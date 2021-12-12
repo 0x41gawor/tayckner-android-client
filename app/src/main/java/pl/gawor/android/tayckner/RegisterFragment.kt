@@ -42,7 +42,7 @@ class RegisterFragment : Fragment() {
         val buttonSwitch = view.findViewById<Button>(R.id.button_switch)
 
         buttonAction.setOnClickListener { Toast.makeText(context, "Not implemented yet", Toast.LENGTH_SHORT).show() }
-        buttonSwitch.setOnClickListener { findNavController().navigate(R.id.loginFragment) }
+        buttonSwitch.setOnClickListener { findNavController().navigate(R.id.action_registerFragment_to_loginFragment) }
         return view
     }
 
