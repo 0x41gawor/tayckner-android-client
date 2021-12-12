@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background_main"
     tools:context=".LoginFragment">
 
 
@@ -42,10 +43,11 @@
         android:textColor="@color/OnPrimary"
         app:layout_constraintBottom_toBottomOf="@+id/view_background"
         app:layout_constraintEnd_toEndOf="@+id/view_background"
-        app:layout_constraintHorizontal_bias="0.56"
+        app:layout_constraintHorizontal_bias="0.52"
         app:layout_constraintStart_toStartOf="@+id/view_background"
         app:layout_constraintTop_toTopOf="@+id/view_background"
-        app:layout_constraintVertical_bias="0.061" />
+        app:layout_constraintVertical_bias="0.046"
+        />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background_main"
     tools:context=".RegisterFragment">
 
 
@@ -41,10 +42,11 @@
         android:textColor="@color/OnPrimary"
         app:layout_constraintBottom_toBottomOf="@+id/view_background"
         app:layout_constraintEnd_toEndOf="@+id/view_background"
-        app:layout_constraintHorizontal_bias="0.447"
+        app:layout_constraintHorizontal_bias="0.52"
         app:layout_constraintStart_toStartOf="@+id/view_background"
         app:layout_constraintTop_toTopOf="@+id/view_background"
-        app:layout_constraintVertical_bias="0.044" />
+        app:layout_constraintVertical_bias="0.046"
+        />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
@@ -120,7 +122,7 @@
                         android:layout_width="159dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:background="@color/backgroundAccent"
+                        android:background="@color/secondaryAccent"
                         android:hint="@string/firstname" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -138,7 +140,7 @@
                         android:layout_width="162dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:background="@color/backgroundAccent"
+                        android:background="@color/secondaryAccent"
                         android:hint="@string/lastname" />
 
                 </com.google.android.material.textfield.TextInputLayout>
