@@ -11,7 +11,7 @@ import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputEditText
 import pl.gawor.android.tayckner.model.ResponseModel
-import pl.gawor.android.tayckner.model.UserCredentialsModel
+import pl.gawor.android.tayckner.model.CredentialsModel
 import pl.gawor.android.tayckner.service.RetrofitInstance
 import pl.gawor.android.tayckner.service.UserApi
 import retrofit2.Call
@@ -35,7 +35,7 @@ class LoginFragment : Fragment() {
 
         buttonAction.setOnClickListener {
             Log.i(TAG, "LoginFragment.buttonAction.OnClickListener:\t\tLogin Button Clicked")
-            val userCredentials = UserCredentialsModel(view.findViewById<TextInputEditText>(R.id.textInput_username).text.toString(),
+            val userCredentials = CredentialsModel(view.findViewById<TextInputEditText>(R.id.textInput_username).text.toString(),
                 view.findViewById<TextInputEditText>(R.id.textInput_password).text.toString())
                 sendLoginRequest(userCredentials)
         }
@@ -44,7 +44,7 @@ class LoginFragment : Fragment() {
         return view
     }
 
-    private fun sendLoginRequest(credentials: UserCredentialsModel) {
+    private fun sendLoginRequest(credentials: CredentialsModel) {
         Log.i(TAG, "LoginFragment.sendLoginRequest(credentials = $credentials)")
 
         val userApiClient: UserApi = RetrofitInstance.retrofit.create(UserApi::class.java)
