@@ -1,6 +1,7 @@
 package pl.gawor.android.tayckner
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -8,61 +9,80 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.textfield.TextInputEditText
+import pl.gawor.android.tayckner.model.ResponseModel
+import pl.gawor.android.tayckner.model.UserModel
+import pl.gawor.android.tayckner.service.RetrofitInstance
+import pl.gawor.android.tayckner.service.UserApi
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [RegisterFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class RegisterFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+
+    private  val TAG = "TAYCKNER"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_register, container, false)
+        // buttons
         val buttonAction = view.findViewById<Button>(R.id.button_action)
         val buttonSwitch = view.findViewById<Button>(R.id.button_switch)
+        // form
+        val textInputUsername = view.findViewById<TextInputEditText>(R.id.textInput_username)
+        val textInputEmail = view.findViewById<TextInputEditText>(R.id.textInput_email)
+        val textInputFirstname = view.findViewById<TextInputEditText>(R.id.textInput_firstname)
+        val textInputLastname = view.findViewById<TextInputEditText>(R.id.textInput_lastname)
+        val textInputPassword = view.findViewById<TextInputEditText>(R.id.textInput_password)
 
-        buttonAction.setOnClickListener { Toast.makeText(context, "Not implemented yet", Toast.LENGTH_SHORT).show() }
+        buttonAction.setOnClickListener {
+            val user = UserModel(
+                textInputUsername.text.toString(),
+                textInputPassword.text.toString(),
+                textInputFirstname.text.toString(),
+                textInputLastname.text.toString(),
+                textInputEmail.text.toString()
+            )
+
+            sendRegisterRequest(user)
+        }
         buttonSwitch.setOnClickListener { findNavController().navigate(R.id.action_registerFragment_to_loginFragment) }
         return view
     }
 
+    private fun sendRegisterRequest(user: UserModel) {
+        Log.i(TAG, "RegisterFragment.sendRegisterRequest(user = $user)")
+
+        val userApiClient: UserApi = RetrofitInstance.retrofit.create(UserApi::class.java)
+
+        val call: Call<ResponseModel> = userApiClient.register(user)
+        call.enqueue(object : Callback<ResponseModel> {
+            override fun onFailure(call: Call<ResponseModel>?, t: Throwable?) {
+                Log.i(TAG, "RegisterFragment.sendRegisterRequest():\t\tCall failed: ${t?.message}")
+                Toast.makeText(context, "Call failed: ${t?.message}", Toast.LENGTH_LONG).show()
+            }
+            override fun onResponse(call: Call<ResponseModel>?, response: Response<ResponseModel>?) {
+                Log.i(TAG, "RegisterFragment.sendRegisterRequest():\t\tCall success: response.body = ${response?.body()}")
+                val res = response?.body()
+                when (res?.code) {
+                    "0" ->  Toast.makeText(context, "User registered", Toast.LENGTH_LONG).show()
+                    else -> Toast.makeText(context, res?.message, Toast.LENGTH_LONG).show()
+                }
+            }
+        })
+
+    }
+
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment RegisterFragment.
-         */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
             RegisterFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
             }
     }
 }
