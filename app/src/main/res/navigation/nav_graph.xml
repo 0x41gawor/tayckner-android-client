@@ -27,4 +27,9 @@
             app:enterAnim="@anim/from_left"
             app:exitAnim="@anim/to_right" />
     </fragment>
+    <fragment
+        android:id="@+id/habitTrackerFragment"
+        android:name="pl.gawor.android.tayckner.HabitTrackerFragment"
+        android:label="fragment_habit_tracker"
+        tools:layout="@layout/fragment_habit_tracker" />
 </navigation>
