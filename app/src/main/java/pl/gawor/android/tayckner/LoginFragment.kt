@@ -1,6 +1,7 @@
 package pl.gawor.android.tayckner
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -8,42 +9,65 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.textfield.TextInputEditText
+import pl.gawor.android.tayckner.model.ResponseModel
+import pl.gawor.android.tayckner.model.CredentialsModel
+import pl.gawor.android.tayckner.service.RetrofitInstance
+import pl.gawor.android.tayckner.service.UserApi
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [LoginFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class LoginFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+
+    private  val TAG = "TAYCKNER"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_login, container, false)
+
         val buttonAction = view.findViewById<Button>(R.id.button_action)
         val buttonSwitch = view.findViewById<Button>(R.id.button_switch)
 
-        buttonAction.setOnClickListener { Toast.makeText(context, "Not implemented yet", Toast.LENGTH_SHORT).show() }
+        buttonAction.setOnClickListener {
+            Log.i(TAG, "LoginFragment.buttonAction.OnClickListener:\t\tLogin Button Clicked")
+            val userCredentials = CredentialsModel(view.findViewById<TextInputEditText>(R.id.textInput_username).text.toString(),
+                view.findViewById<TextInputEditText>(R.id.textInput_password).text.toString())
+                sendLoginRequest(userCredentials)
+        }
         buttonSwitch.setOnClickListener { findNavController().navigate(R.id.action_loginFragment_to_registerFragment) }
+
         return view
+    }
+
+    private fun sendLoginRequest(credentials: CredentialsModel) {
+        Log.i(TAG, "LoginFragment.sendLoginRequest(credentials = $credentials)")
+
+        val userApiClient: UserApi = RetrofitInstance.retrofit.create(UserApi::class.java)
+
+        val call: Call<ResponseModel> = userApiClient.login(credentials)
+        call.enqueue(object : Callback<ResponseModel> {
+            override fun onFailure(call: Call<ResponseModel>?, t: Throwable?) {
+                Log.i(TAG, "LoginFragment.sendLoginRequest():\t\tCall failed: ${t?.message}")
+                Toast.makeText(context, "Call failed: ${t?.message}", Toast.LENGTH_LONG).show()
+            }
+            override fun onResponse(call: Call<ResponseModel>?, response: Response<ResponseModel>?) {
+                Log.i(TAG, "LoginFragment.sendLoginRequest():\t\tCall success: response.body = ${response?.body()}")
+                val res = response?.body()
+                if (res?.code == "L0")
+                    Toast.makeText(context, "Logged-in successfully", Toast.LENGTH_LONG).show()
+                else if (res?.code == "L1")
+                    Toast.makeText(context, "No such username", Toast.LENGTH_LONG).show()
+                else if (res?.code == "L2")
+                    Toast.makeText(context, "Wrong password", Toast.LENGTH_LONG).show()
+                else
+                    Toast.makeText(context, "Unknown response", Toast.LENGTH_LONG).show()
+            }
+        })
     }
 
     companion object {
@@ -57,12 +81,8 @@ class LoginFragment : Fragment() {
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
+        fun newInstance() =
             LoginFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
             }
     }
 }
