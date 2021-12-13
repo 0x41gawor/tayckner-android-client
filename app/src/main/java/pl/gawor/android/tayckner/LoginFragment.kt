@@ -58,28 +58,16 @@ class LoginFragment : Fragment() {
             override fun onResponse(call: Call<ResponseModel>?, response: Response<ResponseModel>?) {
                 Log.i(TAG, "LoginFragment.sendLoginRequest():\t\tCall success: response.body = ${response?.body()}")
                 val res = response?.body()
-                if (res?.code == "L0")
-                    Toast.makeText(context, "Logged-in successfully", Toast.LENGTH_LONG).show()
-                else if (res?.code == "L1")
-                    Toast.makeText(context, "No such username", Toast.LENGTH_LONG).show()
-                else if (res?.code == "L2")
-                    Toast.makeText(context, "Wrong password", Toast.LENGTH_LONG).show()
-                else
-                    Toast.makeText(context, "Unknown response", Toast.LENGTH_LONG).show()
+
+                when (res?.code) {
+                    "L0" -> Toast.makeText(context, "Logged-in successfully", Toast.LENGTH_LONG).show()
+                    else -> Toast.makeText(context, res?.message, Toast.LENGTH_LONG).show()
+                }
             }
         })
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment LoginFragment.
-         */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance() =
             LoginFragment().apply {
