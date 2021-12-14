@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import pl.gawor.android.tayckner.adapter.HabitAdapter
@@ -37,6 +38,20 @@ class HabitTrackerFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentHabitTrackerBinding.inflate(layoutInflater)
         setupHabitRecyclerView()
+
+        binding.imageButtonOptions.setOnClickListener {
+            Toast.makeText(context, "Options button not implemented yet", Toast.LENGTH_SHORT).show()
+        }
+        binding.imageButtonDayPlanner.setOnClickListener {
+            Toast.makeText(context, "Day-planner button not implemented yet", Toast.LENGTH_SHORT).show()
+        }
+        binding.imageButtonDayTracker.setOnClickListener {
+            Toast.makeText(context, "Day-tracker button not implemented yet", Toast.LENGTH_SHORT).show()
+        }
+        binding.imageButtonHabitTracker.setOnClickListener {
+            Toast.makeText(context, "Habit-tracker button not implemented yet", Toast.LENGTH_SHORT).show()
+        }
+
         return binding.root
     }
 
