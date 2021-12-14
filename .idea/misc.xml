@@ -14,6 +14,7 @@
         <entry key="..\:/Ejek/Programming/Android/tayckner-android-client/app/src/main/res/drawable/button_login_top_enabled.xml" value="0.22361111111111112" />
         <entry key="..\:/Ejek/Programming/Android/tayckner-android-client/app/src/main/res/drawable/button_login_top_pressed.xml" value="0.22361111111111112" />
         <entry key="..\:/Ejek/Programming/Android/tayckner-android-client/app/src/main/res/drawable/button_login_top_selector.xml" value="0.23941368078175895" />
+        <entry key="..\:/Ejek/Programming/Android/tayckner-android-client/app/src/main/res/drawable/button_modules_nav.xml" value="0.32666666666666666" />
         <entry key="..\:/Ejek/Programming/Android/tayckner-android-client/app/src/main/res/drawable/ic_day_planner_icon.xml" value="0.3310810810810811" />
         <entry key="..\:/Ejek/Programming/Android/tayckner-android-client/app/src/main/res/drawable/ic_day_planner_icon_background.xml" value="0.3310810810810811" />
         <entry key="..\:/Ejek/Programming/Android/tayckner-android-client/app/src/main/res/drawable/ic_day_tracker_icon.xml" value="0.3310810810810811" />
@@ -24,7 +25,7 @@
         <entry key="..\:/Ejek/Programming/Android/tayckner-android-client/app/src/main/res/drawable/ic_password.xml" value="0.29814814814814816" />
         <entry key="..\:/Ejek/Programming/Android/tayckner-android-client/app/src/main/res/drawable/ic_username.xml" value="0.29814814814814816" />
         <entry key="..\:/Ejek/Programming/Android/tayckner-android-client/app/src/main/res/layout/activity_main.xml" value="0.17147922998986828" />
-        <entry key="..\:/Ejek/Programming/Android/tayckner-android-client/app/src/main/res/layout/fragment_habit_tracker.xml" value="0.4732824427480916" />
+        <entry key="..\:/Ejek/Programming/Android/tayckner-android-client/app/src/main/res/layout/fragment_habit_tracker.xml" value="0.33" />
         <entry key="..\:/Ejek/Programming/Android/tayckner-android-client/app/src/main/res/layout/fragment_login.xml" value="0.22" />
         <entry key="..\:/Ejek/Programming/Android/tayckner-android-client/app/src/main/res/layout/fragment_register.xml" value="0.25" />
         <entry key="..\:/Ejek/Programming/Android/tayckner-android-client/app/src/main/res/xml/network_security_config.xml" value="0.2391891891891892" />
