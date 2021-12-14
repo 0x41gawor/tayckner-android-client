@@ -1,59 +1,78 @@
 package pl.gawor.android.tayckner
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import pl.gawor.android.tayckner.adapter.HabitAdapter
+import pl.gawor.android.tayckner.databinding.FragmentHabitTrackerBinding
+import pl.gawor.android.tayckner.model.Habit
+import pl.gawor.android.tayckner.model.ResponseModel
+import pl.gawor.android.tayckner.service.HabitApi
+import pl.gawor.android.tayckner.service.RetrofitInstance
+import retrofit2.HttpException
+import retrofit2.Response
+import java.io.IOException
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [HabitTrackerFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
+const val JWT_TOKEN = "Bearer " + "eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2Mzk1MjExNTYsImV4cCI6MTYzOTUzMDY3OCwidXNlcklkIjozLCJ1c2VybmFtZSI6IndhemEifQ.5iVafroBtowtdV95VBZNj8bxvXjAq0552wAg_0XEyCc"
+
 class HabitTrackerFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+
+    private  val TAG = "TAYCKNER"
+
+    private lateinit var binding: FragmentHabitTrackerBinding
+
+    private lateinit var habitAdapter: HabitAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+        sendHabitsListRequest()
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        binding = FragmentHabitTrackerBinding.inflate(layoutInflater)
+        setupHabitRecyclerView()
+        return binding.root
+    }
+
+    private fun setupHabitRecyclerView() = binding.recyclerViewMyHabits.apply {
+        habitAdapter = HabitAdapter()
+        adapter = habitAdapter
+        layoutManager = LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL, false)
+    }
+
+    private fun sendHabitsListRequest() {
+        Log.i(TAG, "HabitTrackerFragment.sendHabitsListRequest()")
+        lifecycleScope.launchWhenCreated {
+            val habitApiClient: HabitApi = RetrofitInstance.retrofitHabits.create(HabitApi::class.java)
+            val response: Response<ResponseModel<List<Habit>>> = try {
+                habitApiClient.list(JWT_TOKEN)
+            } catch (e: IOException) {
+                Log.e(TAG, "HabitTrackerFragment.sendHabitsListRequest:\t\tIOException: ${e.message}")
+                return@launchWhenCreated
+            } catch (e: HttpException) {
+                Log.e(TAG, "HabitTrackerFragment.sendHabitsListRequest:\t\tHttpException: ${e.message}")
+                return@launchWhenCreated
+            }
+            if (response.isSuccessful && response.body() != null) {
+                val res: ResponseModel<List<Habit>> = response.body()!!
+                Log.e(TAG, "HabitTrackerFragment.sendHabitsListRequest: $res")
+                habitAdapter.habits = res.content
+            } else {
+                Log.e(TAG, "HabitTrackerFragment.sendHabitsListRequest: HTTP status != 200")
+            }
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_habit_tracker, container, false)
-    }
-
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment HabitTrackerFragment.
-         */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
+        fun newInstance() =
             HabitTrackerFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
             }
     }
 }
