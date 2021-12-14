@@ -58,10 +58,47 @@
     </LinearLayout>
 
     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="508dp"
+        android:orientation="vertical">
+
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/linearLayout_modules_navigation"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"/>
+        android:layout_height="80dp"
+        android:padding="5dp"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/imageButton"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:background="@color/primary"
+            android:src="@drawable/ic_day_planner_icon"
+            tools:ignore="SpeakableTextPresentCheck" />
+
+        <ImageButton
+            android:id="@+id/imageButton2"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:src="@drawable/ic_day_tracker_icon"
+            tools:ignore="SpeakableTextPresentCheck" />
+
+        <ImageButton
+            android:id="@+id/imageButton3"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:src="@drawable/ic_habit_tracker_icon"
+            tools:ignore="SpeakableTextPresentCheck" />
+    </LinearLayout>
 
 
 </LinearLayout>
