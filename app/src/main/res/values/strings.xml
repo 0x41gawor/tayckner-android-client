@@ -11,4 +11,6 @@
     <string name="firstname">firstname</string>
     <string name="lastname">lastname</string>
     <string name="tag">TAYCKNER</string>
+    <string name="habit_tracker">Habit-Tracker</string>
+    <string name="my_habits">My habits</string>
 </resources>
