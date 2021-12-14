@@ -1,6 +1,6 @@
 package pl.gawor.android.tayckner.model
 
-data class UserModel(
+data class User(
     val username: String,
     val password: String,
     val firstName: String,

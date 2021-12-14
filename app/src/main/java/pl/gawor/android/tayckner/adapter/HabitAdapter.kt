@@ -7,24 +7,24 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import pl.gawor.android.tayckner.databinding.HabitItemBinding
-import pl.gawor.android.tayckner.model.HabitModel
+import pl.gawor.android.tayckner.model.Habit
 
 class HabitAdapter : RecyclerView.Adapter<HabitAdapter.HabitViewHolder>() {
 
     inner class HabitViewHolder(val binding: HabitItemBinding) : RecyclerView.ViewHolder(binding.root)
 
-    private val diffCallback = object : DiffUtil.ItemCallback<HabitModel>() {
-        override fun areItemsTheSame(oldItem: HabitModel, newItem: HabitModel): Boolean {
+    private val diffCallback = object : DiffUtil.ItemCallback<Habit>() {
+        override fun areItemsTheSame(oldItem: Habit, newItem: Habit): Boolean {
             return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: HabitModel, newItem: HabitModel): Boolean {
+        override fun areContentsTheSame(oldItem: Habit, newItem: Habit): Boolean {
             return oldItem == newItem
         }
     }
 
     private val differ = AsyncListDiffer(this, diffCallback)
-    var habits: List<HabitModel>
+    var habits: List<Habit>
         get() = differ.currentList
         set(value) {differ.submitList(value)}
 
