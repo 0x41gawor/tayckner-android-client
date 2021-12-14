@@ -40,7 +40,7 @@ class HabitAdapter : RecyclerView.Adapter<HabitAdapter.HabitViewHolder>() {
         holder.binding.apply {
             val habit = habits[position]
             textViewHabit.text = habit.name
-            frameLayout.background.current.setTint(Color.parseColor(habit.color))
+            materialCardView.background.current.setTint(Color.parseColor(habit.color))
         }
     }
 
