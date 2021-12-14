@@ -58,13 +58,13 @@ class HabitTrackerFragment : Fragment() {
     private fun setupHabitRecyclerView() = binding.recyclerViewMyHabits.apply {
         habitAdapter = HabitAdapter()
         adapter = habitAdapter
-        layoutManager = LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL, false)
+        layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
     }
 
     private fun sendHabitsListRequest() {
         Log.i(TAG, "HabitTrackerFragment.sendHabitsListRequest()")
         lifecycleScope.launchWhenCreated {
-            val habitApiClient: HabitApi = RetrofitInstance.retrofitHabits.create(HabitApi::class.java)
+            val habitApiClient: HabitApi = RetrofitInstance.retrofit.create(HabitApi::class.java)
             val response: Response<ResponseModel<List<Habit>>> = try {
                 habitApiClient.list(JWT_TOKEN)
             } catch (e: IOException) {

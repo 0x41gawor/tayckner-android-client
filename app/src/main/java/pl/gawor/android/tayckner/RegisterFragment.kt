@@ -59,7 +59,7 @@ class RegisterFragment : Fragment() {
     private fun sendRegisterRequest(user: User) {
         Log.i(TAG, "RegisterFragment.sendRegisterRequest(user = $user)")
 
-        val userApiClient: UserApi = RetrofitInstance.retrofitUsers.create(UserApi::class.java)
+        val userApiClient: UserApi = RetrofitInstance.retrofit.create(UserApi::class.java)
 
         val call: Call<ResponseModel<Any>> = userApiClient.register(user)
         call.enqueue(object : Callback<ResponseModel<Any>> {

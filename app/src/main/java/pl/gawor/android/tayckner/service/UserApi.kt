@@ -9,9 +9,9 @@ import retrofit2.http.POST
 
 interface UserApi {
 
-    @POST("login")
+    @POST("users/login")
     fun login(@Body credentialsModel: CredentialsModel): Call<ResponseModel<String>>
 
-    @POST("register")
+    @POST("users/register")
     fun register(@Body user: User): Call<ResponseModel<Any>>
 }

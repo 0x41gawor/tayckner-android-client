@@ -47,7 +47,7 @@ class LoginFragment : Fragment() {
     private fun sendLoginRequest(credentials: CredentialsModel) {
         Log.i(TAG, "LoginFragment.sendLoginRequest(credentials = $credentials)")
 
-        val userApiClient: UserApi = RetrofitInstance.retrofitUsers.create(UserApi::class.java)
+        val userApiClient: UserApi = RetrofitInstance.retrofit.create(UserApi::class.java)
 
         val call: Call<ResponseModel<String>> = userApiClient.login(credentials)
         call.enqueue(object : Callback<ResponseModel<String>> {

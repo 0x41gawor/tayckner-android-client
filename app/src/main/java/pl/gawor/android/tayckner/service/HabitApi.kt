@@ -8,7 +8,7 @@ import retrofit2.http.Header
 
 interface HabitApi {
 
-    @GET(".")
+    @GET("habits")
     suspend fun list(@Header("Authorization") auth: String): Response<ResponseModel<List<Habit>>>
 
 }
