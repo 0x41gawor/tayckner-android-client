@@ -5,6 +5,7 @@
     android:layout_margin="8dp">
 
     <FrameLayout
+        android:id="@+id/frameLayout"
         android:layout_width="match_parent"
         android:background="@drawable/background_habit_item"
         android:layout_height="match_parent">
