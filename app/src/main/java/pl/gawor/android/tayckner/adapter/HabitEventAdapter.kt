@@ -1,16 +1,15 @@
 package pl.gawor.android.tayckner.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import pl.gawor.android.tayckner.databinding.HabitEventItemBinding
+import pl.gawor.android.tayckner.databinding.ItemHabitEventBinding
 import pl.gawor.android.tayckner.model.HabitEvent
 
 class HabitEventAdapter : RecyclerView.Adapter<HabitEventAdapter.HabitEventViewHolder>() {
-    inner class HabitEventViewHolder(val binding: HabitEventItemBinding) : RecyclerView.ViewHolder(binding.root)
+    inner class HabitEventViewHolder(val binding: ItemHabitEventBinding) : RecyclerView.ViewHolder(binding.root)
 
     private val diffCallback = object : DiffUtil.ItemCallback<HabitEvent>() {
         override fun areItemsTheSame(oldItem: HabitEvent, newItem: HabitEvent): Boolean {
@@ -32,7 +31,7 @@ class HabitEventAdapter : RecyclerView.Adapter<HabitEventAdapter.HabitEventViewH
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HabitEventViewHolder {
         return HabitEventViewHolder(
-            HabitEventItemBinding.inflate(
+            ItemHabitEventBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
