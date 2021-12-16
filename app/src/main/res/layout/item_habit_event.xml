@@ -1,29 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="5dp"
-    android:layout_margin="8dp">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="10dp"
+    android:layout_margin="8dp"
+    app:strokeColor="@color/primary"
+    app:strokeWidth="2dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:background="@drawable/background_habit_event_item"
         android:orientation="horizontal">
 
         <FrameLayout
-            android:layout_width="wrap_content"
+            android:id="@+id/frameLayout_habit_name"
+            android:layout_width="113dp"
             android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:padding="10dp">
+            android:background="@color/OnPrimary"
+            android:layout_gravity="center">
 
             <TextView
                 android:id="@+id/textView_habitName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="Workout"
-                android:textColor="@color/primary"
+                android:textColor="@color/OnPrimary"
                 android:textSize="20sp"
                 android:textStyle="bold" />
         </FrameLayout>
@@ -31,8 +33,9 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginStart="10dp"
+            android:layout_marginStart="15dp"
             android:layout_marginEnd="10dp"
+            android:background="@drawable/background_item_habit_event"
             android:orientation="horizontal">
 
             <TextView
@@ -40,7 +43,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginRight="5dp"
+                android:layout_marginEnd="5dp"
                 android:layout_weight="1"
                 android:text="12 dec"
                 android:textColor="@color/primary"
@@ -72,4 +75,4 @@
                 android:textSize="16sp" />
         </FrameLayout>
     </LinearLayout>
-</androidx.cardview.widget.CardView>
+</com.google.android.material.card.MaterialCardView>

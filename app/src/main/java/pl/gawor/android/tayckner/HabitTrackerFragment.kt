@@ -57,6 +57,9 @@ class HabitTrackerFragment : Fragment() {
         binding.imageButtonHabitTracker.setOnClickListener {
             Toast.makeText(context, "Habit-tracker button not implemented yet", Toast.LENGTH_SHORT).show()
         }
+        binding.imageButtonAdd.setOnClickListener {
+            Toast.makeText(context, "Add habit-event button not implemented yet", Toast.LENGTH_SHORT).show()
+        }
 
         return binding.root
     }

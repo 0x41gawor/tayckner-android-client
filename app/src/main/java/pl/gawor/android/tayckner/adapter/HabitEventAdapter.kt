@@ -1,5 +1,6 @@
 package pl.gawor.android.tayckner.adapter
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
@@ -47,6 +48,7 @@ class HabitEventAdapter : RecyclerView.Adapter<HabitEventAdapter.HabitEventViewH
             textViewDate.text =  date
             textViewYear.text = habitEvent.date.substring(0,4)
             textViewComment.text = habitEvent.comment
+            frameLayoutHabitName.background.current.setTint(Color.parseColor((habitEvent.habit.color)))
         }
     }
 
