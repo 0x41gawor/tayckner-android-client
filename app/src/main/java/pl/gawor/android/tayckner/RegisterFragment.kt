@@ -43,6 +43,7 @@ class RegisterFragment : Fragment() {
 
         buttonAction.setOnClickListener {
             val user = User(
+                0L,
                 textInputUsername.text.toString(),
                 textInputPassword.text.toString(),
                 textInputFirstname.text.toString(),

@@ -20,7 +20,7 @@ import retrofit2.Response
 import java.io.IOException
 
 
-const val JWT_TOKEN = "Bearer " + "eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2Mzk1MjExNTYsImV4cCI6MTYzOTUzMDY3OCwidXNlcklkIjozLCJ1c2VybmFtZSI6IndhemEifQ.5iVafroBtowtdV95VBZNj8bxvXjAq0552wAg_0XEyCc"
+const val JWT_TOKEN = "Bearer " + "eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2Mzk2ODM3OTgsImV4cCI6MTYzOTY5MzMyMCwidXNlcklkIjozLCJ1c2VybmFtZSI6IndhemEifQ.EM-ETeNQ3QYyByuGJIyT3xp1g01VEDPRX1zf-sJK2OA"
 
 class HabitTrackerFragment : Fragment() {
 
