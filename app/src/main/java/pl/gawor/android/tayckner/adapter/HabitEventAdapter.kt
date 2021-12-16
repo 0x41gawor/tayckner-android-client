@@ -1,5 +1,6 @@
 package pl.gawor.android.tayckner.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
@@ -29,7 +30,6 @@ class HabitEventAdapter : RecyclerView.Adapter<HabitEventAdapter.HabitEventViewH
             differ.submitList(value)
         }
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HabitEventViewHolder {
         return HabitEventViewHolder(
             HabitEventItemBinding.inflate(
@@ -44,9 +44,9 @@ class HabitEventAdapter : RecyclerView.Adapter<HabitEventAdapter.HabitEventViewH
         holder.binding.apply {
             val habitEvent = habitEvents[position]
             textViewHabitName.text = habitEvent.habit.name
-            //TODO split date and year
-            textViewDate.text = habitEvent.date
-            textViewYear.text = habitEvent.date
+            val date = habitEvent.date.substring(8, 10) + " " + convertMonth(habitEvent.date.substring(5, 7))
+            textViewDate.text =  date
+            textViewYear.text = habitEvent.date.substring(0,4)
             textViewComment.text = habitEvent.comment
         }
     }
@@ -55,5 +55,21 @@ class HabitEventAdapter : RecyclerView.Adapter<HabitEventAdapter.HabitEventViewH
         return habitEvents.size
     }
 
-
+    private fun convertMonth(number: String): String {
+            return when(number) {
+                "01" -> "JAN"
+                "02" -> "FEB"
+                "03" -> "MAR"
+                "04" -> "APR"
+                "05" -> "MAY"
+                "06" -> "JUN"
+                "07" -> "JUL"
+                "08" -> "AUG"
+                "09" -> "SEP"
+                "10" -> "OCT"
+                "11" -> "NOV"
+                "12" -> "DEC"
+                else -> "XXX"
+            }
+    }
 }

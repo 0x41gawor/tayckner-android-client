@@ -10,17 +10,20 @@ import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import pl.gawor.android.tayckner.adapter.HabitAdapter
+import pl.gawor.android.tayckner.adapter.HabitEventAdapter
 import pl.gawor.android.tayckner.databinding.FragmentHabitTrackerBinding
 import pl.gawor.android.tayckner.model.Habit
+import pl.gawor.android.tayckner.model.HabitEvent
 import pl.gawor.android.tayckner.model.ResponseModel
 import pl.gawor.android.tayckner.service.HabitApi
+import pl.gawor.android.tayckner.service.HabitEventApi
 import pl.gawor.android.tayckner.service.RetrofitInstance
 import retrofit2.HttpException
 import retrofit2.Response
 import java.io.IOException
 
 
-const val JWT_TOKEN = "Bearer " + "eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2Mzk2ODM3OTgsImV4cCI6MTYzOTY5MzMyMCwidXNlcklkIjozLCJ1c2VybmFtZSI6IndhemEifQ.EM-ETeNQ3QYyByuGJIyT3xp1g01VEDPRX1zf-sJK2OA"
+const val JWT_TOKEN = "Bearer " + "eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2Mzk2OTM4MjYsImV4cCI6MTYzOTcwMzM0OCwidXNlcklkIjozLCJ1c2VybmFtZSI6IndhemEifQ.fGz7Xd4rc8udNan8yqn12bweh4Bg8r3GHQn3HAmr8O8"
 
 class HabitTrackerFragment : Fragment() {
 
@@ -29,15 +32,18 @@ class HabitTrackerFragment : Fragment() {
     private lateinit var binding: FragmentHabitTrackerBinding
 
     private lateinit var habitAdapter: HabitAdapter
+    private lateinit var habitEventAdapter: HabitEventAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         sendHabitsListRequest()
+        sendHabitEventsListRequest()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentHabitTrackerBinding.inflate(layoutInflater)
         setupHabitRecyclerView()
+        setupHabitEventRecyclerView()
 
         binding.imageButtonOptions.setOnClickListener {
             Toast.makeText(context, "Options button not implemented yet", Toast.LENGTH_SHORT).show()
@@ -61,6 +67,12 @@ class HabitTrackerFragment : Fragment() {
         layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
     }
 
+    private fun setupHabitEventRecyclerView() = binding.recyclerViewHabitEvents.apply {
+        habitEventAdapter = HabitEventAdapter()
+        adapter = habitEventAdapter
+        layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+    }
+
     private fun sendHabitsListRequest() {
         Log.i(TAG, "HabitTrackerFragment.sendHabitsListRequest()")
         lifecycleScope.launchWhenCreated {
@@ -80,6 +92,29 @@ class HabitTrackerFragment : Fragment() {
                 habitAdapter.habits = res.content
             } else {
                 Log.e(TAG, "HabitTrackerFragment.sendHabitsListRequest: HTTP status != 200")
+            }
+        }
+    }
+
+    private fun sendHabitEventsListRequest() {
+        Log.i(TAG, "HabitTrackerFragment.sendHabitEventsListRequest()")
+        lifecycleScope.launchWhenCreated {
+            val habitEventApiClient: HabitEventApi = RetrofitInstance.retrofit.create(HabitEventApi::class.java)
+            val response: Response<ResponseModel<List<HabitEvent>>> = try {
+                habitEventApiClient.list(JWT_TOKEN)
+            } catch (e: IOException) {
+                Log.e(TAG, "HabitTrackerFragment.sendHabitEventsListRequest:\t\tIOException: ${e.message}")
+                return@launchWhenCreated
+            } catch (e: HttpException) {
+                Log.e(TAG, "HabitTrackerFragment.sendHabitEventsListRequest:\t\tHttpException: ${e.message}")
+                return@launchWhenCreated
+            }
+            if (response.isSuccessful && response.body() != null) {
+                val res: ResponseModel<List<HabitEvent>> = response.body()!!
+                Log.e(TAG, "HabitTrackerFragment.sendHabitEventsListRequest: $res")
+                habitEventAdapter.habitEvents = res.content
+            } else {
+                Log.e(TAG, "HabitTrackerFragment.sendHabitEventsListRequest: HTTP status != 200")
             }
         }
     }
