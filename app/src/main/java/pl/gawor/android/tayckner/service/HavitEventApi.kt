@@ -7,6 +7,6 @@ import retrofit2.http.GET
 import retrofit2.http.Header
 
 interface HavitEventApi {
-    @GET("habits")
+    @GET("habit-events")
     suspend fun list(@Header("Authorization") auth: String): Response<ResponseModel<List<HabitEvent>>>
 }
