@@ -19,7 +19,6 @@ import pl.gawor.android.tayckner.databinding.ItemAddHabitEventBinding
 import pl.gawor.android.tayckner.model.Habit
 import pl.gawor.android.tayckner.model.HabitEvent
 import pl.gawor.android.tayckner.model.ResponseModel
-import pl.gawor.android.tayckner.model.User
 import pl.gawor.android.tayckner.service.HabitApi
 import pl.gawor.android.tayckner.service.HabitEventApi
 import pl.gawor.android.tayckner.service.RetrofitInstance
@@ -28,7 +27,7 @@ import retrofit2.Response
 import java.io.IOException
 
 
-const val JWT_TOKEN = "Bearer " + "eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NDAxMDEyOTIsImV4cCI6MTY0MDExMDgxNCwidXNlcklkIjozLCJ1c2VybmFtZSI6IndhemEifQ.Av4MovhJ1VPrwk4V0TMqlLT4BchDQRktb67PL5DljRw"
+const val JWT_TOKEN = "Bearer " + "eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NDAxMjMwNzEsImV4cCI6MTY0MDEzMjU5MywidXNlcklkIjozLCJ1c2VybmFtZSI6IndhemEifQ.Nfe-0hTGYx24ztDDGBcVWwALC5bhTuN0fy9e7Qlfn2c"
 
 class HabitTrackerFragment : Fragment() {
 
@@ -76,7 +75,7 @@ class HabitTrackerFragment : Fragment() {
     }
 
     private fun setupHabitEventRecyclerView() = binding.recyclerViewHabitEvents.apply {
-        habitEventAdapter = HabitEventAdapter()
+        habitEventAdapter = HabitEventAdapter(context)
         adapter = habitEventAdapter
         layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
     }

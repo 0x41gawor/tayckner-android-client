@@ -1,16 +1,24 @@
 package pl.gawor.android.tayckner.adapter
 
+import android.content.Context
 import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupMenu
+import android.widget.Toast
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import pl.gawor.android.tayckner.R
 import pl.gawor.android.tayckner.databinding.ItemHabitEventBinding
 import pl.gawor.android.tayckner.model.HabitEvent
 
-class HabitEventAdapter : RecyclerView.Adapter<HabitEventAdapter.HabitEventViewHolder>() {
+class HabitEventAdapter(val context: Context) : RecyclerView.Adapter<HabitEventAdapter.HabitEventViewHolder>() {
     inner class HabitEventViewHolder(val binding: ItemHabitEventBinding) : RecyclerView.ViewHolder(binding.root)
+
+    private  val TAG = "TAYCKNER"
 
     private val diffCallback = object : DiffUtil.ItemCallback<HabitEvent>() {
         override fun areItemsTheSame(oldItem: HabitEvent, newItem: HabitEvent): Boolean {
@@ -31,13 +39,32 @@ class HabitEventAdapter : RecyclerView.Adapter<HabitEventAdapter.HabitEventViewH
         }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HabitEventViewHolder {
-        return HabitEventViewHolder(
-            ItemHabitEventBinding.inflate(
-                LayoutInflater.from(parent.context),
-                parent,
-                false
-            )
-        )
+        val binding = ItemHabitEventBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        binding.cardView.setOnClickListener {
+            Log.i("TAYCKNER", "ELOELO")
+            popUpMenu(context, binding.root)
+        }
+        return HabitEventViewHolder(binding)
+    }
+
+    private fun popUpMenu(context: Context, view: View) {
+        Log.i(TAG, "HabitEventAdapter.popUpMenu()")
+        val popupMenus = PopupMenu(context, view)
+        popupMenus.inflate(R.menu.menu_item_habit_event)
+        popupMenus.setOnMenuItemClickListener {
+            when(it.itemId) {
+                R.id.editText -> {
+                    Toast.makeText(context, "Edit option is clicked", Toast.LENGTH_SHORT).show()
+                    true
+                }
+                R.id.delete -> {
+                    Toast.makeText(context, "Delete option is clicked", Toast.LENGTH_SHORT).show()
+                    true
+                }
+                else -> true
+            }
+        }
+        popupMenus.show()
     }
 
     override fun onBindViewHolder(holder: HabitEventViewHolder, position: Int) {
