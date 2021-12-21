@@ -7,9 +7,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.coroutines.delay
 import pl.gawor.android.tayckner.adapter.HabitAdapter
 import pl.gawor.android.tayckner.adapter.HabitEventAdapter
 import pl.gawor.android.tayckner.databinding.FragmentHabitTrackerBinding
@@ -17,6 +19,7 @@ import pl.gawor.android.tayckner.databinding.ItemAddHabitEventBinding
 import pl.gawor.android.tayckner.model.Habit
 import pl.gawor.android.tayckner.model.HabitEvent
 import pl.gawor.android.tayckner.model.ResponseModel
+import pl.gawor.android.tayckner.model.User
 import pl.gawor.android.tayckner.service.HabitApi
 import pl.gawor.android.tayckner.service.HabitEventApi
 import pl.gawor.android.tayckner.service.RetrofitInstance
@@ -117,7 +120,10 @@ class HabitTrackerFragment : Fragment() {
             if (response.isSuccessful && response.body() != null) {
                 val res: ResponseModel<List<HabitEvent>> = response.body()!!
                 Log.e(TAG, "HabitTrackerFragment.sendHabitEventsListRequest: $res")
-                habitEventAdapter.habitEvents = res.content
+                if (res.content != null)
+                {
+                    habitEventAdapter.habitEvents = res.content
+                }
             } else {
                 Log.e(TAG, "HabitTrackerFragment.sendHabitEventsListRequest: HTTP status != 200")
             }
@@ -126,11 +132,12 @@ class HabitTrackerFragment : Fragment() {
 
 
     private fun addHabitEvent() {
+        Log.e(TAG, "HabitTrackerFragment.addHabitEvent()")
        val bindingAddHabitEvent = ItemAddHabitEventBinding.inflate(layoutInflater)
 
         val editTextHabitId = bindingAddHabitEvent.editTextHabit
         val editTextDate = bindingAddHabitEvent.editTextDate
-        val editTextComment = bindingAddHabitEvent.editTextDate
+        val editTextComment = bindingAddHabitEvent.editTextComment
         val editTextValue = bindingAddHabitEvent.editTextValue
 
         val dialogAddHabitEvent = AlertDialog.Builder(context)
@@ -140,6 +147,8 @@ class HabitTrackerFragment : Fragment() {
         dialogAddHabitEvent.setPositiveButton("OK") {
                 dialog,_->
             Toast.makeText(context, "Not implemented yet", Toast.LENGTH_SHORT).show()
+            sendHabitEventsCreateRequest(editTextHabitId, editTextDate, editTextComment, editTextValue)
+            updateHabitEventsListRequest()
             dialog.dismiss()
         }
         dialogAddHabitEvent.setNegativeButton("Cancel") {
@@ -149,6 +158,61 @@ class HabitTrackerFragment : Fragment() {
         }
         dialogAddHabitEvent.create()
         dialogAddHabitEvent.show()
+    }
+
+    private fun updateHabitEventsListRequest() {
+        Log.i(TAG, "HabitTrackerFragment.sendHabitEventsListRequest()")
+        lifecycleScope.launchWhenCreated {
+            delay(1000)
+            val habitEventApiClient: HabitEventApi = RetrofitInstance.retrofit.create(HabitEventApi::class.java)
+            val response: Response<ResponseModel<List<HabitEvent>>> = try {
+                habitEventApiClient.list(JWT_TOKEN)
+            } catch (e: IOException) {
+                Log.e(TAG, "HabitTrackerFragment.sendHabitEventsListRequest:\t\tIOException: ${e.message}")
+                return@launchWhenCreated
+            } catch (e: HttpException) {
+                Log.e(TAG, "HabitTrackerFragment.sendHabitEventsListRequest:\t\tHttpException: ${e.message}")
+                return@launchWhenCreated
+            }
+            if (response.isSuccessful && response.body() != null) {
+                val res: ResponseModel<List<HabitEvent>> = response.body()!!
+                Log.e(TAG, "HabitTrackerFragment.sendHabitEventsListRequest: $res")
+                if (res.content != null)
+                {
+                    habitEventAdapter.habitEvents = res.content
+                }
+            } else {
+                Log.e(TAG, "HabitTrackerFragment.sendHabitEventsListRequest: HTTP status != 200")
+            }
+        }
+    }
+
+    private fun sendHabitEventsCreateRequest(editTextHabitId: EditText, editTextDate: EditText, editTextComment: EditText, editTextValue: EditText) {
+        Log.i(TAG, "HabitTrackerFragment.sendHabitEventsCreateRequest()")
+        val habitId = editTextHabitId.text.toString().toLong()
+        val date = editTextDate.text.toString()
+        val comment = editTextComment.text.toString()
+        val value = editTextValue.text.toString().toInt()
+        val habit = Habit(habitId,"","", null)
+        val habitEvent = HabitEvent(comment, date, habit, 0, value)
+        lifecycleScope.launchWhenCreated {
+            val habitEventApiClient: HabitEventApi = RetrofitInstance.retrofit.create(HabitEventApi::class.java)
+            val response: Response<ResponseModel<HabitEvent>> = try {
+                habitEventApiClient.create(JWT_TOKEN, habitEvent)
+            }catch (e: IOException) {
+                Log.e(TAG, "HabitTrackerFragment.sendHabitEventsCreateRequest:\t\tIOException: ${e.message}")
+                return@launchWhenCreated
+            } catch (e: HttpException) {
+                Log.e(TAG, "HabitTrackerFragment.sendHabitEventsCreateRequest:\t\tHttpException: ${e.message}")
+                return@launchWhenCreated
+            }
+            if (response.isSuccessful && response.body() != null) {
+                val res: ResponseModel<HabitEvent> = response.body()!!
+                Log.e(TAG, "HabitTrackerFragment.sendHabitEventsCreateRequest: $res")
+            } else {
+                Log.e(TAG, "HabitTrackerFragment.sendHabitEventsCreateRequest: HTTP status != 200")
+            }
+        }
     }
 
     companion object {

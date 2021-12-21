@@ -52,7 +52,6 @@
         <EditText
             android:id="@+id/editText_comment"
             android:hint="Comment"
-            android:inputType="phone"
             android:textColor="@color/purple_500"
             android:padding="15dp"
             android:textSize="18sp"
