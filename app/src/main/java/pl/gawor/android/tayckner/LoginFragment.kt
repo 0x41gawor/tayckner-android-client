@@ -49,13 +49,13 @@ class LoginFragment : Fragment() {
 
         val userApiClient: UserApi = RetrofitInstance.retrofit.create(UserApi::class.java)
 
-        val call: Call<ResponseModel> = userApiClient.login(credentials)
-        call.enqueue(object : Callback<ResponseModel> {
-            override fun onFailure(call: Call<ResponseModel>?, t: Throwable?) {
+        val call: Call<ResponseModel<String>> = userApiClient.login(credentials)
+        call.enqueue(object : Callback<ResponseModel<String>> {
+            override fun onFailure(call: Call<ResponseModel<String>>?, t: Throwable?) {
                 Log.i(TAG, "LoginFragment.sendLoginRequest():\t\tCall failed: ${t?.message}")
                 Toast.makeText(context, "Call failed: ${t?.message}", Toast.LENGTH_LONG).show()
             }
-            override fun onResponse(call: Call<ResponseModel>?, response: Response<ResponseModel>?) {
+            override fun onResponse(call: Call<ResponseModel<String>>?, response: Response<ResponseModel<String>>?) {
                 Log.i(TAG, "LoginFragment.sendLoginRequest():\t\tCall success: response.body = ${response?.body()}")
                 val res = response?.body()
 

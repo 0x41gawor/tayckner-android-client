@@ -11,7 +11,7 @@ import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputEditText
 import pl.gawor.android.tayckner.model.ResponseModel
-import pl.gawor.android.tayckner.model.UserModel
+import pl.gawor.android.tayckner.model.User
 import pl.gawor.android.tayckner.service.RetrofitInstance
 import pl.gawor.android.tayckner.service.UserApi
 import retrofit2.Call
@@ -42,7 +42,8 @@ class RegisterFragment : Fragment() {
         val textInputPassword = view.findViewById<TextInputEditText>(R.id.textInput_password)
 
         buttonAction.setOnClickListener {
-            val user = UserModel(
+            val user = User(
+                0L,
                 textInputUsername.text.toString(),
                 textInputPassword.text.toString(),
                 textInputFirstname.text.toString(),
@@ -56,18 +57,18 @@ class RegisterFragment : Fragment() {
         return view
     }
 
-    private fun sendRegisterRequest(user: UserModel) {
+    private fun sendRegisterRequest(user: User) {
         Log.i(TAG, "RegisterFragment.sendRegisterRequest(user = $user)")
 
         val userApiClient: UserApi = RetrofitInstance.retrofit.create(UserApi::class.java)
 
-        val call: Call<ResponseModel> = userApiClient.register(user)
-        call.enqueue(object : Callback<ResponseModel> {
-            override fun onFailure(call: Call<ResponseModel>?, t: Throwable?) {
+        val call: Call<ResponseModel<Any>> = userApiClient.register(user)
+        call.enqueue(object : Callback<ResponseModel<Any>> {
+            override fun onFailure(call: Call<ResponseModel<Any>>?, t: Throwable?) {
                 Log.i(TAG, "RegisterFragment.sendRegisterRequest():\t\tCall failed: ${t?.message}")
                 Toast.makeText(context, "Call failed: ${t?.message}", Toast.LENGTH_LONG).show()
             }
-            override fun onResponse(call: Call<ResponseModel>?, response: Response<ResponseModel>?) {
+            override fun onResponse(call: Call<ResponseModel<Any>>?, response: Response<ResponseModel<Any>>?) {
                 Log.i(TAG, "RegisterFragment.sendRegisterRequest():\t\tCall success: response.body = ${response?.body()}")
                 val res = response?.body()
                 when (res?.code) {
