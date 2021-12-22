@@ -140,7 +140,6 @@ class HabitTrackerFragment : Fragment() {
             return@launchWhenCreated
         }
         Log.i(TAG, "HabitTrackerFragment.refreshHabitEventsList() = void")
-
     }
 
     private fun sendHabitEventsCreateRequest(editTextHabitId: EditText, editTextDate: EditText, editTextComment: EditText, editTextValue: EditText) {
@@ -152,22 +151,7 @@ class HabitTrackerFragment : Fragment() {
         val habit = Habit(habitId,"","", null)
         val habitEvent = HabitEvent(comment, date, habit, 0, value)
         lifecycleScope.launchWhenCreated {
-            val habitEventApiClient: HabitEventApi = RetrofitInstance.retrofit.create(HabitEventApi::class.java)
-            val response: Response<ResponseModel<HabitEvent>> = try {
-                habitEventApiClient.create(JWT_TOKEN, habitEvent)
-            }catch (e: IOException) {
-                Log.e(TAG, "HabitTrackerFragment.sendHabitEventsCreateRequest:\t\tIOException: ${e.message}")
-                return@launchWhenCreated
-            } catch (e: HttpException) {
-                Log.e(TAG, "HabitTrackerFragment.sendHabitEventsCreateRequest:\t\tHttpException: ${e.message}")
-                return@launchWhenCreated
-            }
-            if (response.isSuccessful && response.body() != null) {
-                val res: ResponseModel<HabitEvent> = response.body()!!
-                Log.e(TAG, "HabitTrackerFragment.sendHabitEventsCreateRequest: $res")
-            } else {
-                Log.e(TAG, "HabitTrackerFragment.sendHabitEventsCreateRequest: HTTP status != 200")
-            }
+            HabitEventRepository.create(habitEvent)
         }
     }
 

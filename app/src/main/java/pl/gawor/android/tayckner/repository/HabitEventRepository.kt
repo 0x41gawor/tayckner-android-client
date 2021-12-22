@@ -41,6 +41,27 @@ object HabitEventRepository {
         return emptyList()
     }
 
+    suspend fun create(habitEvent: HabitEvent) : HabitEvent? {
+        var result: HabitEvent? = null
+        val habitEventApiClient: HabitEventApi = RetrofitInstance.retrofit.create(HabitEventApi::class.java)
+        val response: Response<ResponseModel<HabitEvent>> = try {
+            habitEventApiClient.create(JWT_TOKEN, habitEvent)
+        }catch (e: IOException) {
+            Log.e(TAG, "HabitEventRepository.create:\t\tIOException: ${e.message}")
+            return null
+        } catch (e: HttpException) {
+            Log.e(TAG, "HabitEventRepository.create:\t\tHttpException: ${e.message}")
+            return null
+        }
+        if (response.isSuccessful && response.body() != null) {
+            val res: ResponseModel<HabitEvent> = response.body()!!
+            result = res.content
+            Log.e(TAG, "HabitEventRepository.create: $res")
+        } else {
+            Log.e(TAG, "HabitEventRepository.create: HTTP status != 200")
+        }
+        return result
+    }
 
 
 }
