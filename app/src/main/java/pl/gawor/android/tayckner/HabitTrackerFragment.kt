@@ -20,8 +20,8 @@ import pl.gawor.android.tayckner.model.Habit
 import pl.gawor.android.tayckner.model.HabitEvent
 import pl.gawor.android.tayckner.model.ResponseModel
 import pl.gawor.android.tayckner.repository.HabitEventRepository
+import pl.gawor.android.tayckner.repository.HabitRepository
 import pl.gawor.android.tayckner.repository.JWT_TOKEN
-import pl.gawor.android.tayckner.service.HabitApi
 import pl.gawor.android.tayckner.service.HabitEventApi
 import pl.gawor.android.tayckner.service.RetrofitInstance
 import retrofit2.HttpException
@@ -84,24 +84,11 @@ class HabitTrackerFragment : Fragment() {
     private fun sendHabitsListRequest() {
         Log.i(TAG, "HabitTrackerFragment.sendHabitsListRequest()")
         lifecycleScope.launchWhenCreated {
-            val habitApiClient: HabitApi = RetrofitInstance.retrofit.create(HabitApi::class.java)
-            val response: Response<ResponseModel<List<Habit>>> = try {
-                habitApiClient.list(JWT_TOKEN)
-            } catch (e: IOException) {
-                Log.e(TAG, "HabitTrackerFragment.sendHabitsListRequest:\t\tIOException: ${e.message}")
-                return@launchWhenCreated
-            } catch (e: HttpException) {
-                Log.e(TAG, "HabitTrackerFragment.sendHabitsListRequest:\t\tHttpException: ${e.message}")
-                return@launchWhenCreated
-            }
-            if (response.isSuccessful && response.body() != null) {
-                val res: ResponseModel<List<Habit>> = response.body()!!
-                Log.e(TAG, "HabitTrackerFragment.sendHabitsListRequest: $res")
-                habitAdapter.habits = res.content
-            } else {
-                Log.e(TAG, "HabitTrackerFragment.sendHabitsListRequest: HTTP status != 200")
-            }
+            val list: List<Habit> = HabitRepository.list()
+            habitAdapter.habits = list
+            return@launchWhenCreated
         }
+        Log.i(TAG, "HabitTrackerFragment.sendHabitsListRequest() = void")
     }
 
     private fun sendHabitEventsListRequest() {
@@ -111,6 +98,7 @@ class HabitTrackerFragment : Fragment() {
             habitEventAdapter.habitEvents = list
             return@launchWhenCreated
         }
+        Log.i(TAG, "HabitTrackerFragment.sendHabitEventsListRequest() = void")
     }
 
 
@@ -130,7 +118,7 @@ class HabitTrackerFragment : Fragment() {
         dialogAddHabitEvent.setPositiveButton("OK") {
                 dialog,_->
             sendHabitEventsCreateRequest(editTextHabitId, editTextDate, editTextComment, editTextValue)
-            updateHabitEventsListRequest()
+            refreshHabitEventsList()
             dialog.dismiss()
         }
         dialogAddHabitEvent.setNegativeButton("Cancel") {
@@ -140,33 +128,19 @@ class HabitTrackerFragment : Fragment() {
         }
         dialogAddHabitEvent.create()
         dialogAddHabitEvent.show()
+        Log.e(TAG, "HabitTrackerFragment.addHabitEvent() = void")
     }
 
-    private fun updateHabitEventsListRequest() {
-        Log.i(TAG, "HabitTrackerFragment.sendHabitEventsListRequest()")
+    private fun refreshHabitEventsList() {
+        Log.i(TAG, "HabitTrackerFragment.refreshHabitEventsList() = void")
         lifecycleScope.launchWhenCreated {
             delay(1000)
-            val habitEventApiClient: HabitEventApi = RetrofitInstance.retrofit.create(HabitEventApi::class.java)
-            val response: Response<ResponseModel<List<HabitEvent>>> = try {
-                habitEventApiClient.list(JWT_TOKEN)
-            } catch (e: IOException) {
-                Log.e(TAG, "HabitTrackerFragment.sendHabitEventsListRequest:\t\tIOException: ${e.message}")
-                return@launchWhenCreated
-            } catch (e: HttpException) {
-                Log.e(TAG, "HabitTrackerFragment.sendHabitEventsListRequest:\t\tHttpException: ${e.message}")
-                return@launchWhenCreated
-            }
-            if (response.isSuccessful && response.body() != null) {
-                val res: ResponseModel<List<HabitEvent>> = response.body()!!
-                Log.e(TAG, "HabitTrackerFragment.sendHabitEventsListRequest: $res")
-                if (res.content != null)
-                {
-                    habitEventAdapter.habitEvents = res.content
-                }
-            } else {
-                Log.e(TAG, "HabitTrackerFragment.sendHabitEventsListRequest: HTTP status != 200")
-            }
+            val list :List<HabitEvent> = HabitEventRepository.list()
+            habitEventAdapter.habitEvents = list
+            return@launchWhenCreated
         }
+        Log.i(TAG, "HabitTrackerFragment.refreshHabitEventsList() = void")
+
     }
 
     private fun sendHabitEventsCreateRequest(editTextHabitId: EditText, editTextDate: EditText, editTextComment: EditText, editTextValue: EditText) {

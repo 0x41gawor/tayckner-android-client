@@ -19,22 +19,22 @@ object HabitEventRepository {
         val response: Response<ResponseModel<List<HabitEvent>>> = try {
             habitEventApiClient.list(JWT_TOKEN)
         } catch (e: IOException) {
-            Log.e(TAG, "HabitTrackerFragment.sendHabitEventsListRequest:\t\tIOException: ${e.message}")
+            Log.e(TAG, "HabitEventRepository.list:\t\tIOException: ${e.message}")
             return emptyList()
         } catch (e: HttpException) {
-            Log.e(TAG, "HabitTrackerFragment.sendHabitEventsListRequest:\t\tHttpException: ${e.message}")
+            Log.e(TAG, "HabitEventRepository.list:\t\tHttpException: ${e.message}")
             return emptyList()
         }
         if (response.isSuccessful && response.body() != null) {
             val res: ResponseModel<List<HabitEvent>> = response.body()!!
-            Log.e(TAG, "HabitTrackerFragment.sendHabitEventsListRequest: $res")
+            Log.e(TAG, "HabitEventRepository.list: $res")
             if (res.content != null)
             {
                 result =  res.content
                 return result
             }
         } else {
-            Log.e(TAG, "HabitTrackerFragment.sendHabitEventsListRequest: HTTP status != 200")
+            Log.e(TAG, "HabitEventRepository.list: HTTP status != 200")
             return emptyList()
         }
 
