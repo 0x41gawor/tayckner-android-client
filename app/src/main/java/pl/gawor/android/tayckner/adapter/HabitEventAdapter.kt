@@ -13,13 +13,17 @@ import android.widget.Toast
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import pl.gawor.android.tayckner.JWT_TOKEN
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import pl.gawor.android.tayckner.R
 import pl.gawor.android.tayckner.databinding.ItemHabitEventBinding
 import pl.gawor.android.tayckner.databinding.ItemUpdateHabitEventBinding
 import pl.gawor.android.tayckner.model.Habit
 import pl.gawor.android.tayckner.model.HabitEvent
 import pl.gawor.android.tayckner.model.ResponseModel
+import pl.gawor.android.tayckner.repository.HabitEventRepository
+import pl.gawor.android.tayckner.repository.JWT_TOKEN
 import pl.gawor.android.tayckner.service.HabitEventApi
 import pl.gawor.android.tayckner.service.RetrofitInstance
 import retrofit2.Call
@@ -33,6 +37,8 @@ class HabitEventAdapter(val context: Context) : RecyclerView.Adapter<HabitEventA
                 popUpMenu(context, binding.root)
             }
         }
+
+        private val repository = Repository()
 
         private fun popUpMenu(context: Context, view: View) {
             Log.i(TAG, "HabitEventAdapter.popUpMenu()")
@@ -60,9 +66,9 @@ class HabitEventAdapter(val context: Context) : RecyclerView.Adapter<HabitEventA
 
                         dialogAddHabitEvent.setPositiveButton("Update") {
                                 dialog,_->
-                            sendHabitEventsUpdateRequest(item.id, editTextHabitId, editTextDate, editTextComment, editTextValue)
+                            repository.sendHabitEventsUpdateRequest(item.id, editTextHabitId, editTextDate, editTextComment, editTextValue)
                             Thread.sleep(500)
-                            sendHabitEventsListRequest()
+                            repository.sendHabitEventsListRequest()
                             dialog.dismiss()
                         }
                         dialogAddHabitEvent.setNegativeButton("Cancel") {
@@ -74,9 +80,9 @@ class HabitEventAdapter(val context: Context) : RecyclerView.Adapter<HabitEventA
                         true
                     }
                     R.id.delete -> {
-                        sendHabitEventsDeleteRequest(item.id)
+                        repository.sendHabitEventsDeleteRequest(item.id)
                         Thread.sleep(500)
-                        sendHabitEventsListRequest()
+                        repository.sendHabitEventsListRequest()
                         true
                     }
                     else -> true
@@ -145,75 +151,34 @@ class HabitEventAdapter(val context: Context) : RecyclerView.Adapter<HabitEventA
             }
     }
 
-    private  fun sendHabitEventsUpdateRequest(habitEventId: Int, editTextHabitId: EditText, editTextDate: EditText, editTextComment: EditText, editTextValue: EditText) {
-        Log.i(TAG, "HabitEventAdapter.sendHabitEventsUpdateRequest()")
-        val habitId = editTextHabitId.text.toString().toLong()
-        val date = editTextDate.text.toString()
-        val comment = editTextComment.text.toString()
-        val value = editTextValue.text.toString().toInt()
-        val habit = Habit(habitId,"","", null)
-        val habitEvent = HabitEvent(comment, date, habit, 0, value)
+    inner class Repository {
+        fun sendHabitEventsUpdateRequest(habitEventId: Int, editTextHabitId: EditText, editTextDate: EditText, editTextComment: EditText, editTextValue: EditText) {
+            Log.i(TAG, "HabitEventAdapter.sendHabitEventsUpdateRequest()")
+            val habitId = editTextHabitId.text.toString().toLong()
+            val date = editTextDate.text.toString()
+            val comment = editTextComment.text.toString()
+            val value = editTextValue.text.toString().toInt()
+            val habit = Habit(habitId,"","", null)
+            val habitEvent = HabitEvent(comment, date, habit, 0, value)
 
-
-        val habitEventApiClient: HabitEventApi = RetrofitInstance.retrofit.create(HabitEventApi::class.java)
-
-        val call: Call<ResponseModel<HabitEvent>> = habitEventApiClient.update(JWT_TOKEN, habitEvent, habitEventId)
-
-        call.enqueue(object : Callback<ResponseModel<HabitEvent>> {
-            override fun onFailure(call: Call<ResponseModel<HabitEvent>>?, t: Throwable?) {
-                Log.i(TAG, "HabitEventAdapter.sendHabitEventsUpdateRequest():\t\tCall failed: ${t?.message}")
+            CoroutineScope(Dispatchers.IO).launch {
+                HabitEventRepository.update(habitEvent, habitEventId)
             }
-            override fun onResponse(call: Call<ResponseModel<HabitEvent>>?, response: Response<ResponseModel<HabitEvent>>?) {
-                Log.i(TAG, "HabitEventAdapter.sendHabitEventsUpdateRequest():\t\tCall success: response.body = ${response?.body()}")
-                val res = response?.body()
+        }
 
-                when (res?.code) {
-                    "XxX0" -> Toast.makeText(context, "Model updated", Toast.LENGTH_LONG).show()
-                    else -> Toast.makeText(context, res?.message, Toast.LENGTH_LONG).show()
-                }
+        fun sendHabitEventsListRequest() {
+            Log.i(TAG, "HabitEventAdapter.sendHabitEventsListRequest()")
+            CoroutineScope(Dispatchers.IO).launch {
+                val list :List<HabitEvent> = HabitEventRepository.list()
+                habitEvents = list
             }
-        })
+        }
 
-    }
-
-    private fun sendHabitEventsListRequest() {
-        Log.i(TAG, "HabitEventAdapter.sendHabitEventsListRequest()")
-
-        val habitEventApiClient: HabitEventApi = RetrofitInstance.retrofit.create(HabitEventApi::class.java)
-
-        val call: Call<ResponseModel<List<HabitEvent>>> = habitEventApiClient.listCall(JWT_TOKEN)
-        call.enqueue(object : Callback<ResponseModel<List<HabitEvent>>> {
-            override fun onFailure(call: Call<ResponseModel<List<HabitEvent>>>?, t: Throwable?) {
-                Log.i(TAG, "HabitEventAdapter.sendHabitEventsListRequest():\t\tCall failed: ${t?.message}")
+        fun sendHabitEventsDeleteRequest(habitEventId: Int) {
+            Log.i(TAG, "HabitEventAdapter.sendHabitEventsDeleteRequest()")
+            CoroutineScope(Dispatchers.IO).launch {
+                HabitEventRepository.delete(habitEventId)
             }
-            override fun onResponse(call: Call<ResponseModel<List<HabitEvent>>>?, response: Response<ResponseModel<List<HabitEvent>>>?) {
-                Log.i(TAG, "HabitEventAdapter.sendHabitEventsListRequest():\t\tCall success: response.body = ${response?.body()}")
-                val res = response?.body()
-
-                habitEvents = res?.content ?: emptyList()
-            }
-        })
-    }
-
-    private fun sendHabitEventsDeleteRequest(habitEventId: Int) {
-        Log.i(TAG, "HabitEventAdapter.sendHabitEventsDeleteRequest()")
-
-        val habitEventApiClient: HabitEventApi = RetrofitInstance.retrofit.create(HabitEventApi::class.java)
-
-        val call: Call<ResponseModel<Any>> = habitEventApiClient.deleteCall(JWT_TOKEN, habitEventId)
-        call.enqueue(object : Callback<ResponseModel<Any>> {
-            override fun onFailure(call: Call<ResponseModel<Any>>?, t: Throwable?) {
-                Log.i(TAG, "HabitEventAdapter.sendHabitEventsListRequest():\t\tCall failed: ${t?.message}")
-            }
-            override fun onResponse(call: Call<ResponseModel<Any>>?, response: Response<ResponseModel<Any>>?) {
-                Log.i(TAG, "HabitEventAdapter.sendHabitEventsListRequest():\t\tCall success: response.body = ${response?.body()}")
-                val res = response?.body()
-
-                when (res?.code) {
-                    "XxX0" -> Toast.makeText(context, "Item deleted", Toast.LENGTH_LONG).show()
-                    else -> Toast.makeText(context, res?.message, Toast.LENGTH_LONG).show()
-                }
-            }
-        })
+        }
     }
 }
