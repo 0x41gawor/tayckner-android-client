@@ -19,6 +19,8 @@ import pl.gawor.android.tayckner.databinding.ItemAddHabitEventBinding
 import pl.gawor.android.tayckner.model.Habit
 import pl.gawor.android.tayckner.model.HabitEvent
 import pl.gawor.android.tayckner.model.ResponseModel
+import pl.gawor.android.tayckner.repository.HabitEventRepository
+import pl.gawor.android.tayckner.repository.JWT_TOKEN
 import pl.gawor.android.tayckner.service.HabitApi
 import pl.gawor.android.tayckner.service.HabitEventApi
 import pl.gawor.android.tayckner.service.RetrofitInstance
@@ -27,7 +29,7 @@ import retrofit2.Response
 import java.io.IOException
 
 
-const val JWT_TOKEN = "Bearer " + "eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NDAxNzA3OTMsImV4cCI6MTY0MDE4MDMxNSwidXNlcklkIjozLCJ1c2VybmFtZSI6IndhemEifQ.F8tCuGP3PSfoVKm4eLAs9dF6JlYg-e6NaaL5cnmkPdM"
+
 
 class HabitTrackerFragment : Fragment() {
 
@@ -105,26 +107,9 @@ class HabitTrackerFragment : Fragment() {
     private fun sendHabitEventsListRequest() {
         Log.i(TAG, "HabitTrackerFragment.sendHabitEventsListRequest()")
         lifecycleScope.launchWhenCreated {
-            val habitEventApiClient: HabitEventApi = RetrofitInstance.retrofit.create(HabitEventApi::class.java)
-            val response: Response<ResponseModel<List<HabitEvent>>> = try {
-                habitEventApiClient.list(JWT_TOKEN)
-            } catch (e: IOException) {
-                Log.e(TAG, "HabitTrackerFragment.sendHabitEventsListRequest:\t\tIOException: ${e.message}")
-                return@launchWhenCreated
-            } catch (e: HttpException) {
-                Log.e(TAG, "HabitTrackerFragment.sendHabitEventsListRequest:\t\tHttpException: ${e.message}")
-                return@launchWhenCreated
-            }
-            if (response.isSuccessful && response.body() != null) {
-                val res: ResponseModel<List<HabitEvent>> = response.body()!!
-                Log.e(TAG, "HabitTrackerFragment.sendHabitEventsListRequest: $res")
-                if (res.content != null)
-                {
-                    habitEventAdapter.habitEvents = res.content
-                }
-            } else {
-                Log.e(TAG, "HabitTrackerFragment.sendHabitEventsListRequest: HTTP status != 200")
-            }
+            val list :List<HabitEvent> = HabitEventRepository.list()
+            habitEventAdapter.habitEvents = list
+            return@launchWhenCreated
         }
     }
 

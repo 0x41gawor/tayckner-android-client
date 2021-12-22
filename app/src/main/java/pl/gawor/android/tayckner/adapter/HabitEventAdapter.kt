@@ -13,13 +13,13 @@ import android.widget.Toast
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import pl.gawor.android.tayckner.JWT_TOKEN
 import pl.gawor.android.tayckner.R
 import pl.gawor.android.tayckner.databinding.ItemHabitEventBinding
 import pl.gawor.android.tayckner.databinding.ItemUpdateHabitEventBinding
 import pl.gawor.android.tayckner.model.Habit
 import pl.gawor.android.tayckner.model.HabitEvent
 import pl.gawor.android.tayckner.model.ResponseModel
+import pl.gawor.android.tayckner.repository.JWT_TOKEN
 import pl.gawor.android.tayckner.service.HabitEventApi
 import pl.gawor.android.tayckner.service.RetrofitInstance
 import retrofit2.Call
