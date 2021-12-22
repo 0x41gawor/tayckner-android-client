@@ -35,7 +35,7 @@ class MyHabitsFragment : Fragment() {
     }
 
     private fun setupHabitRecyclerView()  = binding.recyclerViewMyHabits.apply {
-        habitAdapter = MyHabitAdapter()
+        habitAdapter = MyHabitAdapter(context)
         adapter = habitAdapter
         layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
     }
