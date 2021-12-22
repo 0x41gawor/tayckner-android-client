@@ -32,7 +32,7 @@ class HabitTrackerFragment : Fragment() {
     private lateinit var habitAdapter: HabitAdapter
     private lateinit var habitEventAdapter: HabitEventAdapter
 
-    val repository = Repository()
+    private val repository = Repository()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
