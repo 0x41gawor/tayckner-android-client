@@ -18,4 +18,7 @@ interface HabitEventApi {
 
     @GET("habit-events")
     fun listCall(@Header("Authorization") auth: String): Call<ResponseModel<List<HabitEvent>>>
+
+    @DELETE("habit-events/{id}")
+    fun deleteCall(@Header("Authorization") auth: String, @Path("id") id: Int): Call<ResponseModel<Any>>
 }
