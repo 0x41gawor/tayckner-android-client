@@ -14,7 +14,7 @@ interface HabitEventApi {
     suspend fun create(@Header("Authorization") auth: String, @Body habitEvent: HabitEvent): Response<ResponseModel<HabitEvent>>
 
     @PUT("habit-events/{id}")
-    fun update(@Header("Authorization") auth: String, @Body habitEvent: HabitEvent, @Path("id") id: Int): Call<ResponseModel<HabitEvent>>
+    suspend fun update(@Header("Authorization") auth: String, @Body habitEvent: HabitEvent, @Path("id") id: Int): Response<ResponseModel<HabitEvent>>
 
     @GET("habit-events")
     fun listCall(@Header("Authorization") auth: String): Call<ResponseModel<List<HabitEvent>>>
