@@ -6,15 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
-import pl.gawor.android.tayckner.adapter.HabitAdapter
-import pl.gawor.android.tayckner.databinding.FragmentHabitTrackerBinding
+import pl.gawor.android.tayckner.adapter.MyHabitAdapter
 import pl.gawor.android.tayckner.databinding.FragmentMyHabitsBinding
 
 class MyHabitsFragment : Fragment() {
 
     private lateinit var binding: FragmentMyHabitsBinding
 
-    private lateinit var habitAdapter: HabitAdapter
+    private lateinit var habitAdapter: MyHabitAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,7 +26,7 @@ class MyHabitsFragment : Fragment() {
     }
 
     private fun setupHabitRecyclerView()  = binding.recyclerViewMyHabits.apply {
-        habitAdapter = HabitAdapter()
+        habitAdapter = MyHabitAdapter()
         adapter = habitAdapter
         layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
     }
