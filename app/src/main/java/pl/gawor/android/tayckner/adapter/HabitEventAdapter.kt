@@ -10,11 +10,9 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.PopupMenu
 import android.widget.Toast
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.coroutines.delay
 import pl.gawor.android.tayckner.JWT_TOKEN
 import pl.gawor.android.tayckner.R
 import pl.gawor.android.tayckner.databinding.ItemHabitEventBinding
@@ -24,7 +22,6 @@ import pl.gawor.android.tayckner.model.HabitEvent
 import pl.gawor.android.tayckner.model.ResponseModel
 import pl.gawor.android.tayckner.service.HabitEventApi
 import pl.gawor.android.tayckner.service.RetrofitInstance
-import pl.gawor.android.tayckner.service.UserApi
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -33,7 +30,6 @@ class HabitEventAdapter(val context: Context) : RecyclerView.Adapter<HabitEventA
     inner class HabitEventViewHolder(val binding: ItemHabitEventBinding) : RecyclerView.ViewHolder(binding.root){
         init {
             binding.cardView.setOnClickListener {
-                Log.i("TAYCKNER", "ELOELO")
                 popUpMenu(context, binding.root)
             }
         }
@@ -78,7 +74,9 @@ class HabitEventAdapter(val context: Context) : RecyclerView.Adapter<HabitEventA
                         true
                     }
                     R.id.delete -> {
-                        Toast.makeText(context, "Delete option is clicked", Toast.LENGTH_SHORT).show()
+                        sendHabitEventsDeleteRequest(item.id)
+                        Thread.sleep(500)
+                        sendHabitEventsListRequest()
                         true
                     }
                     else -> true
@@ -193,13 +191,29 @@ class HabitEventAdapter(val context: Context) : RecyclerView.Adapter<HabitEventA
                 val res = response?.body()
 
                 habitEvents = res?.content ?: emptyList()
+            }
+        })
+    }
+
+    private fun sendHabitEventsDeleteRequest(habitEventId: Int) {
+        Log.i(TAG, "HabitEventAdapter.sendHabitEventsDeleteRequest()")
+
+        val habitEventApiClient: HabitEventApi = RetrofitInstance.retrofit.create(HabitEventApi::class.java)
+
+        val call: Call<ResponseModel<Any>> = habitEventApiClient.deleteCall(JWT_TOKEN, habitEventId)
+        call.enqueue(object : Callback<ResponseModel<Any>> {
+            override fun onFailure(call: Call<ResponseModel<Any>>?, t: Throwable?) {
+                Log.i(TAG, "HabitEventAdapter.sendHabitEventsListRequest():\t\tCall failed: ${t?.message}")
+            }
+            override fun onResponse(call: Call<ResponseModel<Any>>?, response: Response<ResponseModel<Any>>?) {
+                Log.i(TAG, "HabitEventAdapter.sendHabitEventsListRequest():\t\tCall success: response.body = ${response?.body()}")
+                val res = response?.body()
 
                 when (res?.code) {
-                    "XxX0" -> Toast.makeText(context, "Model updated", Toast.LENGTH_LONG).show()
+                    "XxX0" -> Toast.makeText(context, "Item deleted", Toast.LENGTH_LONG).show()
                     else -> Toast.makeText(context, res?.message, Toast.LENGTH_LONG).show()
                 }
             }
         })
-
     }
 }
