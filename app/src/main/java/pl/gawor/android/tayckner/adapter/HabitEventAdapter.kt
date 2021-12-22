@@ -38,6 +38,8 @@ class HabitEventAdapter(val context: Context) : RecyclerView.Adapter<HabitEventA
             }
         }
 
+        private val repository = Repository()
+
         private fun popUpMenu(context: Context, view: View) {
             Log.i(TAG, "HabitEventAdapter.popUpMenu()")
             val item = habitEvents[adapterPosition]
@@ -64,9 +66,9 @@ class HabitEventAdapter(val context: Context) : RecyclerView.Adapter<HabitEventA
 
                         dialogAddHabitEvent.setPositiveButton("Update") {
                                 dialog,_->
-                            sendHabitEventsUpdateRequest(item.id, editTextHabitId, editTextDate, editTextComment, editTextValue)
+                            repository.sendHabitEventsUpdateRequest(item.id, editTextHabitId, editTextDate, editTextComment, editTextValue)
                             Thread.sleep(500)
-                            sendHabitEventsListRequest()
+                            repository.sendHabitEventsListRequest()
                             dialog.dismiss()
                         }
                         dialogAddHabitEvent.setNegativeButton("Cancel") {
@@ -78,9 +80,9 @@ class HabitEventAdapter(val context: Context) : RecyclerView.Adapter<HabitEventA
                         true
                     }
                     R.id.delete -> {
-                        sendHabitEventsDeleteRequest(item.id)
+                        repository.sendHabitEventsDeleteRequest(item.id)
                         Thread.sleep(500)
-                        sendHabitEventsListRequest()
+                        repository.sendHabitEventsListRequest()
                         true
                     }
                     else -> true
@@ -149,32 +151,34 @@ class HabitEventAdapter(val context: Context) : RecyclerView.Adapter<HabitEventA
             }
     }
 
-    private  fun sendHabitEventsUpdateRequest(habitEventId: Int, editTextHabitId: EditText, editTextDate: EditText, editTextComment: EditText, editTextValue: EditText) {
-        Log.i(TAG, "HabitEventAdapter.sendHabitEventsUpdateRequest()")
-        val habitId = editTextHabitId.text.toString().toLong()
-        val date = editTextDate.text.toString()
-        val comment = editTextComment.text.toString()
-        val value = editTextValue.text.toString().toInt()
-        val habit = Habit(habitId,"","", null)
-        val habitEvent = HabitEvent(comment, date, habit, 0, value)
+    inner class Repository {
+        fun sendHabitEventsUpdateRequest(habitEventId: Int, editTextHabitId: EditText, editTextDate: EditText, editTextComment: EditText, editTextValue: EditText) {
+            Log.i(TAG, "HabitEventAdapter.sendHabitEventsUpdateRequest()")
+            val habitId = editTextHabitId.text.toString().toLong()
+            val date = editTextDate.text.toString()
+            val comment = editTextComment.text.toString()
+            val value = editTextValue.text.toString().toInt()
+            val habit = Habit(habitId,"","", null)
+            val habitEvent = HabitEvent(comment, date, habit, 0, value)
 
-        CoroutineScope(Dispatchers.IO).launch {
-            HabitEventRepository.update(habitEvent, habitEventId)
+            CoroutineScope(Dispatchers.IO).launch {
+                HabitEventRepository.update(habitEvent, habitEventId)
+            }
         }
-    }
 
-    private fun sendHabitEventsListRequest() {
-        Log.i(TAG, "HabitEventAdapter.sendHabitEventsListRequest()")
-        CoroutineScope(Dispatchers.IO).launch {
-            val list :List<HabitEvent> = HabitEventRepository.list()
-            habitEvents = list
+        fun sendHabitEventsListRequest() {
+            Log.i(TAG, "HabitEventAdapter.sendHabitEventsListRequest()")
+            CoroutineScope(Dispatchers.IO).launch {
+                val list :List<HabitEvent> = HabitEventRepository.list()
+                habitEvents = list
+            }
         }
-    }
 
-    private fun sendHabitEventsDeleteRequest(habitEventId: Int) {
-        Log.i(TAG, "HabitEventAdapter.sendHabitEventsDeleteRequest()")
-        CoroutineScope(Dispatchers.IO).launch {
-            HabitEventRepository.delete(habitEventId)
+        fun sendHabitEventsDeleteRequest(habitEventId: Int) {
+            Log.i(TAG, "HabitEventAdapter.sendHabitEventsDeleteRequest()")
+            CoroutineScope(Dispatchers.IO).launch {
+                HabitEventRepository.delete(habitEventId)
+            }
         }
     }
 }
