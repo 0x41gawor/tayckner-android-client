@@ -27,7 +27,7 @@ import retrofit2.Response
 import java.io.IOException
 
 
-const val JWT_TOKEN = "Bearer " + "eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NDAxMjMwNzEsImV4cCI6MTY0MDEzMjU5MywidXNlcklkIjozLCJ1c2VybmFtZSI6IndhemEifQ.Nfe-0hTGYx24ztDDGBcVWwALC5bhTuN0fy9e7Qlfn2c"
+const val JWT_TOKEN = "Bearer " + "eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NDAxNzA3OTMsImV4cCI6MTY0MDE4MDMxNSwidXNlcklkIjozLCJ1c2VybmFtZSI6IndhemEifQ.F8tCuGP3PSfoVKm4eLAs9dF6JlYg-e6NaaL5cnmkPdM"
 
 class HabitTrackerFragment : Fragment() {
 
@@ -64,7 +64,6 @@ class HabitTrackerFragment : Fragment() {
         binding.imageButtonAdd.setOnClickListener {
             addHabitEvent()
         }
-
         return binding.root
     }
 
@@ -132,7 +131,7 @@ class HabitTrackerFragment : Fragment() {
 
     private fun addHabitEvent() {
         Log.e(TAG, "HabitTrackerFragment.addHabitEvent()")
-       val bindingAddHabitEvent = ItemAddHabitEventBinding.inflate(layoutInflater)
+        val bindingAddHabitEvent = ItemAddHabitEventBinding.inflate(layoutInflater)
 
         val editTextHabitId = bindingAddHabitEvent.editTextHabit
         val editTextDate = bindingAddHabitEvent.editTextDate
@@ -145,7 +144,6 @@ class HabitTrackerFragment : Fragment() {
 
         dialogAddHabitEvent.setPositiveButton("OK") {
                 dialog,_->
-            Toast.makeText(context, "Not implemented yet", Toast.LENGTH_SHORT).show()
             sendHabitEventsCreateRequest(editTextHabitId, editTextDate, editTextComment, editTextValue)
             updateHabitEventsListRequest()
             dialog.dismiss()

@@ -16,7 +16,7 @@
             android:elevation="15dp"
             android:gravity="center"
             android:padding="10dp"
-            android:text="New havit-event"
+            android:text="New habit-event"
             android:textColor="@color/white"
             android:textSize="19sp"
             android:textStyle="bold" />

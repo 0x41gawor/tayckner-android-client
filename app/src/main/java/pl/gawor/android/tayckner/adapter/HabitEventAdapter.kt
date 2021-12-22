@@ -1,22 +1,92 @@
 package pl.gawor.android.tayckner.adapter
 
+import android.app.AlertDialog
 import android.content.Context
 import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.PopupMenu
 import android.widget.Toast
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.delay
+import pl.gawor.android.tayckner.JWT_TOKEN
 import pl.gawor.android.tayckner.R
 import pl.gawor.android.tayckner.databinding.ItemHabitEventBinding
+import pl.gawor.android.tayckner.databinding.ItemUpdateHabitEventBinding
+import pl.gawor.android.tayckner.model.Habit
 import pl.gawor.android.tayckner.model.HabitEvent
+import pl.gawor.android.tayckner.model.ResponseModel
+import pl.gawor.android.tayckner.service.HabitEventApi
+import pl.gawor.android.tayckner.service.RetrofitInstance
+import pl.gawor.android.tayckner.service.UserApi
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class HabitEventAdapter(val context: Context) : RecyclerView.Adapter<HabitEventAdapter.HabitEventViewHolder>() {
-    inner class HabitEventViewHolder(val binding: ItemHabitEventBinding) : RecyclerView.ViewHolder(binding.root)
+    inner class HabitEventViewHolder(val binding: ItemHabitEventBinding) : RecyclerView.ViewHolder(binding.root){
+        init {
+            binding.cardView.setOnClickListener {
+                Log.i("TAYCKNER", "ELOELO")
+                popUpMenu(context, binding.root)
+            }
+        }
+
+        private fun popUpMenu(context: Context, view: View) {
+            Log.i(TAG, "HabitEventAdapter.popUpMenu()")
+            val item = habitEvents[adapterPosition]
+            val popupMenus = PopupMenu(context, view)
+            popupMenus.inflate(R.menu.menu_item_habit_event)
+            popupMenus.setOnMenuItemClickListener {
+                when(it.itemId) {
+                    R.id.editText -> {
+                        val bindingAddHabitEvent = ItemUpdateHabitEventBinding.inflate(LayoutInflater.from(context))
+
+                        val editTextHabitId = bindingAddHabitEvent.editTextHabit
+                        val editTextDate = bindingAddHabitEvent.editTextDate
+                        val editTextComment = bindingAddHabitEvent.editTextComment
+                        val editTextValue = bindingAddHabitEvent.editTextValue
+
+                        editTextHabitId.setText(item.habit.id.toString())
+                        editTextDate.setText(item.date)
+                        editTextComment.setText(item.comment)
+                        editTextValue.setText(item.value.toString())
+
+                        val dialogAddHabitEvent = AlertDialog.Builder(context)
+
+                        dialogAddHabitEvent.setView(bindingAddHabitEvent.root)
+
+                        dialogAddHabitEvent.setPositiveButton("Update") {
+                                dialog,_->
+                            sendHabitEventsUpdateRequest(item.id, editTextHabitId, editTextDate, editTextComment, editTextValue)
+                            Thread.sleep(500)
+                            sendHabitEventsListRequest()
+                            dialog.dismiss()
+                        }
+                        dialogAddHabitEvent.setNegativeButton("Cancel") {
+                                dialog,_->
+                            dialog.dismiss()
+                        }
+                        dialogAddHabitEvent.create()
+                        dialogAddHabitEvent.show()
+                        true
+                    }
+                    R.id.delete -> {
+                        Toast.makeText(context, "Delete option is clicked", Toast.LENGTH_SHORT).show()
+                        true
+                    }
+                    else -> true
+                }
+            }
+            popupMenus.show()
+        }
+    }
 
     private  val TAG = "TAYCKNER"
 
@@ -40,31 +110,7 @@ class HabitEventAdapter(val context: Context) : RecyclerView.Adapter<HabitEventA
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HabitEventViewHolder {
         val binding = ItemHabitEventBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        binding.cardView.setOnClickListener {
-            Log.i("TAYCKNER", "ELOELO")
-            popUpMenu(context, binding.root)
-        }
         return HabitEventViewHolder(binding)
-    }
-
-    private fun popUpMenu(context: Context, view: View) {
-        Log.i(TAG, "HabitEventAdapter.popUpMenu()")
-        val popupMenus = PopupMenu(context, view)
-        popupMenus.inflate(R.menu.menu_item_habit_event)
-        popupMenus.setOnMenuItemClickListener {
-            when(it.itemId) {
-                R.id.editText -> {
-                    Toast.makeText(context, "Edit option is clicked", Toast.LENGTH_SHORT).show()
-                    true
-                }
-                R.id.delete -> {
-                    Toast.makeText(context, "Delete option is clicked", Toast.LENGTH_SHORT).show()
-                    true
-                }
-                else -> true
-            }
-        }
-        popupMenus.show()
     }
 
     override fun onBindViewHolder(holder: HabitEventViewHolder, position: Int) {
@@ -99,5 +145,61 @@ class HabitEventAdapter(val context: Context) : RecyclerView.Adapter<HabitEventA
                 "12" -> "DEC"
                 else -> "XXX"
             }
+    }
+
+    private  fun sendHabitEventsUpdateRequest(habitEventId: Int, editTextHabitId: EditText, editTextDate: EditText, editTextComment: EditText, editTextValue: EditText) {
+        Log.i(TAG, "HabitEventAdapter.sendHabitEventsUpdateRequest()")
+        val habitId = editTextHabitId.text.toString().toLong()
+        val date = editTextDate.text.toString()
+        val comment = editTextComment.text.toString()
+        val value = editTextValue.text.toString().toInt()
+        val habit = Habit(habitId,"","", null)
+        val habitEvent = HabitEvent(comment, date, habit, 0, value)
+
+
+        val habitEventApiClient: HabitEventApi = RetrofitInstance.retrofit.create(HabitEventApi::class.java)
+
+        val call: Call<ResponseModel<HabitEvent>> = habitEventApiClient.update(JWT_TOKEN, habitEvent, habitEventId)
+
+        call.enqueue(object : Callback<ResponseModel<HabitEvent>> {
+            override fun onFailure(call: Call<ResponseModel<HabitEvent>>?, t: Throwable?) {
+                Log.i(TAG, "HabitEventAdapter.sendHabitEventsUpdateRequest():\t\tCall failed: ${t?.message}")
+            }
+            override fun onResponse(call: Call<ResponseModel<HabitEvent>>?, response: Response<ResponseModel<HabitEvent>>?) {
+                Log.i(TAG, "HabitEventAdapter.sendHabitEventsUpdateRequest():\t\tCall success: response.body = ${response?.body()}")
+                val res = response?.body()
+
+                when (res?.code) {
+                    "XxX0" -> Toast.makeText(context, "Model updated", Toast.LENGTH_LONG).show()
+                    else -> Toast.makeText(context, res?.message, Toast.LENGTH_LONG).show()
+                }
+            }
+        })
+
+    }
+
+    private fun sendHabitEventsListRequest() {
+        Log.i(TAG, "HabitEventAdapter.sendHabitEventsListRequest()")
+
+        val habitEventApiClient: HabitEventApi = RetrofitInstance.retrofit.create(HabitEventApi::class.java)
+
+        val call: Call<ResponseModel<List<HabitEvent>>> = habitEventApiClient.listCall(JWT_TOKEN)
+        call.enqueue(object : Callback<ResponseModel<List<HabitEvent>>> {
+            override fun onFailure(call: Call<ResponseModel<List<HabitEvent>>>?, t: Throwable?) {
+                Log.i(TAG, "HabitEventAdapter.sendHabitEventsListRequest():\t\tCall failed: ${t?.message}")
+            }
+            override fun onResponse(call: Call<ResponseModel<List<HabitEvent>>>?, response: Response<ResponseModel<List<HabitEvent>>>?) {
+                Log.i(TAG, "HabitEventAdapter.sendHabitEventsListRequest():\t\tCall success: response.body = ${response?.body()}")
+                val res = response?.body()
+
+                habitEvents = res?.content ?: emptyList()
+
+                when (res?.code) {
+                    "XxX0" -> Toast.makeText(context, "Model updated", Toast.LENGTH_LONG).show()
+                    else -> Toast.makeText(context, res?.message, Toast.LENGTH_LONG).show()
+                }
+            }
+        })
+
     }
 }

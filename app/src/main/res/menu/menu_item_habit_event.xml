@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/editText"
-        android:title="@string/edit"
+        android:title="@string/update"
         android:icon="@drawable/ic_edit"
         />
     <item
