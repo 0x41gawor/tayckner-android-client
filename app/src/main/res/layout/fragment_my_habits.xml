@@ -56,10 +56,25 @@
             android:textColor="@color/primary"
             android:textSize="20sp" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView_my_habits"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="598dp"
+            android:orientation="vertical">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView_my_habits"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <ImageButton
+                android:id="@+id/imageButton_add"
+                android:layout_width="72dp"
+                android:layout_height="60dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="532dp"
+                android:background="@drawable/button_login_enabled"
+                android:src="@drawable/ic_add_icon" />
+        </FrameLayout>
 
     </LinearLayout>
 
