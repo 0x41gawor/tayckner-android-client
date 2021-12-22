@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,6 +16,7 @@ import pl.gawor.android.tayckner.databinding.FragmentMyHabitsBinding
 import pl.gawor.android.tayckner.databinding.ItemAddHabitBinding
 import pl.gawor.android.tayckner.databinding.ItemAddHabitEventBinding
 import pl.gawor.android.tayckner.model.Habit
+import pl.gawor.android.tayckner.repository.HabitEventRepository
 import pl.gawor.android.tayckner.repository.HabitRepository
 
 class MyHabitsFragment : Fragment() {
@@ -73,7 +75,9 @@ class MyHabitsFragment : Fragment() {
 
         dialogAddHabitEvent.setPositiveButton("OK") {
                 dialog,_->
-            Toast.makeText(context, "Ok clicked", Toast.LENGTH_SHORT).show()
+            repository.sendHabitsCreateRequest(editTextName, editTextColor)
+            Thread.sleep(500)
+            repository.refreshHabitsList()
             dialog.dismiss()
         }
         dialogAddHabitEvent.setNegativeButton("Cancel") {
@@ -95,6 +99,16 @@ class MyHabitsFragment : Fragment() {
                 return@launchWhenCreated
             }
             Log.i(TAG, "MyHabitsFragment.Repository.refreshHabitsList() = void")
+        }
+
+        fun sendHabitsCreateRequest(editTextName: EditText,editTextColor: EditText) {
+            val name = editTextName.text.toString()
+            val color = editTextColor.text.toString()
+            val habit = Habit(0,name,color, null)
+            lifecycleScope.launchWhenCreated {
+                HabitRepository.create(habit)
+                return@launchWhenCreated
+            }
         }
     }
 
