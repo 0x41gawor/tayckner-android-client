@@ -18,16 +18,8 @@ import pl.gawor.android.tayckner.databinding.FragmentHabitTrackerBinding
 import pl.gawor.android.tayckner.databinding.ItemAddHabitEventBinding
 import pl.gawor.android.tayckner.model.Habit
 import pl.gawor.android.tayckner.model.HabitEvent
-import pl.gawor.android.tayckner.model.ResponseModel
 import pl.gawor.android.tayckner.repository.HabitEventRepository
 import pl.gawor.android.tayckner.repository.HabitRepository
-import pl.gawor.android.tayckner.repository.JWT_TOKEN
-import pl.gawor.android.tayckner.service.HabitEventApi
-import pl.gawor.android.tayckner.service.RetrofitInstance
-import retrofit2.HttpException
-import retrofit2.Response
-import java.io.IOException
-
 
 
 
@@ -40,10 +32,12 @@ class HabitTrackerFragment : Fragment() {
     private lateinit var habitAdapter: HabitAdapter
     private lateinit var habitEventAdapter: HabitEventAdapter
 
+    val repository = Repository()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        sendHabitsListRequest()
-        sendHabitEventsListRequest()
+        repository.sendHabitsListRequest()
+        repository.sendHabitEventsListRequest()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -81,26 +75,6 @@ class HabitTrackerFragment : Fragment() {
         layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
     }
 
-    private fun sendHabitsListRequest() {
-        Log.i(TAG, "HabitTrackerFragment.sendHabitsListRequest()")
-        lifecycleScope.launchWhenCreated {
-            val list: List<Habit> = HabitRepository.list()
-            habitAdapter.habits = list
-            return@launchWhenCreated
-        }
-        Log.i(TAG, "HabitTrackerFragment.sendHabitsListRequest() = void")
-    }
-
-    private fun sendHabitEventsListRequest() {
-        Log.i(TAG, "HabitTrackerFragment.sendHabitEventsListRequest()")
-        lifecycleScope.launchWhenCreated {
-            val list :List<HabitEvent> = HabitEventRepository.list()
-            habitEventAdapter.habitEvents = list
-            return@launchWhenCreated
-        }
-        Log.i(TAG, "HabitTrackerFragment.sendHabitEventsListRequest() = void")
-    }
-
 
     private fun addHabitEvent() {
         Log.e(TAG, "HabitTrackerFragment.addHabitEvent()")
@@ -117,8 +91,8 @@ class HabitTrackerFragment : Fragment() {
 
         dialogAddHabitEvent.setPositiveButton("OK") {
                 dialog,_->
-            sendHabitEventsCreateRequest(editTextHabitId, editTextDate, editTextComment, editTextValue)
-            refreshHabitEventsList()
+            repository.sendHabitEventsCreateRequest(editTextHabitId, editTextDate, editTextComment, editTextValue)
+            repository.refreshHabitEventsList()
             dialog.dismiss()
         }
         dialogAddHabitEvent.setNegativeButton("Cancel") {
@@ -131,27 +105,52 @@ class HabitTrackerFragment : Fragment() {
         Log.e(TAG, "HabitTrackerFragment.addHabitEvent() = void")
     }
 
-    private fun refreshHabitEventsList() {
-        Log.i(TAG, "HabitTrackerFragment.refreshHabitEventsList() = void")
-        lifecycleScope.launchWhenCreated {
-            delay(1000)
-            val list :List<HabitEvent> = HabitEventRepository.list()
-            habitEventAdapter.habitEvents = list
-            return@launchWhenCreated
-        }
-        Log.i(TAG, "HabitTrackerFragment.refreshHabitEventsList() = void")
-    }
 
-    private fun sendHabitEventsCreateRequest(editTextHabitId: EditText, editTextDate: EditText, editTextComment: EditText, editTextValue: EditText) {
-        Log.i(TAG, "HabitTrackerFragment.sendHabitEventsCreateRequest()")
-        val habitId = editTextHabitId.text.toString().toLong()
-        val date = editTextDate.text.toString()
-        val comment = editTextComment.text.toString()
-        val value = editTextValue.text.toString().toInt()
-        val habit = Habit(habitId,"","", null)
-        val habitEvent = HabitEvent(comment, date, habit, 0, value)
-        lifecycleScope.launchWhenCreated {
-            HabitEventRepository.create(habitEvent)
+    inner class Repository{
+        fun sendHabitEventsCreateRequest(editTextHabitId: EditText, editTextDate: EditText, editTextComment: EditText, editTextValue: EditText) {
+            Log.i(TAG, "HabitTrackerFragment.Repository.sendHabitEventsCreateRequest()")
+            val habitId = editTextHabitId.text.toString().toLong()
+            val date = editTextDate.text.toString()
+            val comment = editTextComment.text.toString()
+            val value = editTextValue.text.toString().toInt()
+            val habit = Habit(habitId,"","", null)
+            val habitEvent = HabitEvent(comment, date, habit, 0, value)
+            lifecycleScope.launchWhenCreated {
+                HabitEventRepository.create(habitEvent)
+            }
+            Log.i(TAG, "HabitTrackerFragment.Repository.sendHabitEventsCreateRequest() = void")
+
+        }
+
+        fun refreshHabitEventsList() {
+            Log.i(TAG, "HabitTrackerFragment.Repository.refreshHabitEventsList() = void")
+            lifecycleScope.launchWhenCreated {
+                delay(1000)
+                val list :List<HabitEvent> = HabitEventRepository.list()
+                habitEventAdapter.habitEvents = list
+                return@launchWhenCreated
+            }
+            Log.i(TAG, "HabitTrackerFragment.Repository.refreshHabitEventsList() = void")
+        }
+
+        fun sendHabitEventsListRequest() {
+            Log.i(TAG, "HabitTrackerFragment.Repository.sendHabitEventsListRequest()")
+            lifecycleScope.launchWhenCreated {
+                val list :List<HabitEvent> = HabitEventRepository.list()
+                habitEventAdapter.habitEvents = list
+                return@launchWhenCreated
+            }
+            Log.i(TAG, "HabitTrackerFragment.Repository.sendHabitEventsListRequest() = void")
+        }
+
+        fun sendHabitsListRequest() {
+            Log.i(TAG, "HabitTrackerFragment.Repository.sendHabitsListRequest()")
+            lifecycleScope.launchWhenCreated {
+                val list: List<Habit> = HabitRepository.list()
+                habitAdapter.habits = list
+                return@launchWhenCreated
+            }
+            Log.i(TAG, "HabitTrackerFragment.Repository.sendHabitsListRequest() = void")
         }
     }
 
