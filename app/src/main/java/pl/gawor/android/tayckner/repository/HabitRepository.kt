@@ -2,8 +2,10 @@ package pl.gawor.android.tayckner.repository
 
 import android.util.Log
 import pl.gawor.android.tayckner.model.Habit
+import pl.gawor.android.tayckner.model.HabitEvent
 import pl.gawor.android.tayckner.model.ResponseModel
 import pl.gawor.android.tayckner.service.HabitApi
+import pl.gawor.android.tayckner.service.HabitEventApi
 import pl.gawor.android.tayckner.service.RetrofitInstance
 import retrofit2.HttpException
 import retrofit2.Response
@@ -39,5 +41,30 @@ object HabitRepository {
         }
 
         return emptyList()
+    }
+
+    suspend fun create(habit: Habit) : Habit? {
+        Log.i(TAG, "HabitRepository.create()")
+        var result: Habit? = null
+        val habitApiClient: HabitApi = RetrofitInstance.retrofit.create(HabitApi::class.java)
+        val response: Response<ResponseModel<Habit>> = try {
+            habitApiClient.create(JWT_TOKEN, habit)
+        }catch (e: IOException) {
+            Log.e(TAG, "HabitRepository.create:\t\tIOException: ${e.message}")
+            return null
+        } catch (e: HttpException) {
+            Log.e(TAG, "HabitRepository.create:\t\tHttpException: ${e.message}")
+            return null
+        }
+        if (response.isSuccessful && response.body() != null) {
+            val res: ResponseModel<Habit> = response.body()!!
+            result = res.content
+            Log.e(TAG, "HabitRepository.create: $res")
+        } else {
+            Log.e(TAG, "HabitRepository.create: HTTP status != 200")
+        }
+        Log.i(TAG, "HabitRepository.create() = $result")
+
+        return result
     }
 }
