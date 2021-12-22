@@ -10,8 +10,8 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.coroutines.delay
 import pl.gawor.android.tayckner.adapter.HabitAdapter
 import pl.gawor.android.tayckner.adapter.HabitEventAdapter
 import pl.gawor.android.tayckner.databinding.FragmentHabitTrackerBinding
@@ -60,7 +60,16 @@ class HabitTrackerFragment : Fragment() {
         binding.imageButtonAdd.setOnClickListener {
             addHabitEvent()
         }
+        binding.linearLayoutMyHabitsPanel.setOnClickListener {
+            findNavController().navigate(R.id.action_habitTrackerFragment_to_myHabitsFragment)
+        }
         return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        repository.refreshHabitEventsList()
+        repository.refreshHabitsList()
     }
 
     private fun setupHabitRecyclerView() = binding.recyclerViewMyHabits.apply {
@@ -92,6 +101,7 @@ class HabitTrackerFragment : Fragment() {
         dialogAddHabitEvent.setPositiveButton("OK") {
                 dialog,_->
             repository.sendHabitEventsCreateRequest(editTextHabitId, editTextDate, editTextComment, editTextValue)
+            Thread.sleep(500)
             repository.refreshHabitEventsList()
             dialog.dismiss()
         }
@@ -117,6 +127,7 @@ class HabitTrackerFragment : Fragment() {
             val habitEvent = HabitEvent(comment, date, habit, 0, value)
             lifecycleScope.launchWhenCreated {
                 HabitEventRepository.create(habitEvent)
+                return@launchWhenCreated
             }
             Log.i(TAG, "HabitTrackerFragment.Repository.sendHabitEventsCreateRequest() = void")
 
@@ -125,12 +136,21 @@ class HabitTrackerFragment : Fragment() {
         fun refreshHabitEventsList() {
             Log.i(TAG, "HabitTrackerFragment.Repository.refreshHabitEventsList() = void")
             lifecycleScope.launchWhenCreated {
-                delay(1000)
                 val list :List<HabitEvent> = HabitEventRepository.list()
                 habitEventAdapter.habitEvents = list
                 return@launchWhenCreated
             }
             Log.i(TAG, "HabitTrackerFragment.Repository.refreshHabitEventsList() = void")
+        }
+
+        fun refreshHabitsList() {
+            Log.i(TAG, "HabitTrackerFragment.Repository.refreshHabitsList() = void")
+            lifecycleScope.launchWhenCreated {
+                val list :List<Habit> = HabitRepository.list()
+                habitAdapter.habits = list
+                return@launchWhenCreated
+            }
+            Log.i(TAG, "HabitTrackerFragment.Repository.refreshHabitsList() = void")
         }
 
         fun sendHabitEventsListRequest() {

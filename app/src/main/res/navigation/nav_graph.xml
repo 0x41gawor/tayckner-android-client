@@ -31,5 +31,14 @@
         android:id="@+id/habitTrackerFragment"
         android:name="pl.gawor.android.tayckner.HabitTrackerFragment"
         android:label="fragment_habit_tracker"
-        tools:layout="@layout/fragment_habit_tracker" />
+        tools:layout="@layout/fragment_habit_tracker" >
+        <action
+            android:id="@+id/action_habitTrackerFragment_to_myHabitsFragment"
+            app:destination="@id/myHabitsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/myHabitsFragment"
+        android:name="pl.gawor.android.tayckner.MyHabitsFragment"
+        android:label="fragment_my_habits"
+        tools:layout="@layout/fragment_my_habits" />
 </navigation>
