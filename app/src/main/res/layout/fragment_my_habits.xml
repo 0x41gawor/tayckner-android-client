@@ -56,6 +56,11 @@
             android:textColor="@color/primary"
             android:textSize="20sp" />
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView_my_habits"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
     </LinearLayout>
 
     <LinearLayout
