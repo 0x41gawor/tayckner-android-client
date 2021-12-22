@@ -173,23 +173,8 @@ class HabitEventAdapter(val context: Context) : RecyclerView.Adapter<HabitEventA
 
     private fun sendHabitEventsDeleteRequest(habitEventId: Int) {
         Log.i(TAG, "HabitEventAdapter.sendHabitEventsDeleteRequest()")
-
-        val habitEventApiClient: HabitEventApi = RetrofitInstance.retrofit.create(HabitEventApi::class.java)
-
-        val call: Call<ResponseModel<Any>> = habitEventApiClient.deleteCall(JWT_TOKEN, habitEventId)
-        call.enqueue(object : Callback<ResponseModel<Any>> {
-            override fun onFailure(call: Call<ResponseModel<Any>>?, t: Throwable?) {
-                Log.i(TAG, "HabitEventAdapter.sendHabitEventsListRequest():\t\tCall failed: ${t?.message}")
-            }
-            override fun onResponse(call: Call<ResponseModel<Any>>?, response: Response<ResponseModel<Any>>?) {
-                Log.i(TAG, "HabitEventAdapter.sendHabitEventsListRequest():\t\tCall success: response.body = ${response?.body()}")
-                val res = response?.body()
-
-                when (res?.code) {
-                    "XxX0" -> Toast.makeText(context, "Item deleted", Toast.LENGTH_LONG).show()
-                    else -> Toast.makeText(context, res?.message, Toast.LENGTH_LONG).show()
-                }
-            }
-        })
+        CoroutineScope(Dispatchers.IO).launch {
+            HabitEventRepository.delete(habitEventId)
+        }
     }
 }

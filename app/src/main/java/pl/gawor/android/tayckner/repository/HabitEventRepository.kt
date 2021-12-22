@@ -93,4 +93,24 @@ object HabitEventRepository {
         return result
     }
 
+    suspend fun delete(id: Int) {
+        Log.i(TAG, "HabitEventRepository.delete()")
+        val habitEventApiClient: HabitEventApi = RetrofitInstance.retrofit.create(HabitEventApi::class.java)
+        val response: Response<ResponseModel<Any>> = try {
+            habitEventApiClient.delete(JWT_TOKEN, id)
+        }catch (e: IOException) {
+            Log.e(TAG, "HabitEventRepository.delete:\t\tIOException: ${e.message}")
+            return
+        } catch (e: HttpException) {
+            Log.e(TAG, "HabitEventRepository.delete:\t\tHttpException: ${e.message}")
+            return
+        }
+        if (response.isSuccessful && response.body() != null) {
+            val res: ResponseModel<Any> = response.body()!!
+            Log.e(TAG, "HabitEventRepository.delete: $res")
+        } else {
+            Log.e(TAG, "HabitEventRepository.delete: HTTP status != 200")
+        }
+        Log.i(TAG, "HabitEventRepository.delete() = void")
+    }
 }
