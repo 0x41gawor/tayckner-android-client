@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -46,7 +47,7 @@ class HabitTrackerFragment : Fragment() {
         setupHabitEventRecyclerView()
 
         binding.imageButtonOptions.setOnClickListener {
-            Toast.makeText(context, "Options button not implemented yet", Toast.LENGTH_SHORT).show()
+            optionsMenu(binding.imageButtonOptions)
         }
         binding.imageButtonDayPlanner.setOnClickListener {
             Toast.makeText(context, "Day-planner button not implemented yet", Toast.LENGTH_SHORT).show()
@@ -113,6 +114,20 @@ class HabitTrackerFragment : Fragment() {
         dialogAddHabitEvent.create()
         dialogAddHabitEvent.show()
         Log.e(TAG, "HabitTrackerFragment.addHabitEvent() = void")
+    }
+
+    private fun optionsMenu(view: View) {
+        val popupMenus = PopupMenu(context, view)
+        popupMenus.inflate(R.menu.menu_top_bar_options)
+        popupMenus.setOnMenuItemClickListener{
+            when(it.itemId) {
+                 R.id.logout -> {
+                     Toast.makeText(context, "Logout not implemented yet", Toast.LENGTH_SHORT).show()
+                     true}
+                else -> {true}
+            }
+        }
+        popupMenus.show()
     }
 
 
