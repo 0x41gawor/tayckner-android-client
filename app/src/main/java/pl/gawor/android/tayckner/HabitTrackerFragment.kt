@@ -36,8 +36,8 @@ class HabitTrackerFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        repository.sendHabitsListRequest()
-        repository.sendHabitEventsListRequest()
+        repository.refreshHabitsList()
+        repository.refreshHabitEventsList()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -151,26 +151,6 @@ class HabitTrackerFragment : Fragment() {
                 return@launchWhenCreated
             }
             Log.i(TAG, "HabitTrackerFragment.Repository.refreshHabitsList() = void")
-        }
-
-        fun sendHabitEventsListRequest() {
-            Log.i(TAG, "HabitTrackerFragment.Repository.sendHabitEventsListRequest()")
-            lifecycleScope.launchWhenCreated {
-                val list :List<HabitEvent> = HabitEventRepository.list()
-                habitEventAdapter.habitEvents = list
-                return@launchWhenCreated
-            }
-            Log.i(TAG, "HabitTrackerFragment.Repository.sendHabitEventsListRequest() = void")
-        }
-
-        fun sendHabitsListRequest() {
-            Log.i(TAG, "HabitTrackerFragment.Repository.sendHabitsListRequest()")
-            lifecycleScope.launchWhenCreated {
-                val list: List<Habit> = HabitRepository.list()
-                habitAdapter.habits = list
-                return@launchWhenCreated
-            }
-            Log.i(TAG, "HabitTrackerFragment.Repository.sendHabitsListRequest() = void")
         }
     }
 

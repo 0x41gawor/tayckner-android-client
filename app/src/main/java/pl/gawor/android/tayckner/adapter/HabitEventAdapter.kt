@@ -9,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.PopupMenu
-import android.widget.Toast
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -21,14 +20,7 @@ import pl.gawor.android.tayckner.databinding.ItemHabitEventBinding
 import pl.gawor.android.tayckner.databinding.ItemUpdateHabitEventBinding
 import pl.gawor.android.tayckner.model.Habit
 import pl.gawor.android.tayckner.model.HabitEvent
-import pl.gawor.android.tayckner.model.ResponseModel
 import pl.gawor.android.tayckner.repository.HabitEventRepository
-import pl.gawor.android.tayckner.repository.JWT_TOKEN
-import pl.gawor.android.tayckner.service.HabitEventApi
-import pl.gawor.android.tayckner.service.RetrofitInstance
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class HabitEventAdapter(val context: Context) : RecyclerView.Adapter<HabitEventAdapter.HabitEventViewHolder>() {
     inner class HabitEventViewHolder(val binding: ItemHabitEventBinding) : RecyclerView.ViewHolder(binding.root){

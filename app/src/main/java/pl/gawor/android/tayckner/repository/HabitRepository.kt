@@ -2,8 +2,10 @@ package pl.gawor.android.tayckner.repository
 
 import android.util.Log
 import pl.gawor.android.tayckner.model.Habit
+import pl.gawor.android.tayckner.model.HabitEvent
 import pl.gawor.android.tayckner.model.ResponseModel
 import pl.gawor.android.tayckner.service.HabitApi
+import pl.gawor.android.tayckner.service.HabitEventApi
 import pl.gawor.android.tayckner.service.RetrofitInstance
 import retrofit2.HttpException
 import retrofit2.Response
@@ -39,5 +41,76 @@ object HabitRepository {
         }
 
         return emptyList()
+    }
+
+    suspend fun create(habit: Habit) : Habit? {
+        Log.i(TAG, "HabitRepository.create()")
+        var result: Habit? = null
+        val habitApiClient: HabitApi = RetrofitInstance.retrofit.create(HabitApi::class.java)
+        val response: Response<ResponseModel<Habit>> = try {
+            habitApiClient.create(JWT_TOKEN, habit)
+        }catch (e: IOException) {
+            Log.e(TAG, "HabitRepository.create:\t\tIOException: ${e.message}")
+            return null
+        } catch (e: HttpException) {
+            Log.e(TAG, "HabitRepository.create:\t\tHttpException: ${e.message}")
+            return null
+        }
+        if (response.isSuccessful && response.body() != null) {
+            val res: ResponseModel<Habit> = response.body()!!
+            result = res.content
+            Log.e(TAG, "HabitRepository.create: $res")
+        } else {
+            Log.e(TAG, "HabitRepository.create: HTTP status != 200")
+        }
+        Log.i(TAG, "HabitRepository.create() = $result")
+
+        return result
+    }
+
+    suspend fun update(habit: Habit, id: Int) : Habit? {
+        Log.i(TAG, "HabitRepository.update()")
+        var result: Habit? = null
+        val habitApiClient: HabitApi = RetrofitInstance.retrofit.create(HabitApi::class.java)
+        val response: Response<ResponseModel<Habit>> = try {
+            habitApiClient.update(JWT_TOKEN, habit, id)
+        }catch (e: IOException) {
+            Log.e(TAG, "HabitRepository.update:\t\tIOException: ${e.message}")
+            return null
+        } catch (e: HttpException) {
+            Log.e(TAG, "HabitRepository.update:\t\tHttpException: ${e.message}")
+            return null
+        }
+        if (response.isSuccessful && response.body() != null) {
+            val res: ResponseModel<Habit> = response.body()!!
+            result = res.content
+            Log.e(TAG, "HabitRepository.update: $res")
+        } else {
+            Log.e(TAG, "HabitRepository.update: HTTP status != 200")
+        }
+        Log.i(TAG, "HabitRepository.update() = $result")
+
+        return result
+    }
+
+    suspend fun delete(id: Int) {
+        Log.i(TAG, "HabitRepository.delete()")
+        val habitApiClient: HabitApi = RetrofitInstance.retrofit.create(HabitApi::class.java)
+        val response: Response<ResponseModel<Any>> = try {
+            habitApiClient.delete(JWT_TOKEN, id)
+        }catch (e: IOException) {
+            Log.e(TAG, "HabitRepository.delete:\t\tIOException: ${e.message}")
+            return
+        } catch (e: HttpException) {
+            Log.e(TAG, "HabitRepository.delete:\t\tHttpException: ${e.message}")
+            return
+        }
+        if (response.isSuccessful && response.body() != null) {
+            val res: ResponseModel<Any> = response.body()!!
+            Log.e(TAG, "HabitRepository.delete: $res")
+        } else {
+            Log.e(TAG, "HabitRepository.delete: HTTP status != 200")
+        }
+        Log.i(TAG, "HabitRepository.delete() = void")
     }
 }
