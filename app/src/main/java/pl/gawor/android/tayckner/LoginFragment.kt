@@ -1,5 +1,6 @@
 package pl.gawor.android.tayckner
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -60,11 +61,24 @@ class LoginFragment : Fragment() {
                 val res = response?.body()
 
                 when (res?.code) {
-                    "L0" -> Toast.makeText(context, "Logged-in successfully", Toast.LENGTH_LONG).show()
+                    "L0" -> {
+                        Toast.makeText(context, "Logged-in successfully", Toast.LENGTH_LONG).show()
+                        saveJWT(res.content)
+                        findNavController().navigate(R.id.action_loginFragment_to_habitTrackerFragment)
+                    }
                     else -> Toast.makeText(context, res?.message, Toast.LENGTH_LONG).show()
                 }
             }
         })
+    }
+
+    private fun saveJWT(token: String) {
+        val sharedPref = activity?.getSharedPreferences("pl.gawor.android.tayckner", Context.MODE_PRIVATE)
+        sharedPref!!.edit().apply {
+            putString("token", token)
+            Log.i(TAG, "LoginFragment.saveJWT: Saved token = $token")
+            apply()
+        }
     }
 
     companion object {
