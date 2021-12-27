@@ -2,16 +2,14 @@ package pl.gawor.android.tayckner.repository
 
 import android.util.Log
 import pl.gawor.android.tayckner.model.Habit
-import pl.gawor.android.tayckner.model.HabitEvent
 import pl.gawor.android.tayckner.model.ResponseModel
 import pl.gawor.android.tayckner.service.HabitApi
-import pl.gawor.android.tayckner.service.HabitEventApi
 import pl.gawor.android.tayckner.service.RetrofitInstance
 import retrofit2.HttpException
 import retrofit2.Response
 import java.io.IOException
 
-object HabitRepository {
+class HabitRepository {
 
     private  val TAG = "TAYCKNER"
 

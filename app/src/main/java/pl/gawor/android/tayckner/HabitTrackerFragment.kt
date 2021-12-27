@@ -117,6 +117,9 @@ class HabitTrackerFragment : Fragment() {
 
 
     inner class Repository{
+        private val habitEventRepository = HabitEventRepository()
+        private val habitRepository = HabitRepository()
+
         fun sendHabitEventsCreateRequest(editTextHabitId: EditText, editTextDate: EditText, editTextComment: EditText, editTextValue: EditText) {
             Log.i(TAG, "HabitTrackerFragment.Repository.sendHabitEventsCreateRequest()")
             val habitId = editTextHabitId.text.toString().toLong()
@@ -126,7 +129,7 @@ class HabitTrackerFragment : Fragment() {
             val habit = Habit(habitId,"","", null)
             val habitEvent = HabitEvent(comment, date, habit, 0, value)
             lifecycleScope.launchWhenCreated {
-                HabitEventRepository.create(habitEvent)
+                habitEventRepository.create(habitEvent)
                 return@launchWhenCreated
             }
             Log.i(TAG, "HabitTrackerFragment.Repository.sendHabitEventsCreateRequest() = void")
@@ -136,7 +139,7 @@ class HabitTrackerFragment : Fragment() {
         fun refreshHabitEventsList() {
             Log.i(TAG, "HabitTrackerFragment.Repository.refreshHabitEventsList() = void")
             lifecycleScope.launchWhenCreated {
-                val list :List<HabitEvent> = HabitEventRepository.list()
+                val list :List<HabitEvent> = habitEventRepository.list()
                 habitEventAdapter.habitEvents = list
                 return@launchWhenCreated
             }
@@ -146,7 +149,7 @@ class HabitTrackerFragment : Fragment() {
         fun refreshHabitsList() {
             Log.i(TAG, "HabitTrackerFragment.Repository.refreshHabitsList() = void")
             lifecycleScope.launchWhenCreated {
-                val list :List<Habit> = HabitRepository.list()
+                val list :List<Habit> = habitRepository.list()
                 habitAdapter.habits = list
                 return@launchWhenCreated
             }
