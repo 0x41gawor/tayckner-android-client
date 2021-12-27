@@ -6,14 +6,20 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import pl.gawor.android.tayckner.R
 import pl.gawor.android.tayckner.databinding.ItemMyHabitBinding
 import pl.gawor.android.tayckner.model.Habit
+import pl.gawor.android.tayckner.repository.HabitEventRepository
+import pl.gawor.android.tayckner.repository.HabitRepository
 
 class MyHabitAdapter(val context: Context) : RecyclerView.Adapter<MyHabitAdapter.HabitViewHolder>() {
 
@@ -84,4 +90,25 @@ class MyHabitAdapter(val context: Context) : RecyclerView.Adapter<MyHabitAdapter
     override fun getItemCount(): Int {
         return habits.size
     }
+
+
+    inner class Repository {
+        fun sendHabitsUpdateRequest(editTextName: EditText, editTextColor: EditText, habitId: Int) {
+            Log.i(TAG, "HabitAdapter.Repository.sendHabitsUpdateRequest()")
+            val name = editTextName.text.toString()
+            val color = editTextColor.text.toString()
+            val habit = Habit(habitId.toLong(), name, color, null)
+            CoroutineScope(Dispatchers.IO).launch {
+                HabitRepository.update(habit, habitId)
+            }
+        }
+
+        fun sendHabitsDeleteRequest(habitId: Int) {
+            Log.i(TAG, "HabitAdapter.Repository.sendHabitsDeleteRequest()")
+            CoroutineScope(Dispatchers.IO).launch {
+                HabitRepository.delete(habitId)
+            }
+        }
+    }
+
 }
