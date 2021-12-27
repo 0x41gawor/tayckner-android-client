@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.CheckBox
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputEditText
@@ -25,8 +26,15 @@ class LoginFragment : Fragment() {
 
     private  val TAG = "TAYCKNER"
 
+    private lateinit var checkBox: CheckBox
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        if (logFromPreferences()) {
+                val credentials = getCredentialsFromPreferences()!!
+                sendLoginRequest(credentials)
+                saveCredentials(credentials, true)
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -34,6 +42,7 @@ class LoginFragment : Fragment() {
 
         val buttonAction = view.findViewById<Button>(R.id.button_action)
         val buttonSwitch = view.findViewById<Button>(R.id.button_switch)
+        checkBox = view.findViewById<CheckBox>(R.id.checkBox)
 
         buttonAction.setOnClickListener {
             Log.i(TAG, "LoginFragment.buttonAction.OnClickListener:\t\tLogin Button Clicked")
@@ -65,12 +74,39 @@ class LoginFragment : Fragment() {
                     "L0" -> {
                         Toast.makeText(context, "Logged-in successfully", Toast.LENGTH_LONG).show()
                         saveJWT(res.content)
+                        saveCredentials(credentials, checkBox.isChecked)
                         findNavController().navigate(R.id.action_loginFragment_to_habitTrackerFragment)
                     }
                     else -> Toast.makeText(context, res?.message, Toast.LENGTH_LONG).show()
                 }
             }
         })
+    }
+
+    private fun saveCredentials(credentials: CredentialsModel, isRememberMeChecked: Boolean) {
+        val sharedPref = requireActivity().getSharedPreferences("pl.gawor.android.tayckner", Context.MODE_PRIVATE)
+        Log.i(TAG, "LoginFragment.saveCredentials: Saved to shared preferences: username = ${credentials.username}, password = ${credentials.password}, checkbox = $isRememberMeChecked")
+        sharedPref.edit().apply {
+            putString("username", credentials.username)
+            putString("password", credentials.password)
+            putBoolean("checkbox", isRememberMeChecked)
+            apply()
+        }
+    }
+
+    private fun logFromPreferences() : Boolean {
+        val sharedPreferences = activity?.getSharedPreferences("pl.gawor.android.tayckner", Context.MODE_PRIVATE)
+        val isRememberMeChecked = sharedPreferences!!.getBoolean("checkbox", false)
+        Log.i(TAG, "LoginFragment.logFromPreferences() = $isRememberMeChecked")
+        return isRememberMeChecked
+    }
+
+    private fun getCredentialsFromPreferences() : CredentialsModel? {
+        val sharedPreferences = activity?.getSharedPreferences("pl.gawor.android.tayckner", Context.MODE_PRIVATE)
+        val username = sharedPreferences!!.getString("username", "none")
+        val password = sharedPreferences!!.getString("password", "none")
+
+        return CredentialsModel(username!!, password!!)
     }
 
     private fun saveJWT(token: String) {
