@@ -1,5 +1,6 @@
 package pl.gawor.android.tayckner.adapter
 
+import android.app.AlertDialog
 import android.content.Context
 import android.graphics.Color
 import android.util.Log
@@ -16,8 +17,11 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import pl.gawor.android.tayckner.R
+import pl.gawor.android.tayckner.databinding.ItemAddHabitBinding
 import pl.gawor.android.tayckner.databinding.ItemMyHabitBinding
+import pl.gawor.android.tayckner.databinding.ItemUpdateHabitBinding
 import pl.gawor.android.tayckner.model.Habit
+import pl.gawor.android.tayckner.model.HabitEvent
 import pl.gawor.android.tayckner.repository.HabitEventRepository
 import pl.gawor.android.tayckner.repository.HabitRepository
 
@@ -30,6 +34,8 @@ class MyHabitAdapter(val context: Context) : RecyclerView.Adapter<MyHabitAdapter
             }
         }
 
+        private val repository = Repository()
+
         private fun popUpMenu(context: Context, view: View) {
             Log.i(TAG, "HabitEventAdapter.popUpMenu()")
             val item = habits[adapterPosition]
@@ -38,11 +44,37 @@ class MyHabitAdapter(val context: Context) : RecyclerView.Adapter<MyHabitAdapter
             popupMenus.setOnMenuItemClickListener {
                 when(it.itemId) {
                     R.id.editText -> {
-                        Toast.makeText(context, "edit", Toast.LENGTH_SHORT).show()
+                        val bindingUpdateHabit = ItemUpdateHabitBinding.inflate(LayoutInflater.from(context))
+
+                        val editTextName = bindingUpdateHabit.editTextName
+                        val editTextColor = bindingUpdateHabit.editTextColor
+                        val id = item.id
+
+                        editTextName.setText(item.name)
+                        editTextColor.setText(item.color)
+                        val dialogUpdateHabit = AlertDialog.Builder(context)
+
+                        dialogUpdateHabit.setView(bindingUpdateHabit.root)
+
+                        dialogUpdateHabit.setPositiveButton("Update") {
+                                dialog,_->
+                            repository.sendHabitsUpdateRequest(editTextName, editTextColor, id)
+                            Thread.sleep(500)
+                            repository.sendHabitsListRequest()
+                            dialog.dismiss()
+                        }
+                        dialogUpdateHabit.setNegativeButton("Cancel") {
+                                dialog,_->
+                            dialog.dismiss()
+                        }
+                        dialogUpdateHabit.create()
+                        dialogUpdateHabit.show()
                         true
                     }
                     R.id.delete -> {
-                        Toast.makeText(context, "delete", Toast.LENGTH_SHORT).show()
+                        repository.sendHabitsDeleteRequest(item.id.toInt())
+                        Thread.sleep(500)
+                        repository.sendHabitsListRequest()
                         true
                     }
                     else -> true
@@ -93,13 +125,13 @@ class MyHabitAdapter(val context: Context) : RecyclerView.Adapter<MyHabitAdapter
 
 
     inner class Repository {
-        fun sendHabitsUpdateRequest(editTextName: EditText, editTextColor: EditText, habitId: Int) {
+        fun sendHabitsUpdateRequest(editTextName: EditText, editTextColor: EditText, habitId: Long) {
             Log.i(TAG, "HabitAdapter.Repository.sendHabitsUpdateRequest()")
             val name = editTextName.text.toString()
             val color = editTextColor.text.toString()
-            val habit = Habit(habitId.toLong(), name, color, null)
+            val habit = Habit(habitId, name, color, null)
             CoroutineScope(Dispatchers.IO).launch {
-                HabitRepository.update(habit, habitId)
+                HabitRepository.update(habit, habitId.toInt())
             }
         }
 
@@ -107,6 +139,14 @@ class MyHabitAdapter(val context: Context) : RecyclerView.Adapter<MyHabitAdapter
             Log.i(TAG, "HabitAdapter.Repository.sendHabitsDeleteRequest()")
             CoroutineScope(Dispatchers.IO).launch {
                 HabitRepository.delete(habitId)
+            }
+        }
+
+        fun sendHabitsListRequest() {
+            Log.i(TAG, "HabitAdapter.Repository.sendHabitsListRequest()")
+            CoroutineScope(Dispatchers.IO).launch {
+                val list :List<Habit> = HabitRepository.list()
+                habits = list
             }
         }
     }
