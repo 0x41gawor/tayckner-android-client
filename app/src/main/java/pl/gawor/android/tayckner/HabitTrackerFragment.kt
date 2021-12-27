@@ -122,7 +122,7 @@ class HabitTrackerFragment : Fragment() {
         popupMenus.setOnMenuItemClickListener{
             when(it.itemId) {
                  R.id.logout -> {
-                     Toast.makeText(context, "Logout not implemented yet", Toast.LENGTH_SHORT).show()
+                     findNavController().navigate(R.id.action_habitTrackerFragment_to_loginFragment)
                      true}
                 else -> {true}
             }

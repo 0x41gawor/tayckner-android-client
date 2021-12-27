@@ -38,6 +38,9 @@
         <action
             android:id="@+id/action_habitTrackerFragment_to_myHabitsFragment"
             app:destination="@id/myHabitsFragment" />
+        <action
+            android:id="@+id/action_habitTrackerFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
     </fragment>
     <fragment
         android:id="@+id/myHabitsFragment"
