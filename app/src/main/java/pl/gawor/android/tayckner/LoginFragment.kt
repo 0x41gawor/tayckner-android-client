@@ -13,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputEditText
 import pl.gawor.android.tayckner.model.ResponseModel
 import pl.gawor.android.tayckner.model.CredentialsModel
+import pl.gawor.android.tayckner.repository.JWT_TOKEN
 import pl.gawor.android.tayckner.service.RetrofitInstance
 import pl.gawor.android.tayckner.service.UserApi
 import retrofit2.Call
@@ -73,12 +74,7 @@ class LoginFragment : Fragment() {
     }
 
     private fun saveJWT(token: String) {
-        val sharedPref = activity?.getSharedPreferences("pl.gawor.android.tayckner", Context.MODE_PRIVATE)
-        sharedPref!!.edit().apply {
-            putString("token", token)
-            Log.i(TAG, "LoginFragment.saveJWT: Saved token = $token")
-            apply()
-        }
+        JWT_TOKEN = "Bearer $token"
     }
 
     companion object {
