@@ -10,13 +10,12 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import pl.gawor.android.tayckner.adapter.MyHabitAdapter
 import pl.gawor.android.tayckner.databinding.FragmentMyHabitsBinding
 import pl.gawor.android.tayckner.databinding.ItemAddHabitBinding
-import pl.gawor.android.tayckner.databinding.ItemAddHabitEventBinding
 import pl.gawor.android.tayckner.model.Habit
-import pl.gawor.android.tayckner.repository.HabitEventRepository
 import pl.gawor.android.tayckner.repository.HabitRepository
 
 class MyHabitsFragment : Fragment() {
@@ -52,6 +51,9 @@ class MyHabitsFragment : Fragment() {
         }
         binding.imageButtonAdd.setOnClickListener {
             addHabit()
+        }
+        binding.textViewMyHabits.setOnClickListener{
+            findNavController().navigate(R.id.action_myHabitsFragment_to_habitTrackerFragment)
         }
         return binding.root
     }
