@@ -17,6 +17,7 @@ import pl.gawor.android.tayckner.model.CredentialsModel
 import pl.gawor.android.tayckner.repository.JWT_TOKEN
 import pl.gawor.android.tayckner.service.RetrofitInstance
 import pl.gawor.android.tayckner.service.UserApi
+import pl.gawor.android.tayckner.util.SharedPrefManager
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -30,8 +31,8 @@ class LoginFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (isRememberMeTrue()) {
-            sendLoginRequestSharedPref(getCredentialsFromPreferences())
+        if (SharedPrefManager.isRememberMeTrue(this)) {
+            sendLoginRequestSharedPref(SharedPrefManager.getCredentialsFromPreferences(this))
         }
     }
 
@@ -72,7 +73,7 @@ class LoginFragment : Fragment() {
                     "L0" -> {
                         Toast.makeText(context, "Logged-in successfully", Toast.LENGTH_LONG).show()
                         saveJWT(res.content)
-                        saveCredentials(credentials, checkBox.isChecked)
+                        SharedPrefManager.saveCredentials(credentials, checkBox.isChecked, this@LoginFragment)
                         findNavController().navigate(R.id.action_loginFragment_to_habitTrackerFragment)
                     }
                     else -> Toast.makeText(context, res?.message, Toast.LENGTH_LONG).show()
@@ -108,32 +109,6 @@ class LoginFragment : Fragment() {
         })
     }
 
-    private fun saveCredentials(credentials: CredentialsModel, isRememberMeChecked: Boolean) {
-        Log.i(TAG, "LoginFragment.saveCredentials: Saved to shared preferences: username = ${credentials.username}, password = ${credentials.password}, remember = $isRememberMeChecked")
-        val sharedPref = requireActivity().getSharedPreferences("pl.gawor.android.tayckner", Context.MODE_PRIVATE)
-        sharedPref.edit().apply {
-            putString("username", credentials.username)
-            putString("password", credentials.password)
-            putBoolean("remember", isRememberMeChecked)
-            apply()
-        }
-    }
-
-    private fun isRememberMeTrue() : Boolean {
-        Log.i(TAG, "LoginFragment.isRememberMeTrue()")
-        val sharedPreferences = activity?.getSharedPreferences("pl.gawor.android.tayckner", Context.MODE_PRIVATE)
-        val remember = sharedPreferences!!.getBoolean("remember", false)
-        Log.i(TAG, "LoginFragment.isRememberMeTrue() = $remember")
-        return remember
-    }
-
-    private fun getCredentialsFromPreferences() : CredentialsModel? {
-        val sharedPreferences = activity?.getSharedPreferences("pl.gawor.android.tayckner", Context.MODE_PRIVATE)
-        val username = sharedPreferences!!.getString("username", "none")
-        val password = sharedPreferences.getString("password", "none")
-
-        return CredentialsModel(username!!, password!!)
-    }
 
     private fun saveJWT(token: String) {
         JWT_TOKEN = "Bearer $token"

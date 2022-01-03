@@ -22,7 +22,7 @@ import pl.gawor.android.tayckner.model.Habit
 import pl.gawor.android.tayckner.model.HabitEvent
 import pl.gawor.android.tayckner.repository.HabitEventRepository
 import pl.gawor.android.tayckner.repository.HabitRepository
-
+import pl.gawor.android.tayckner.util.SharedPrefManager
 
 
 class HabitTrackerFragment : Fragment() {
@@ -123,11 +123,7 @@ class HabitTrackerFragment : Fragment() {
         popupMenus.setOnMenuItemClickListener{
             when(it.itemId) {
                  R.id.logout -> {
-                     val sharedPref = requireActivity().getSharedPreferences("pl.gawor.android.tayckner", Context.MODE_PRIVATE)
-                     sharedPref.edit().apply {
-                         putBoolean("remember", false)
-                         apply()
-                     }
+                     SharedPrefManager.logout(this)
                      findNavController().navigate(R.id.action_habitTrackerFragment_to_loginFragment)
                      true}
                 else -> {true}
