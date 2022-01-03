@@ -9,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.PopupMenu
-import android.widget.Toast
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -17,12 +16,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import pl.gawor.android.tayckner.R
-import pl.gawor.android.tayckner.databinding.ItemAddHabitBinding
 import pl.gawor.android.tayckner.databinding.ItemMyHabitBinding
 import pl.gawor.android.tayckner.databinding.ItemUpdateHabitBinding
 import pl.gawor.android.tayckner.model.Habit
-import pl.gawor.android.tayckner.model.HabitEvent
-import pl.gawor.android.tayckner.repository.HabitEventRepository
 import pl.gawor.android.tayckner.repository.HabitRepository
 
 class MyHabitAdapter(val context: Context) : RecyclerView.Adapter<MyHabitAdapter.HabitViewHolder>() {
@@ -125,27 +121,29 @@ class MyHabitAdapter(val context: Context) : RecyclerView.Adapter<MyHabitAdapter
 
 
     inner class Repository {
+        private val habitRepository = HabitRepository()
+
         fun sendHabitsUpdateRequest(editTextName: EditText, editTextColor: EditText, habitId: Long) {
             Log.i(TAG, "HabitAdapter.Repository.sendHabitsUpdateRequest()")
             val name = editTextName.text.toString()
             val color = editTextColor.text.toString()
             val habit = Habit(habitId, name, color, null)
             CoroutineScope(Dispatchers.IO).launch {
-                HabitRepository.update(habit, habitId.toInt())
+                habitRepository.update(habit, habitId.toInt())
             }
         }
 
         fun sendHabitsDeleteRequest(habitId: Int) {
             Log.i(TAG, "HabitAdapter.Repository.sendHabitsDeleteRequest()")
             CoroutineScope(Dispatchers.IO).launch {
-                HabitRepository.delete(habitId)
+                habitRepository.delete(habitId)
             }
         }
 
         fun sendHabitsListRequest() {
             Log.i(TAG, "HabitAdapter.Repository.sendHabitsListRequest()")
             CoroutineScope(Dispatchers.IO).launch {
-                val list :List<Habit> = HabitRepository.list()
+                val list :List<Habit> = habitRepository.list()
                 habits = list
             }
         }

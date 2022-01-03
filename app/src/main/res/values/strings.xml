@@ -16,4 +16,5 @@
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
     <string name="update">Update</string>
+    <string name="logout">Logout</string>
 </resources>

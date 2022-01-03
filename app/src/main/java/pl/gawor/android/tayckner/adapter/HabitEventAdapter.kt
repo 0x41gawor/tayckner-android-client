@@ -144,6 +144,8 @@ class HabitEventAdapter(val context: Context) : RecyclerView.Adapter<HabitEventA
     }
 
     inner class Repository {
+        private val habitEventRepository = HabitEventRepository()
+
         fun sendHabitEventsUpdateRequest(habitEventId: Int, editTextHabitId: EditText, editTextDate: EditText, editTextComment: EditText, editTextValue: EditText) {
             Log.i(TAG, "HabitEventAdapter.sendHabitEventsUpdateRequest()")
             val habitId = editTextHabitId.text.toString().toLong()
@@ -154,14 +156,14 @@ class HabitEventAdapter(val context: Context) : RecyclerView.Adapter<HabitEventA
             val habitEvent = HabitEvent(comment, date, habit, 0, value)
 
             CoroutineScope(Dispatchers.IO).launch {
-                HabitEventRepository.update(habitEvent, habitEventId)
+                habitEventRepository.update(habitEvent, habitEventId)
             }
         }
 
         fun sendHabitEventsListRequest() {
             Log.i(TAG, "HabitEventAdapter.sendHabitEventsListRequest()")
             CoroutineScope(Dispatchers.IO).launch {
-                val list :List<HabitEvent> = HabitEventRepository.list()
+                val list :List<HabitEvent> = habitEventRepository.list()
                 habitEvents = list
             }
         }
@@ -169,7 +171,7 @@ class HabitEventAdapter(val context: Context) : RecyclerView.Adapter<HabitEventA
         fun sendHabitEventsDeleteRequest(habitEventId: Int) {
             Log.i(TAG, "HabitEventAdapter.sendHabitEventsDeleteRequest()")
             CoroutineScope(Dispatchers.IO).launch {
-                HabitEventRepository.delete(habitEventId)
+                habitEventRepository.delete(habitEventId)
             }
         }
     }

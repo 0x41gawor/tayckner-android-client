@@ -1,6 +1,7 @@
 package pl.gawor.android.tayckner
 
 import android.app.AlertDialog
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -8,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -20,7 +22,7 @@ import pl.gawor.android.tayckner.model.Habit
 import pl.gawor.android.tayckner.model.HabitEvent
 import pl.gawor.android.tayckner.repository.HabitEventRepository
 import pl.gawor.android.tayckner.repository.HabitRepository
-
+import pl.gawor.android.tayckner.util.SharedPrefManager
 
 
 class HabitTrackerFragment : Fragment() {
@@ -46,7 +48,7 @@ class HabitTrackerFragment : Fragment() {
         setupHabitEventRecyclerView()
 
         binding.imageButtonOptions.setOnClickListener {
-            Toast.makeText(context, "Options button not implemented yet", Toast.LENGTH_SHORT).show()
+            optionsMenu(binding.imageButtonOptions)
         }
         binding.imageButtonDayPlanner.setOnClickListener {
             Toast.makeText(context, "Day-planner button not implemented yet", Toast.LENGTH_SHORT).show()
@@ -115,8 +117,26 @@ class HabitTrackerFragment : Fragment() {
         Log.e(TAG, "HabitTrackerFragment.addHabitEvent() = void")
     }
 
+    private fun optionsMenu(view: View) {
+        val popupMenus = PopupMenu(context, view)
+        popupMenus.inflate(R.menu.menu_top_bar_options)
+        popupMenus.setOnMenuItemClickListener{
+            when(it.itemId) {
+                 R.id.logout -> {
+                     SharedPrefManager.logout(this)
+                     findNavController().navigate(R.id.action_habitTrackerFragment_to_loginFragment)
+                     true}
+                else -> {true}
+            }
+        }
+        popupMenus.show()
+    }
+
 
     inner class Repository{
+        private val habitEventRepository = HabitEventRepository()
+        private val habitRepository = HabitRepository()
+
         fun sendHabitEventsCreateRequest(editTextHabitId: EditText, editTextDate: EditText, editTextComment: EditText, editTextValue: EditText) {
             Log.i(TAG, "HabitTrackerFragment.Repository.sendHabitEventsCreateRequest()")
             val habitId = editTextHabitId.text.toString().toLong()
@@ -126,7 +146,7 @@ class HabitTrackerFragment : Fragment() {
             val habit = Habit(habitId,"","", null)
             val habitEvent = HabitEvent(comment, date, habit, 0, value)
             lifecycleScope.launchWhenCreated {
-                HabitEventRepository.create(habitEvent)
+                habitEventRepository.create(habitEvent)
                 return@launchWhenCreated
             }
             Log.i(TAG, "HabitTrackerFragment.Repository.sendHabitEventsCreateRequest() = void")
@@ -136,7 +156,7 @@ class HabitTrackerFragment : Fragment() {
         fun refreshHabitEventsList() {
             Log.i(TAG, "HabitTrackerFragment.Repository.refreshHabitEventsList() = void")
             lifecycleScope.launchWhenCreated {
-                val list :List<HabitEvent> = HabitEventRepository.list()
+                val list :List<HabitEvent> = habitEventRepository.list()
                 habitEventAdapter.habitEvents = list
                 return@launchWhenCreated
             }
@@ -146,7 +166,7 @@ class HabitTrackerFragment : Fragment() {
         fun refreshHabitsList() {
             Log.i(TAG, "HabitTrackerFragment.Repository.refreshHabitsList() = void")
             lifecycleScope.launchWhenCreated {
-                val list :List<Habit> = HabitRepository.list()
+                val list :List<Habit> = habitRepository.list()
                 habitAdapter.habits = list
                 return@launchWhenCreated
             }

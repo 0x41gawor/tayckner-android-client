@@ -93,10 +93,12 @@ class MyHabitsFragment : Fragment() {
     }
 
     inner class Repository{
+        private val habitRepository = HabitRepository()
+
         fun refreshHabitsList() {
             Log.i(TAG, "MyHabitsFragment.Repository.refreshHabitsList() = void")
             lifecycleScope.launchWhenCreated {
-                val list :List<Habit> = HabitRepository.list()
+                val list :List<Habit> = habitRepository.list()
                 habitAdapter.habits = list
                 return@launchWhenCreated
             }
@@ -108,7 +110,7 @@ class MyHabitsFragment : Fragment() {
             val color = editTextColor.text.toString()
             val habit = Habit(0,name,color, null)
             lifecycleScope.launchWhenCreated {
-                HabitRepository.create(habit)
+                habitRepository.create(habit)
                 return@launchWhenCreated
             }
         }
