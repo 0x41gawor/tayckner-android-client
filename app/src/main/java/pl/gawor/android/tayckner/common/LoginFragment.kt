@@ -37,7 +37,7 @@ class LoginFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_login, container, false)
+        val view = inflater.inflate(R.layout.common_fragment_login, container, false)
 
         val buttonAction = view.findViewById<Button>(R.id.button_action)
         val buttonSwitch = view.findViewById<Button>(R.id.button_switch)

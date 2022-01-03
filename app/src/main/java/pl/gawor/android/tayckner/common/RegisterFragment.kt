@@ -31,7 +31,7 @@ class RegisterFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_register, container, false)
+        val view = inflater.inflate(R.layout.common_fragment_register, container, false)
         // buttons
         val buttonAction = view.findViewById<Button>(R.id.button_action)
         val buttonSwitch = view.findViewById<Button>(R.id.button_switch)

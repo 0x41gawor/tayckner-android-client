@@ -16,14 +16,14 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import pl.gawor.android.tayckner.R
-import pl.gawor.android.tayckner.databinding.ItemHabitEventBinding
-import pl.gawor.android.tayckner.databinding.ItemUpdateHabitEventBinding
+import pl.gawor.android.tayckner.databinding.HabitTrackerItemHabitEventBinding
+import pl.gawor.android.tayckner.databinding.HabitTrackerItemUpdateHabitEventBinding
 import pl.gawor.android.tayckner.habit_tracker.model.Habit
 import pl.gawor.android.tayckner.habit_tracker.model.HabitEvent
 import pl.gawor.android.tayckner.habit_tracker.repository.HabitEventRepository
 
 class HabitEventAdapter(val context: Context) : RecyclerView.Adapter<HabitEventAdapter.HabitEventViewHolder>() {
-    inner class HabitEventViewHolder(val binding: ItemHabitEventBinding) : RecyclerView.ViewHolder(binding.root){
+    inner class HabitEventViewHolder(val binding: HabitTrackerItemHabitEventBinding) : RecyclerView.ViewHolder(binding.root){
         init {
             binding.cardView.setOnClickListener {
                 popUpMenu(context, binding.root)
@@ -36,11 +36,11 @@ class HabitEventAdapter(val context: Context) : RecyclerView.Adapter<HabitEventA
             Log.i(TAG, "HabitEventAdapter.popUpMenu()")
             val item = habitEvents[adapterPosition]
             val popupMenus = PopupMenu(context, view)
-            popupMenus.inflate(R.menu.menu_item_habit_event)
+            popupMenus.inflate(R.menu.habit_tracker_menu_item_habit_event)
             popupMenus.setOnMenuItemClickListener {
                 when(it.itemId) {
                     R.id.editText -> {
-                        val bindingAddHabitEvent = ItemUpdateHabitEventBinding.inflate(LayoutInflater.from(context))
+                        val bindingAddHabitEvent = HabitTrackerItemUpdateHabitEventBinding.inflate(LayoutInflater.from(context))
 
                         val editTextHabitId = bindingAddHabitEvent.editTextHabit
                         val editTextDate = bindingAddHabitEvent.editTextDate
@@ -105,7 +105,7 @@ class HabitEventAdapter(val context: Context) : RecyclerView.Adapter<HabitEventA
         }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HabitEventViewHolder {
-        val binding = ItemHabitEventBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = HabitTrackerItemHabitEventBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return HabitEventViewHolder(binding)
     }
 

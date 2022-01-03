@@ -14,8 +14,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import pl.gawor.android.tayckner.R
 import pl.gawor.android.tayckner.habit_tracker.adapter.MyHabitAdapter
-import pl.gawor.android.tayckner.databinding.FragmentMyHabitsBinding
-import pl.gawor.android.tayckner.databinding.ItemAddHabitBinding
+import pl.gawor.android.tayckner.databinding.HabitTrackerFragmentMyHabitsBinding
+import pl.gawor.android.tayckner.databinding.HabitTrackerItemAddHabitBinding
 import pl.gawor.android.tayckner.habit_tracker.model.Habit
 import pl.gawor.android.tayckner.habit_tracker.repository.HabitRepository
 
@@ -23,7 +23,7 @@ class MyHabitsFragment : Fragment() {
 
     private  val TAG = "TAYCKNER"
 
-    private lateinit var binding: FragmentMyHabitsBinding
+    private lateinit var binding: HabitTrackerFragmentMyHabitsBinding
 
     private lateinit var habitAdapter: MyHabitAdapter
 
@@ -35,7 +35,7 @@ class MyHabitsFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = FragmentMyHabitsBinding.inflate(layoutInflater)
+        binding = HabitTrackerFragmentMyHabitsBinding.inflate(layoutInflater)
         setupHabitRecyclerView()
 
         binding.imageButtonOptions.setOnClickListener {
@@ -67,7 +67,7 @@ class MyHabitsFragment : Fragment() {
 
     private fun addHabit() {
         Log.e(TAG, "HabitTrackerFragment.addHabit()")
-        val bindingAddHabit = ItemAddHabitBinding.inflate(layoutInflater)
+        val bindingAddHabit = HabitTrackerItemAddHabitBinding.inflate(layoutInflater)
 
         val editTextName = bindingAddHabit.editTextName
         val editTextColor = bindingAddHabit.editTextColor

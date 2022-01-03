@@ -16,8 +16,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import pl.gawor.android.tayckner.R
 import pl.gawor.android.tayckner.habit_tracker.adapter.HabitAdapter
 import pl.gawor.android.tayckner.habit_tracker.adapter.HabitEventAdapter
-import pl.gawor.android.tayckner.databinding.FragmentHabitTrackerBinding
-import pl.gawor.android.tayckner.databinding.ItemAddHabitEventBinding
+import pl.gawor.android.tayckner.databinding.HabitTrackerFragmentMainBinding
+import pl.gawor.android.tayckner.databinding.HabitTrackerItemAddHabitEventBinding
 import pl.gawor.android.tayckner.habit_tracker.model.Habit
 import pl.gawor.android.tayckner.habit_tracker.model.HabitEvent
 import pl.gawor.android.tayckner.habit_tracker.repository.HabitEventRepository
@@ -29,7 +29,7 @@ class HabitTrackerFragment : Fragment() {
 
     private  val TAG = "TAYCKNER"
 
-    private lateinit var binding: FragmentHabitTrackerBinding
+    private lateinit var binding: HabitTrackerFragmentMainBinding
 
     private lateinit var habitAdapter: HabitAdapter
     private lateinit var habitEventAdapter: HabitEventAdapter
@@ -43,7 +43,7 @@ class HabitTrackerFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        binding = FragmentHabitTrackerBinding.inflate(layoutInflater)
+        binding = HabitTrackerFragmentMainBinding.inflate(layoutInflater)
         setupHabitRecyclerView()
         setupHabitEventRecyclerView()
 
@@ -89,7 +89,7 @@ class HabitTrackerFragment : Fragment() {
 
     private fun addHabitEvent() {
         Log.e(TAG, "HabitTrackerFragment.addHabitEvent()")
-        val bindingAddHabitEvent = ItemAddHabitEventBinding.inflate(layoutInflater)
+        val bindingAddHabitEvent = HabitTrackerItemAddHabitEventBinding.inflate(layoutInflater)
 
         val editTextHabitId = bindingAddHabitEvent.editTextHabit
         val editTextDate = bindingAddHabitEvent.editTextDate
@@ -119,7 +119,7 @@ class HabitTrackerFragment : Fragment() {
 
     private fun optionsMenu(view: View) {
         val popupMenus = PopupMenu(context, view)
-        popupMenus.inflate(R.menu.menu_top_bar_options)
+        popupMenus.inflate(R.menu.habit_tracker_menu_top_bar_options)
         popupMenus.setOnMenuItemClickListener{
             when(it.itemId) {
                  R.id.logout -> {

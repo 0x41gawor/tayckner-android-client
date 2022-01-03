@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@drawable/background_main"
-    tools:context=".habit_tracker.fragment.MyHabitsFragment">
+    tools:context=".habit_tracker.fragment.HabitTrackerFragment">
 
     <LinearLayout
         android:id="@+id/linearLayout_header"
@@ -40,11 +40,11 @@
     <LinearLayout
         android:id="@+id/linearLayout_my_habits_panel"
         android:layout_width="match_parent"
-        android:layout_height="642dp"
-        android:layout_marginLeft="15dp"
+        android:layout_height="130dp"
         android:layout_marginTop="20dp"
+        android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
-        android:background="@drawable/background_habit_tracker_linear_layout_my_habits"
+        android:background="@drawable/habit_tracker_background_habit_tracker_linear_layout_my_habits"
         android:orientation="vertical"
         android:padding="10dp">
 
@@ -56,27 +56,31 @@
             android:textColor="@color/primary"
             android:textSize="20sp" />
 
-        <FrameLayout
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView_my_habits"
             android:layout_width="match_parent"
-            android:layout_height="598dp"
-            android:orientation="vertical">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView_my_habits"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
-            <ImageButton
-                android:id="@+id/imageButton_add"
-                android:layout_width="72dp"
-                android:layout_height="60dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="532dp"
-                android:background="@drawable/button_login_enabled"
-                android:src="@drawable/ic_add_icon" />
-        </FrameLayout>
-
+            android:layout_height="match_parent" />
     </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="511dp"
+        android:orientation="vertical">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView_habit_events"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <ImageButton
+            android:id="@+id/imageButton_add"
+            android:background="@drawable/button_login_enabled"
+            android:layout_width="72dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="440dp"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/ic_add_icon" />
+    </FrameLayout>
 
     <LinearLayout
         android:id="@+id/linearLayout_modules_navigation"

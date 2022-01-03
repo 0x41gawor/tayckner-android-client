@@ -9,7 +9,7 @@
         android:id="@+id/loginFragment"
         android:name="pl.gawor.android.tayckner.common.LoginFragment"
         android:label="fragment_login"
-        tools:layout="@layout/fragment_login" >
+        tools:layout="@layout/common_fragment_login" >
         <action
             android:id="@+id/action_loginFragment_to_registerFragment"
             app:destination="@id/registerFragment"
@@ -23,7 +23,7 @@
         android:id="@+id/registerFragment"
         android:name="pl.gawor.android.tayckner.common.RegisterFragment"
         android:label="fragment_register"
-        tools:layout="@layout/fragment_register" >
+        tools:layout="@layout/common_fragment_register" >
         <action
             android:id="@+id/action_registerFragment_to_loginFragment"
             app:destination="@id/loginFragment"
@@ -34,7 +34,7 @@
         android:id="@+id/habitTrackerFragment"
         android:name="pl.gawor.android.tayckner.habit_tracker.fragment.HabitTrackerFragment"
         android:label="fragment_habit_tracker"
-        tools:layout="@layout/fragment_habit_tracker" >
+        tools:layout="@layout/habit_tracker_fragment_main" >
         <action
             android:id="@+id/action_habitTrackerFragment_to_myHabitsFragment"
             app:destination="@id/myHabitsFragment" />
@@ -46,7 +46,7 @@
         android:id="@+id/myHabitsFragment"
         android:name="pl.gawor.android.tayckner.habit_tracker.fragment.MyHabitsFragment"
         android:label="fragment_my_habits"
-        tools:layout="@layout/fragment_my_habits" >
+        tools:layout="@layout/habit_tracker_fragment_my_habits" >
         <action
             android:id="@+id/action_myHabitsFragment_to_habitTrackerFragment"
             app:destination="@id/habitTrackerFragment" />

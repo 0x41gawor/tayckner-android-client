@@ -6,12 +6,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import pl.gawor.android.tayckner.databinding.ItemHabitBinding
+import pl.gawor.android.tayckner.databinding.HabitTrackerItemHabitBinding
 import pl.gawor.android.tayckner.habit_tracker.model.Habit
 
 class HabitAdapter : RecyclerView.Adapter<HabitAdapter.HabitViewHolder>() {
 
-    inner class HabitViewHolder(val binding: ItemHabitBinding) : RecyclerView.ViewHolder(binding.root)
+    inner class HabitViewHolder(val binding: HabitTrackerItemHabitBinding) : RecyclerView.ViewHolder(binding.root)
 
     private val diffCallback = object : DiffUtil.ItemCallback<Habit>() {
         override fun areItemsTheSame(oldItem: Habit, newItem: Habit): Boolean {
@@ -29,7 +29,7 @@ class HabitAdapter : RecyclerView.Adapter<HabitAdapter.HabitViewHolder>() {
         set(value) {differ.submitList(value)}
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HabitViewHolder {
-        return HabitViewHolder(ItemHabitBinding.inflate(
+        return HabitViewHolder(HabitTrackerItemHabitBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
             false

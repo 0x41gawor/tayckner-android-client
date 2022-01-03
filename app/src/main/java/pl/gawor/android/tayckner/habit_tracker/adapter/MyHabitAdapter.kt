@@ -16,14 +16,14 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import pl.gawor.android.tayckner.R
-import pl.gawor.android.tayckner.databinding.ItemMyHabitBinding
-import pl.gawor.android.tayckner.databinding.ItemUpdateHabitBinding
+import pl.gawor.android.tayckner.databinding.HabitTrackerItemMyHabitBinding
+import pl.gawor.android.tayckner.databinding.HabitTrackerItemUpdateHabitBinding
 import pl.gawor.android.tayckner.habit_tracker.model.Habit
 import pl.gawor.android.tayckner.habit_tracker.repository.HabitRepository
 
 class MyHabitAdapter(val context: Context) : RecyclerView.Adapter<MyHabitAdapter.HabitViewHolder>() {
 
-    inner class HabitViewHolder(val binding: ItemMyHabitBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class HabitViewHolder(val binding: HabitTrackerItemMyHabitBinding) : RecyclerView.ViewHolder(binding.root) {
         init {
             binding.cardView.setOnClickListener {
                 popUpMenu(context, binding.root)
@@ -36,11 +36,11 @@ class MyHabitAdapter(val context: Context) : RecyclerView.Adapter<MyHabitAdapter
             Log.i(TAG, "HabitEventAdapter.popUpMenu()")
             val item = habits[adapterPosition]
             val popupMenus = PopupMenu(context, view)
-            popupMenus.inflate(R.menu.menu_item_habit)
+            popupMenus.inflate(R.menu.habit_tracker_menu_item_habit)
             popupMenus.setOnMenuItemClickListener {
                 when(it.itemId) {
                     R.id.editText -> {
-                        val bindingUpdateHabit = ItemUpdateHabitBinding.inflate(LayoutInflater.from(context))
+                        val bindingUpdateHabit = HabitTrackerItemUpdateHabitBinding.inflate(LayoutInflater.from(context))
 
                         val editTextName = bindingUpdateHabit.editTextName
                         val editTextColor = bindingUpdateHabit.editTextColor
@@ -100,7 +100,7 @@ class MyHabitAdapter(val context: Context) : RecyclerView.Adapter<MyHabitAdapter
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HabitViewHolder {
         return HabitViewHolder(
-            ItemMyHabitBinding.inflate(
+            HabitTrackerItemMyHabitBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
             false
