@@ -1,4 +1,4 @@
-package pl.gawor.android.tayckner.habit_tracker.model
+package pl.gawor.android.tayckner.common.model
 
 data class ResponseModel<T>(
     val code: String,

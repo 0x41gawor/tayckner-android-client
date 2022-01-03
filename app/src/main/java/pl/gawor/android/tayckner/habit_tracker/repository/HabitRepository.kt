@@ -2,10 +2,10 @@ package pl.gawor.android.tayckner.habit_tracker.repository
 
 import android.util.Log
 import pl.gawor.android.tayckner.habit_tracker.model.Habit
-import pl.gawor.android.tayckner.habit_tracker.model.ResponseModel
+import pl.gawor.android.tayckner.common.model.ResponseModel
 import pl.gawor.android.tayckner.repository.JWT_TOKEN
 import pl.gawor.android.tayckner.habit_tracker.service.HabitApi
-import pl.gawor.android.tayckner.habit_tracker.service.RetrofitInstance
+import pl.gawor.android.tayckner.common.service.RetrofitInstance
 import retrofit2.HttpException
 import retrofit2.Response
 import java.io.IOException

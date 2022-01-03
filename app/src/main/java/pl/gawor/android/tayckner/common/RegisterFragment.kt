@@ -11,9 +11,9 @@ import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputEditText
 import pl.gawor.android.tayckner.R
-import pl.gawor.android.tayckner.habit_tracker.model.ResponseModel
-import pl.gawor.android.tayckner.habit_tracker.model.User
-import pl.gawor.android.tayckner.habit_tracker.service.RetrofitInstance
+import pl.gawor.android.tayckner.common.model.ResponseModel
+import pl.gawor.android.tayckner.common.model.User
+import pl.gawor.android.tayckner.common.service.RetrofitInstance
 import pl.gawor.android.tayckner.habit_tracker.service.UserApi
 import retrofit2.Call
 import retrofit2.Callback

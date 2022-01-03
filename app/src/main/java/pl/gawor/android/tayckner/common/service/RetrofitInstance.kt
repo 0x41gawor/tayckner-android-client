@@ -1,4 +1,4 @@
-package pl.gawor.android.tayckner.habit_tracker.service
+package pl.gawor.android.tayckner.common.service
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

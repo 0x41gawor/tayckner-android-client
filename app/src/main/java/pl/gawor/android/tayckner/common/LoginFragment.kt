@@ -12,10 +12,10 @@ import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputEditText
 import pl.gawor.android.tayckner.R
-import pl.gawor.android.tayckner.habit_tracker.model.ResponseModel
-import pl.gawor.android.tayckner.habit_tracker.model.CredentialsModel
+import pl.gawor.android.tayckner.common.model.ResponseModel
+import pl.gawor.android.tayckner.common.model.CredentialsModel
 import pl.gawor.android.tayckner.repository.JWT_TOKEN
-import pl.gawor.android.tayckner.habit_tracker.service.RetrofitInstance
+import pl.gawor.android.tayckner.common.service.RetrofitInstance
 import pl.gawor.android.tayckner.habit_tracker.service.UserApi
 import pl.gawor.android.tayckner.common.util.SharedPrefManager
 import retrofit2.Call

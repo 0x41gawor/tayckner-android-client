@@ -3,7 +3,7 @@ package pl.gawor.android.tayckner.common.util
 import android.content.Context
 import android.util.Log
 import androidx.fragment.app.Fragment
-import pl.gawor.android.tayckner.habit_tracker.model.CredentialsModel
+import pl.gawor.android.tayckner.common.model.CredentialsModel
 
 object SharedPrefManager {
 
