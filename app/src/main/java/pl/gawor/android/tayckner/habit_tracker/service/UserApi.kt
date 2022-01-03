@@ -1,8 +1,8 @@
 package pl.gawor.android.tayckner.habit_tracker.service
 
-import pl.gawor.android.tayckner.habit_tracker.model.ResponseModel
-import pl.gawor.android.tayckner.habit_tracker.model.CredentialsModel
-import pl.gawor.android.tayckner.habit_tracker.model.User
+import pl.gawor.android.tayckner.common.model.ResponseModel
+import pl.gawor.android.tayckner.common.model.CredentialsModel
+import pl.gawor.android.tayckner.common.model.User
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.POST

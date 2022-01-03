@@ -1,7 +1,7 @@
 package pl.gawor.android.tayckner.habit_tracker.service
 
 import pl.gawor.android.tayckner.habit_tracker.model.HabitEvent
-import pl.gawor.android.tayckner.habit_tracker.model.ResponseModel
+import pl.gawor.android.tayckner.common.model.ResponseModel
 import retrofit2.Response
 import retrofit2.http.*
 

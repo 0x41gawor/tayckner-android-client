@@ -1,4 +1,4 @@
-package pl.gawor.android.tayckner.habit_tracker.model
+package pl.gawor.android.tayckner.common.model
 
 data class User(
     val id: Long,
