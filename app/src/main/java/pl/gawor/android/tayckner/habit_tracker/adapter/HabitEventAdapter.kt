@@ -16,6 +16,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import pl.gawor.android.tayckner.R
+import pl.gawor.android.tayckner.common.util.Util
 import pl.gawor.android.tayckner.databinding.HabitTrackerItemHabitEventBinding
 import pl.gawor.android.tayckner.databinding.HabitTrackerItemUpdateHabitEventBinding
 import pl.gawor.android.tayckner.habit_tracker.model.Habit
@@ -113,7 +114,7 @@ class HabitEventAdapter(val context: Context) : RecyclerView.Adapter<HabitEventA
         holder.binding.apply {
             val habitEvent = habitEvents[position]
             textViewHabitName.text = habitEvent.habit.name
-            val date = habitEvent.date.substring(8, 10) + " " + convertMonth(habitEvent.date.substring(5, 7))
+            val date = habitEvent.date.substring(8, 10) + " " + Util.convertMonth(habitEvent.date.substring(5, 7))
             textViewDate.text =  date
             textViewYear.text = habitEvent.date.substring(0,4)
             textViewComment.text = habitEvent.comment
@@ -123,24 +124,6 @@ class HabitEventAdapter(val context: Context) : RecyclerView.Adapter<HabitEventA
 
     override fun getItemCount(): Int {
         return habitEvents.size
-    }
-
-    private fun convertMonth(number: String): String {
-            return when(number) {
-                "01" -> "JAN"
-                "02" -> "FEB"
-                "03" -> "MAR"
-                "04" -> "APR"
-                "05" -> "MAY"
-                "06" -> "JUN"
-                "07" -> "JUL"
-                "08" -> "AUG"
-                "09" -> "SEP"
-                "10" -> "OCT"
-                "11" -> "NOV"
-                "12" -> "DEC"
-                else -> "XXX"
-            }
     }
 
     inner class Repository {

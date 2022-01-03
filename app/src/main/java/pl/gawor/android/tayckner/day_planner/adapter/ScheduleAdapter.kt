@@ -41,9 +41,9 @@ class ScheduleAdapter(val context: Context) : RecyclerView.Adapter<ScheduleAdapt
         holder.binding.apply {
             val schedule = schedules[position]
             textViewName.text = schedule.name
-            textViewStart.text = schedule.startTime
-            textViewEnd.text = schedule.endTime
-            textViewDuration.text = schedule.duration.toString()
+            textViewStart.text = schedule.startTime.substring(11, 16)
+            textViewEnd.text = schedule.endTime.substring(11, 16)
+            textViewDuration.text = if (schedule.duration == 0)  "" else schedule.duration.toString()
         }
     }
 

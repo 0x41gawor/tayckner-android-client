@@ -154,7 +154,7 @@ class HabitTrackerFragment : Fragment() {
         }
 
         fun refreshHabitEventsList() {
-            Log.i(TAG, "HabitTrackerFragment.Repository.refreshHabitEventsList() = void")
+            Log.i(TAG, "HabitTrackerFragment.Repository.refreshHabitEventsList()")
             lifecycleScope.launchWhenCreated {
                 val list :List<HabitEvent> = habitEventRepository.list()
                 habitEventAdapter.habitEvents = list
@@ -164,7 +164,7 @@ class HabitTrackerFragment : Fragment() {
         }
 
         fun refreshHabitsList() {
-            Log.i(TAG, "HabitTrackerFragment.Repository.refreshHabitsList() = void")
+            Log.i(TAG, "HabitTrackerFragment.Repository.refreshHabitsList()")
             lifecycleScope.launchWhenCreated {
                 val list :List<Habit> = habitRepository.list()
                 habitAdapter.habits = list
