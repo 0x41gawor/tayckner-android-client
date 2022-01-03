@@ -32,12 +32,14 @@
         <entry key="..\:/Ejek/Programming/Android/tayckner-android-client/app/src/main/res/drawable/ic_password.xml" value="0.29814814814814816" />
         <entry key="..\:/Ejek/Programming/Android/tayckner-android-client/app/src/main/res/drawable/ic_username.xml" value="0.29814814814814816" />
         <entry key="..\:/Ejek/Programming/Android/tayckner-android-client/app/src/main/res/layout/activity_main.xml" value="0.17147922998986828" />
+        <entry key="..\:/Ejek/Programming/Android/tayckner-android-client/app/src/main/res/layout/day_planner_fragment_main.xml" value="0.25" />
         <entry key="..\:/Ejek/Programming/Android/tayckner-android-client/app/src/main/res/layout/fragment_habit_tracker.xml" value="0.33" />
         <entry key="..\:/Ejek/Programming/Android/tayckner-android-client/app/src/main/res/layout/fragment_login.xml" value="0.33" />
         <entry key="..\:/Ejek/Programming/Android/tayckner-android-client/app/src/main/res/layout/fragment_my_habits.xml" value="0.2658514492753623" />
         <entry key="..\:/Ejek/Programming/Android/tayckner-android-client/app/src/main/res/layout/fragment_register.xml" value="0.25" />
         <entry key="..\:/Ejek/Programming/Android/tayckner-android-client/app/src/main/res/layout/habit_event_item.xml" value="0.5" />
         <entry key="..\:/Ejek/Programming/Android/tayckner-android-client/app/src/main/res/layout/habit_item.xml" value="0.75" />
+        <entry key="..\:/Ejek/Programming/Android/tayckner-android-client/app/src/main/res/layout/habit_tracker_fragment_main.xml" value="0.25226449275362317" />
         <entry key="..\:/Ejek/Programming/Android/tayckner-android-client/app/src/main/res/layout/item_add_habit.xml" value="0.33" />
         <entry key="..\:/Ejek/Programming/Android/tayckner-android-client/app/src/main/res/layout/item_add_habit_event.xml" value="0.2658514492753623" />
         <entry key="..\:/Ejek/Programming/Android/tayckner-android-client/app/src/main/res/layout/item_habit.xml" value="0.67" />
