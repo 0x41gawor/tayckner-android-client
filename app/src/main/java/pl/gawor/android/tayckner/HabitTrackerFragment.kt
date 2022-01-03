@@ -1,6 +1,7 @@
 package pl.gawor.android.tayckner
 
 import android.app.AlertDialog
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -122,6 +123,11 @@ class HabitTrackerFragment : Fragment() {
         popupMenus.setOnMenuItemClickListener{
             when(it.itemId) {
                  R.id.logout -> {
+                     val sharedPref = requireActivity().getSharedPreferences("pl.gawor.android.tayckner", Context.MODE_PRIVATE)
+                     sharedPref.edit().apply {
+                         putBoolean("remember", false)
+                         apply()
+                     }
                      findNavController().navigate(R.id.action_habitTrackerFragment_to_loginFragment)
                      true}
                 else -> {true}

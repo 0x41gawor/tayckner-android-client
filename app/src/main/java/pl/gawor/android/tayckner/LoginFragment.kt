@@ -30,10 +30,8 @@ class LoginFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (logFromPreferences()) {
-                val credentials = getCredentialsFromPreferences()!!
-                sendLoginRequest(credentials)
-                saveCredentials(credentials, true)
+        if (isRememberMeTrue()) {
+            sendLoginRequestSharedPref(getCredentialsFromPreferences())
         }
     }
 
@@ -42,32 +40,32 @@ class LoginFragment : Fragment() {
 
         val buttonAction = view.findViewById<Button>(R.id.button_action)
         val buttonSwitch = view.findViewById<Button>(R.id.button_switch)
-        checkBox = view.findViewById<CheckBox>(R.id.checkBox)
+        checkBox = view.findViewById(R.id.checkBox)
 
         buttonAction.setOnClickListener {
             Log.i(TAG, "LoginFragment.buttonAction.OnClickListener:\t\tLogin Button Clicked")
             val userCredentials = CredentialsModel(view.findViewById<TextInputEditText>(R.id.textInput_username).text.toString(),
                 view.findViewById<TextInputEditText>(R.id.textInput_password).text.toString())
-                sendLoginRequest(userCredentials)
+            sendLoginRequestButton(userCredentials)
         }
         buttonSwitch.setOnClickListener { findNavController().navigate(R.id.action_loginFragment_to_registerFragment) }
 
         return view
     }
 
-    private fun sendLoginRequest(credentials: CredentialsModel) {
-        Log.i(TAG, "LoginFragment.sendLoginRequest(credentials = $credentials)")
+    private fun sendLoginRequestButton(credentials: CredentialsModel) {
+        Log.i(TAG, "LoginFragment.sendLoginRequestButton(credentials = $credentials)")
 
         val userApiClient: UserApi = RetrofitInstance.retrofit.create(UserApi::class.java)
 
         val call: Call<ResponseModel<String>> = userApiClient.login(credentials)
         call.enqueue(object : Callback<ResponseModel<String>> {
             override fun onFailure(call: Call<ResponseModel<String>>?, t: Throwable?) {
-                Log.i(TAG, "LoginFragment.sendLoginRequest():\t\tCall failed: ${t?.message}")
+                Log.i(TAG, "LoginFragment.sendLoginRequestButton():\t\tCall failed: ${t?.message}")
                 Toast.makeText(context, "Call failed: ${t?.message}", Toast.LENGTH_LONG).show()
             }
             override fun onResponse(call: Call<ResponseModel<String>>?, response: Response<ResponseModel<String>>?) {
-                Log.i(TAG, "LoginFragment.sendLoginRequest():\t\tCall success: response.body = ${response?.body()}")
+                Log.i(TAG, "LoginFragment.sendLoginRequestButton():\t\tCall success: response.body = ${response?.body()}")
                 val res = response?.body()
 
                 when (res?.code) {
@@ -83,28 +81,56 @@ class LoginFragment : Fragment() {
         })
     }
 
+    private fun sendLoginRequestSharedPref(credentials: CredentialsModel?) {
+        Log.i(TAG, "LoginFragment.sendLoginRequestSharedPref(credentials = $credentials)")
+
+        val userApiClient: UserApi = RetrofitInstance.retrofit.create(UserApi::class.java)
+
+        val call: Call<ResponseModel<String>> = userApiClient.login(credentials!!)
+        call.enqueue(object : Callback<ResponseModel<String>> {
+            override fun onFailure(call: Call<ResponseModel<String>>?, t: Throwable?) {
+                Log.i(TAG, "LoginFragment.sendLoginRequestSharedPref():\t\tCall failed: ${t?.message}")
+                Toast.makeText(context, "Call failed: ${t?.message}", Toast.LENGTH_LONG).show()
+            }
+            override fun onResponse(call: Call<ResponseModel<String>>?, response: Response<ResponseModel<String>>?) {
+                Log.i(TAG, "LoginFragment.sendLoginRequestSharedPref():\t\tCall success: response.body = ${response?.body()}")
+                val res = response?.body()
+
+                when (res?.code) {
+                    "L0" -> {
+                        Toast.makeText(context, "Logged-in successfully", Toast.LENGTH_LONG).show()
+                        saveJWT(res.content)
+                        findNavController().navigate(R.id.action_loginFragment_to_habitTrackerFragment)
+                    }
+                    else -> Toast.makeText(context, res?.message, Toast.LENGTH_LONG).show()
+                }
+            }
+        })
+    }
+
     private fun saveCredentials(credentials: CredentialsModel, isRememberMeChecked: Boolean) {
+        Log.i(TAG, "LoginFragment.saveCredentials: Saved to shared preferences: username = ${credentials.username}, password = ${credentials.password}, remember = $isRememberMeChecked")
         val sharedPref = requireActivity().getSharedPreferences("pl.gawor.android.tayckner", Context.MODE_PRIVATE)
-        Log.i(TAG, "LoginFragment.saveCredentials: Saved to shared preferences: username = ${credentials.username}, password = ${credentials.password}, checkbox = $isRememberMeChecked")
         sharedPref.edit().apply {
             putString("username", credentials.username)
             putString("password", credentials.password)
-            putBoolean("checkbox", isRememberMeChecked)
+            putBoolean("remember", isRememberMeChecked)
             apply()
         }
     }
 
-    private fun logFromPreferences() : Boolean {
+    private fun isRememberMeTrue() : Boolean {
+        Log.i(TAG, "LoginFragment.isRememberMeTrue()")
         val sharedPreferences = activity?.getSharedPreferences("pl.gawor.android.tayckner", Context.MODE_PRIVATE)
-        val isRememberMeChecked = sharedPreferences!!.getBoolean("checkbox", false)
-        Log.i(TAG, "LoginFragment.logFromPreferences() = $isRememberMeChecked")
-        return isRememberMeChecked
+        val remember = sharedPreferences!!.getBoolean("remember", false)
+        Log.i(TAG, "LoginFragment.isRememberMeTrue() = $remember")
+        return remember
     }
 
     private fun getCredentialsFromPreferences() : CredentialsModel? {
         val sharedPreferences = activity?.getSharedPreferences("pl.gawor.android.tayckner", Context.MODE_PRIVATE)
         val username = sharedPreferences!!.getString("username", "none")
-        val password = sharedPreferences!!.getString("password", "none")
+        val password = sharedPreferences.getString("password", "none")
 
         return CredentialsModel(username!!, password!!)
     }
