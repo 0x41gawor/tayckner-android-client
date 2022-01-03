@@ -1,4 +1,4 @@
-package pl.gawor.android.tayckner
+package pl.gawor.android.tayckner.habit_tracker.fragment
 
 import android.app.AlertDialog
 import android.os.Bundle
@@ -12,11 +12,12 @@ import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import pl.gawor.android.tayckner.adapter.MyHabitAdapter
+import pl.gawor.android.tayckner.R
+import pl.gawor.android.tayckner.habit_tracker.adapter.MyHabitAdapter
 import pl.gawor.android.tayckner.databinding.FragmentMyHabitsBinding
 import pl.gawor.android.tayckner.databinding.ItemAddHabitBinding
-import pl.gawor.android.tayckner.model.Habit
-import pl.gawor.android.tayckner.repository.HabitRepository
+import pl.gawor.android.tayckner.habit_tracker.model.Habit
+import pl.gawor.android.tayckner.habit_tracker.repository.HabitRepository
 
 class MyHabitsFragment : Fragment() {
 

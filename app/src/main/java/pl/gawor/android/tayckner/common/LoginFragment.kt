@@ -1,6 +1,5 @@
-package pl.gawor.android.tayckner
+package pl.gawor.android.tayckner.common
 
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -12,12 +11,13 @@ import android.widget.CheckBox
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputEditText
-import pl.gawor.android.tayckner.model.ResponseModel
-import pl.gawor.android.tayckner.model.CredentialsModel
+import pl.gawor.android.tayckner.R
+import pl.gawor.android.tayckner.habit_tracker.model.ResponseModel
+import pl.gawor.android.tayckner.habit_tracker.model.CredentialsModel
 import pl.gawor.android.tayckner.repository.JWT_TOKEN
-import pl.gawor.android.tayckner.service.RetrofitInstance
-import pl.gawor.android.tayckner.service.UserApi
-import pl.gawor.android.tayckner.util.SharedPrefManager
+import pl.gawor.android.tayckner.habit_tracker.service.RetrofitInstance
+import pl.gawor.android.tayckner.habit_tracker.service.UserApi
+import pl.gawor.android.tayckner.common.util.SharedPrefManager
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

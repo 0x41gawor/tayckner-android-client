@@ -1,4 +1,4 @@
-package pl.gawor.android.tayckner
+package pl.gawor.android.tayckner.common
 
 import android.os.Bundle
 import android.util.Log
@@ -10,10 +10,11 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputEditText
-import pl.gawor.android.tayckner.model.ResponseModel
-import pl.gawor.android.tayckner.model.User
-import pl.gawor.android.tayckner.service.RetrofitInstance
-import pl.gawor.android.tayckner.service.UserApi
+import pl.gawor.android.tayckner.R
+import pl.gawor.android.tayckner.habit_tracker.model.ResponseModel
+import pl.gawor.android.tayckner.habit_tracker.model.User
+import pl.gawor.android.tayckner.habit_tracker.service.RetrofitInstance
+import pl.gawor.android.tayckner.habit_tracker.service.UserApi
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

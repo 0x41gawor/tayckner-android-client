@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/loginFragment"
-        android:name="pl.gawor.android.tayckner.LoginFragment"
+        android:name="pl.gawor.android.tayckner.common.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" >
         <action
@@ -21,7 +21,7 @@
     </fragment>
     <fragment
         android:id="@+id/registerFragment"
-        android:name="pl.gawor.android.tayckner.RegisterFragment"
+        android:name="pl.gawor.android.tayckner.common.RegisterFragment"
         android:label="fragment_register"
         tools:layout="@layout/fragment_register" >
         <action
@@ -32,7 +32,7 @@
     </fragment>
     <fragment
         android:id="@+id/habitTrackerFragment"
-        android:name="pl.gawor.android.tayckner.HabitTrackerFragment"
+        android:name="pl.gawor.android.tayckner.habit_tracker.fragment.HabitTrackerFragment"
         android:label="fragment_habit_tracker"
         tools:layout="@layout/fragment_habit_tracker" >
         <action
@@ -44,7 +44,7 @@
     </fragment>
     <fragment
         android:id="@+id/myHabitsFragment"
-        android:name="pl.gawor.android.tayckner.MyHabitsFragment"
+        android:name="pl.gawor.android.tayckner.habit_tracker.fragment.MyHabitsFragment"
         android:label="fragment_my_habits"
         tools:layout="@layout/fragment_my_habits" >
         <action

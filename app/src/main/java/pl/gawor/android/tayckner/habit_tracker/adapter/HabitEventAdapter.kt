@@ -1,4 +1,4 @@
-package pl.gawor.android.tayckner.adapter
+package pl.gawor.android.tayckner.habit_tracker.adapter
 
 import android.app.AlertDialog
 import android.content.Context
@@ -18,9 +18,9 @@ import kotlinx.coroutines.launch
 import pl.gawor.android.tayckner.R
 import pl.gawor.android.tayckner.databinding.ItemHabitEventBinding
 import pl.gawor.android.tayckner.databinding.ItemUpdateHabitEventBinding
-import pl.gawor.android.tayckner.model.Habit
-import pl.gawor.android.tayckner.model.HabitEvent
-import pl.gawor.android.tayckner.repository.HabitEventRepository
+import pl.gawor.android.tayckner.habit_tracker.model.Habit
+import pl.gawor.android.tayckner.habit_tracker.model.HabitEvent
+import pl.gawor.android.tayckner.habit_tracker.repository.HabitEventRepository
 
 class HabitEventAdapter(val context: Context) : RecyclerView.Adapter<HabitEventAdapter.HabitEventViewHolder>() {
     inner class HabitEventViewHolder(val binding: ItemHabitEventBinding) : RecyclerView.ViewHolder(binding.root){

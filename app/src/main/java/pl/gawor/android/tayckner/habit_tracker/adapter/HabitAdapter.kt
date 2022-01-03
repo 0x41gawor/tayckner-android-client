@@ -1,4 +1,4 @@
-package pl.gawor.android.tayckner.adapter
+package pl.gawor.android.tayckner.habit_tracker.adapter
 
 import android.graphics.Color
 import android.view.LayoutInflater
@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import pl.gawor.android.tayckner.databinding.ItemHabitBinding
-import pl.gawor.android.tayckner.model.Habit
+import pl.gawor.android.tayckner.habit_tracker.model.Habit
 
 class HabitAdapter : RecyclerView.Adapter<HabitAdapter.HabitViewHolder>() {
 

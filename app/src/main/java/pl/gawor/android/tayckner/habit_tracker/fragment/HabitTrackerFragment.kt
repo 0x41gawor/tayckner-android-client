@@ -1,7 +1,6 @@
-package pl.gawor.android.tayckner
+package pl.gawor.android.tayckner.habit_tracker.fragment
 
 import android.app.AlertDialog
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -14,15 +13,16 @@ import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import pl.gawor.android.tayckner.adapter.HabitAdapter
-import pl.gawor.android.tayckner.adapter.HabitEventAdapter
+import pl.gawor.android.tayckner.R
+import pl.gawor.android.tayckner.habit_tracker.adapter.HabitAdapter
+import pl.gawor.android.tayckner.habit_tracker.adapter.HabitEventAdapter
 import pl.gawor.android.tayckner.databinding.FragmentHabitTrackerBinding
 import pl.gawor.android.tayckner.databinding.ItemAddHabitEventBinding
-import pl.gawor.android.tayckner.model.Habit
-import pl.gawor.android.tayckner.model.HabitEvent
-import pl.gawor.android.tayckner.repository.HabitEventRepository
-import pl.gawor.android.tayckner.repository.HabitRepository
-import pl.gawor.android.tayckner.util.SharedPrefManager
+import pl.gawor.android.tayckner.habit_tracker.model.Habit
+import pl.gawor.android.tayckner.habit_tracker.model.HabitEvent
+import pl.gawor.android.tayckner.habit_tracker.repository.HabitEventRepository
+import pl.gawor.android.tayckner.habit_tracker.repository.HabitRepository
+import pl.gawor.android.tayckner.common.util.SharedPrefManager
 
 
 class HabitTrackerFragment : Fragment() {

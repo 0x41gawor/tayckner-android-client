@@ -1,4 +1,4 @@
-package pl.gawor.android.tayckner.adapter
+package pl.gawor.android.tayckner.habit_tracker.adapter
 
 import android.app.AlertDialog
 import android.content.Context
@@ -18,8 +18,8 @@ import kotlinx.coroutines.launch
 import pl.gawor.android.tayckner.R
 import pl.gawor.android.tayckner.databinding.ItemMyHabitBinding
 import pl.gawor.android.tayckner.databinding.ItemUpdateHabitBinding
-import pl.gawor.android.tayckner.model.Habit
-import pl.gawor.android.tayckner.repository.HabitRepository
+import pl.gawor.android.tayckner.habit_tracker.model.Habit
+import pl.gawor.android.tayckner.habit_tracker.repository.HabitRepository
 
 class MyHabitAdapter(val context: Context) : RecyclerView.Adapter<MyHabitAdapter.HabitViewHolder>() {
 

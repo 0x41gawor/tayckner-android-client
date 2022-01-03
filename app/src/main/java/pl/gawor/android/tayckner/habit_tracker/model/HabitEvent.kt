@@ -1,4 +1,4 @@
-package pl.gawor.android.tayckner.model
+package pl.gawor.android.tayckner.habit_tracker.model
 
 data class HabitEvent(
     val comment: String,
