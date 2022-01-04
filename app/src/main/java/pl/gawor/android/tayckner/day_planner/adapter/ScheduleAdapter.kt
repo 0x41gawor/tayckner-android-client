@@ -74,7 +74,9 @@ class ScheduleAdapter(val context: Context) : RecyclerView.Adapter<ScheduleAdapt
                         true
                     }
                     R.id.delete -> {
-                        Toast.makeText(context, "Delete", Toast.LENGTH_SHORT).show()
+                        repository.sendSchedulesDeleteRequest(item.id)
+                        Thread.sleep(500)
+                        repository.sendSchedulesListRequest()
                         true
                     }
                     else -> true
@@ -115,7 +117,7 @@ class ScheduleAdapter(val context: Context) : RecyclerView.Adapter<ScheduleAdapt
             textViewName.text = schedule.name
             textViewStart.text = schedule.startTime.substring(11, 16)
             textViewEnd.text = schedule.endTime.substring(11, 16)
-            textViewDuration.text = if (schedule.duration == 0)  "" else schedule.duration.toString()
+            textViewDuration.text = if (schedule.duration == 0)  "" else schedule.duration.toString()+"h"
         }
     }
 
