@@ -8,5 +8,5 @@ data class Schedule(
     val id: Int,
     val name: String,
     val startTime: String,
-    val user: User
+    val user: User?
 )

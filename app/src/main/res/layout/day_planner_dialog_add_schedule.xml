@@ -37,7 +37,7 @@
         android:textStyle="bold" />
 
     <EditText
-        android:id="@+id/editText_color"
+        android:id="@+id/editText_start"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="15dp"
