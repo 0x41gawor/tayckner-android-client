@@ -1,17 +1,89 @@
 package pl.gawor.android.tayckner.day_tracker.adapter
 
+import android.app.AlertDialog
 import android.content.Context
 import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
+import android.widget.PopupMenu
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import pl.gawor.android.tayckner.R
+import pl.gawor.android.tayckner.databinding.DayTrackerDialogUpdateActivityBinding
 import pl.gawor.android.tayckner.databinding.DayTrackerItemActivityBinding
 import pl.gawor.android.tayckner.day_tracker.model.Activity
+import pl.gawor.android.tayckner.day_tracker.model.Category
+import pl.gawor.android.tayckner.day_tracker.repository.ActivityRepository
+import java.util.*
 
 class ActivityAdapter(val context: Context) : RecyclerView.Adapter<ActivityAdapter.ActivityViewHolder>() {
-    inner class ActivityViewHolder(val binding: DayTrackerItemActivityBinding) : RecyclerView.ViewHolder(binding.root)
+    inner class ActivityViewHolder(val binding: DayTrackerItemActivityBinding) : RecyclerView.ViewHolder(binding.root) {
+        init {
+            binding.cardView.setOnClickListener {
+                popUpMenu(context, binding.root)
+            }
+        }
+
+        private val repository = Repository()
+
+        private fun popUpMenu(context: Context, view: View) {
+            Log.i(TAG, "ActivityAdapter.popUpMenu()")
+            val item = activities[adapterPosition]
+            val popupMenus = PopupMenu(context, view)
+            popupMenus.inflate(R.menu.common_menu_item)
+            popupMenus.setOnMenuItemClickListener {
+                when(it.itemId) {
+                    R.id.editText -> {
+                        val bindingUpdateActivity = DayTrackerDialogUpdateActivityBinding.inflate(LayoutInflater.from(context))
+
+                        val editTextName = bindingUpdateActivity.editTextName
+                        val editTextCategoryId = bindingUpdateActivity.editTextCategoryId
+                        val editTextStart = bindingUpdateActivity.editTextStart
+                        val editTextEnd = bindingUpdateActivity.editTextEnd
+
+                        editTextName.setText(item.name)
+                        editTextCategoryId.setText(item.category.id.toString())
+                        editTextStart.setText(item.startTime.substring(11,16))
+                        editTextEnd.setText(item.endTime.substring(11,16))
+
+                        val dialogUpdateActivity = AlertDialog.Builder(context)
+
+                        dialogUpdateActivity.setView(bindingUpdateActivity.root)
+
+                        dialogUpdateActivity.setPositiveButton("Update") {
+                            dialog,_->
+                            repository.sendActivitiesUpdateRequest(item.id, editTextName, editTextCategoryId, editTextStart, editTextEnd)
+                            Thread.sleep(500)
+                            repository.sendActivitiesListRequest()
+                            dialog.dismiss()
+                        }
+                        dialogUpdateActivity.setNegativeButton("Cancel") {
+                                dialog,_->
+                            dialog.dismiss()
+                        }
+                        dialogUpdateActivity.create()
+                        dialogUpdateActivity.show()
+                        true
+                    }
+                    R.id.delete -> {
+                        repository.sendActivitiesDeleteRequest(item.id)
+                        Thread.sleep(500)
+                        repository.sendActivitiesListRequest()
+                        true
+                    }
+                    else -> true
+                }
+            }
+            popupMenus.show()
+        }
+    }
 
     private  val TAG = "TAYCKNER"
 
@@ -46,6 +118,49 @@ class ActivityAdapter(val context: Context) : RecyclerView.Adapter<ActivityAdapt
             textViewEnd.text = activity.endTime.substring(11, 16)
             textViewCategory.text = activity.category.name
             linearLayout.background.current.setTint(Color.parseColor(activity.category.color))
+        }
+    }
+
+    inner class Repository {
+        private val activitiesRepository = ActivityRepository()
+
+        fun sendActivitiesUpdateRequest(id: Int, editTextName: EditText, editTextCategoryId: EditText, editTextStart: EditText, editTextEnd: EditText) {
+            Log.i(TAG, "ActivityAdapter.sendActivitiesUpdateRequest()")
+            val name = editTextName.text.toString()
+            val categoryId = editTextCategoryId.text.toString().toInt()
+
+            val c = Calendar.getInstance()
+            val year = c.get(Calendar.YEAR)
+            val month = c.get(Calendar.MONTH) + 1
+            val day = c.get(Calendar.DAY_OF_MONTH)
+
+            val date = "$year-${if (month < 10) "0$month" else month}-${if (day < 10) "0$day" else day}"
+
+            var start = editTextStart.text.toString()
+            var end = editTextEnd.text.toString()
+            start = "${date}T${start}:00"
+            end = "${date}T${end}:00"
+
+            val category = Category("", "", categoryId, "", null)
+            val activity = Activity(0, 0, end, id, name, start, category)
+            CoroutineScope(Dispatchers.IO).launch {
+                activitiesRepository.update(activity, id)
+            }
+        }
+
+        fun sendActivitiesListRequest() {
+            Log.i(TAG, "ActivityAdapter.sendActivitiesListRequest()")
+            CoroutineScope(Dispatchers.IO).launch {
+                val list :List<Activity> = activitiesRepository.list()
+                activities = list
+            }
+        }
+
+        fun sendActivitiesDeleteRequest(habitEventId: Int) {
+            Log.i(TAG, "ActivityAdapter.sendActivitiesDeleteRequest()")
+            CoroutineScope(Dispatchers.IO).launch {
+                activitiesRepository.delete(habitEventId)
+            }
         }
     }
 
