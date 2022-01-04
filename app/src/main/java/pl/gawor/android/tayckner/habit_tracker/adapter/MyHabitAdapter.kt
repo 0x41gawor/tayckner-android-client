@@ -36,7 +36,7 @@ class MyHabitAdapter(val context: Context) : RecyclerView.Adapter<MyHabitAdapter
             Log.i(TAG, "HabitEventAdapter.popUpMenu()")
             val item = habits[adapterPosition]
             val popupMenus = PopupMenu(context, view)
-            popupMenus.inflate(R.menu.habit_tracker_menu_item_habit)
+            popupMenus.inflate(R.menu.common_menu_item)
             popupMenus.setOnMenuItemClickListener {
                 when(it.itemId) {
                     R.id.editText -> {
