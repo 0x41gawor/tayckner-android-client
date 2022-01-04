@@ -58,5 +58,9 @@
         android:id="@+id/dayPlannerFragment"
         android:name="pl.gawor.android.tayckner.day_planner.fragment.DayPlannerFragment"
         android:label="fragment_day_planner"
-        tools:layout="@layout/day_planner_fragment_main" />
+        tools:layout="@layout/day_planner_fragment_main" >
+        <action
+            android:id="@+id/action_dayPlannerFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
 </navigation>

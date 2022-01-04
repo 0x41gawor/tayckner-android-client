@@ -8,9 +8,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.ImageButton
+import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import pl.gawor.android.tayckner.R
+import pl.gawor.android.tayckner.common.util.SharedPrefManager
 import pl.gawor.android.tayckner.common.util.Util
 import pl.gawor.android.tayckner.databinding.DayPlannerDialogAddScheduleBinding
 import pl.gawor.android.tayckner.databinding.DayPlannerFragmentMainBinding
@@ -40,6 +45,9 @@ class DayPlannerFragment : Fragment() {
         setupScheduleRecyclerView()
         setupDate()
 
+        binding.imageButtonOptions.setOnClickListener {
+            optionsMenu(binding.imageButtonOptions)
+        }
         binding.imageButtonDayPlanner.setOnClickListener {
             Toast.makeText(context, "Day-planner button not implemented yet", Toast.LENGTH_SHORT).show()
         }
@@ -56,6 +64,20 @@ class DayPlannerFragment : Fragment() {
         return binding.root
     }
 
+    private fun optionsMenu(view: View) {
+        val popupMenus = PopupMenu(context, view)
+        popupMenus.inflate(R.menu.habit_tracker_menu_top_bar_options)
+        popupMenus.setOnMenuItemClickListener{
+            when(it.itemId) {
+                R.id.logout -> {
+                    SharedPrefManager.logout(this)
+                    findNavController().navigate(R.id.action_dayPlannerFragment_to_loginFragment)
+                    true}
+                else -> {true}
+            }
+        }
+        popupMenus.show()
+    }
 
 
     private fun setupScheduleRecyclerView() = binding.recyclerView.apply {
