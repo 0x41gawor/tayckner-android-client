@@ -74,7 +74,7 @@ class LoginFragment : Fragment() {
                         Toast.makeText(context, "Logged-in successfully", Toast.LENGTH_LONG).show()
                         saveJWT(res.content)
                         SharedPrefManager.saveCredentials(credentials, checkBox.isChecked, this@LoginFragment)
-                        findNavController().navigate(R.id.action_loginFragment_to_habitTrackerFragment)
+                        findNavController().navigate(R.id.action_loginFragment_to_dayPlannerFragment)
                     }
                     else -> Toast.makeText(context, res?.message, Toast.LENGTH_LONG).show()
                 }
@@ -101,7 +101,7 @@ class LoginFragment : Fragment() {
                     "L0" -> {
                         Toast.makeText(context, "Logged-in successfully", Toast.LENGTH_LONG).show()
                         saveJWT(res.content)
-                        findNavController().navigate(R.id.action_loginFragment_to_habitTrackerFragment)
+                        findNavController().navigate(R.id.action_loginFragment_to_dayPlannerFragment)
                     }
                     else -> Toast.makeText(context, res?.message, Toast.LENGTH_LONG).show()
                 }
