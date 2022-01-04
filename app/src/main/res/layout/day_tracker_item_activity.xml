@@ -13,6 +13,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
+        android:id="@+id/linearLayout"
+        android:background="@color/primary"
         android:orientation="horizontal">
 
         <LinearLayout
@@ -30,7 +32,7 @@
                 android:gravity="center"
                 android:text="Work"
                 android:textStyle="bold"
-                android:textColor="@color/primary"
+                android:textColor="@color/OnPrimary"
                 android:textSize="15sp" />
         </LinearLayout>
 
@@ -49,7 +51,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="Envelo"
-                android:textColor="@color/primary"
+                android:textColor="@color/OnPrimary"
                 android:textSize="25sp" />
         </LinearLayout>
 
@@ -66,7 +68,7 @@
                 android:layout_height="30dp"
                 android:gravity="center"
                 android:text="9:00"
-                android:textColor="@color/primary"
+                android:textColor="@color/OnPrimary"
                 android:textSize="16sp" />
 
             <TextView
@@ -75,7 +77,7 @@
                 android:layout_height="30dp"
                 android:gravity="center"
                 android:text="12:00"
-                android:textColor="@color/primary"
+                android:textColor="@color/OnPrimary"
                 android:textSize="16sp" />
         </LinearLayout>
 
@@ -92,8 +94,7 @@
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="3h"
-                android:textColor="@color/primary"
+                android:textColor="@color/OnPrimary"
                 android:textSize="22sp" />
         </LinearLayout>
 
