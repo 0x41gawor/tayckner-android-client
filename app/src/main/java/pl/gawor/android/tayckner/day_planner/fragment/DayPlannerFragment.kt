@@ -134,6 +134,13 @@ class DayPlannerFragment : Fragment() {
             var start = editTextStart.text.toString()
             var end = editTextEnd.text.toString()
 
+            if (start == "-") {
+                start = "00:00"
+            }
+            if (end == "-") {
+                end = "00:00"
+            }
+
             start = "${date}T${start}:00"
             end = "${date}T${end}:00"
 

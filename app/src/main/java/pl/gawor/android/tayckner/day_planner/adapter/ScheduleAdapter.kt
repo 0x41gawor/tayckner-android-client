@@ -51,7 +51,9 @@ class ScheduleAdapter(val context: Context) : RecyclerView.Adapter<ScheduleAdapt
                         val editTextDuration = bindingAddSchedule.editTextDuration
                         editTextName.setText(item.name)
                         editTextStart.setText(item.startTime.substring(11,16))
+                        if (item.startTime.substring(11,16) == "00:00") editTextStart.setText("-")
                         editTextEnd.setText(item.endTime.substring(11,16))
+                        if (item.endTime.substring(11,16) == "00:00") editTextEnd.setText("-")
                         editTextDuration.setText(item.duration.toString())
                         val dialogAddSchedule = AlertDialog.Builder(context)
 
@@ -117,6 +119,8 @@ class ScheduleAdapter(val context: Context) : RecyclerView.Adapter<ScheduleAdapt
             textViewName.text = schedule.name
             textViewStart.text = schedule.startTime.substring(11, 16)
             textViewEnd.text = schedule.endTime.substring(11, 16)
+            if (textViewStart.text.toString() == "00:00") textViewStart.text = ""
+            if (textViewEnd.text.toString() == "00:00") textViewEnd.text = ""
             textViewDuration.text = if (schedule.duration == 0)  "" else schedule.duration.toString()+"h"
         }
     }
@@ -142,6 +146,13 @@ class ScheduleAdapter(val context: Context) : RecyclerView.Adapter<ScheduleAdapt
 
             var start = editTextStart.text.toString()
             var end = editTextEnd.text.toString()
+
+            if (start == "-") {
+                start = "00:00"
+            }
+            if (end == "-") {
+                end = "00:00"
+            }
 
             start = "${date}T${start}:00"
             end = "${date}T${end}:00"
