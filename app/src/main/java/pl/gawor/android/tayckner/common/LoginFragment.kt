@@ -101,7 +101,7 @@ class LoginFragment : Fragment() {
                     "L0" -> {
                         Toast.makeText(context, "Logged-in successfully", Toast.LENGTH_LONG).show()
                         saveJWT(res.content)
-                        findNavController().navigate(R.id.action_loginFragment_to_dayPlannerFragment)
+                        findNavController().navigate(R.id.action_loginFragment_to_dayTrackerFragment)
                     }
                     else -> Toast.makeText(context, res?.message, Toast.LENGTH_LONG).show()
                 }
