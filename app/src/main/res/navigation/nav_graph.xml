@@ -21,6 +21,9 @@
         <action
             android:id="@+id/action_loginFragment_to_dayPlannerFragment"
             app:destination="@id/dayPlannerFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_dayTrackerFragment"
+            app:destination="@id/dayTrackerFragment" />
     </fragment>
     <fragment
         android:id="@+id/registerFragment"
@@ -63,4 +66,14 @@
             android:id="@+id/action_dayPlannerFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/dayTrackerFragment"
+        android:name="pl.gawor.android.tayckner.day_tracker.fragment.DayTrackerFragment"
+        android:label="fragment_day_tracker"
+        tools:layout="@layout/day_tracker_fragment_main" />
+    <fragment
+        android:id="@+id/dayTrackerCategoriesFragment"
+        android:name="pl.gawor.android.tayckner.day_tracker.fragment.DayTrackerCategoriesFragment"
+        android:label="fragment_day_tracker_categories"
+        tools:layout="@layout/day_tracker_fragment_categories" />
 </navigation>
