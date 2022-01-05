@@ -8,9 +8,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import pl.gawor.android.tayckner.R
+import pl.gawor.android.tayckner.common.util.SharedPrefManager
 import pl.gawor.android.tayckner.databinding.DayTrackerDialogAddCategoryBinding
 import pl.gawor.android.tayckner.databinding.DayTrackerFragmentCategoriesBinding
 import pl.gawor.android.tayckner.day_tracker.adapter.CategoryAdapter
@@ -38,6 +42,19 @@ class DayTrackerCategoriesFragment : Fragment() {
         binding = DayTrackerFragmentCategoriesBinding.inflate(layoutInflater)
         setupCategoriesRecyclerView()
 
+        binding.imageButtonOptions.setOnClickListener {
+            optionsMenu(binding.imageButtonOptions)
+        }
+        binding.imageButtonDayPlanner.setOnClickListener {
+            findNavController().navigate(R.id.action_dayTrackerCategoriesFragment_to_dayPlannerFragment)
+        }
+        binding.imageButtonDayTracker.setOnClickListener {
+            findNavController().navigate(R.id.action_dayTrackerCategoriesFragment_to_dayTrackerFragment)
+        }
+        binding.imageButtonHabitTracker.setOnClickListener {
+            findNavController().navigate(R.id.action_dayTrackerCategoriesFragment_to_habitTrackerFragment)
+        }
+
         binding.imageButtonAdd.setOnClickListener {
             addCategory()
         }
@@ -48,6 +65,21 @@ class DayTrackerCategoriesFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         repository.refreshCategoriesList()
+    }
+
+    private fun optionsMenu(view: View) {
+        val optionsMenu = PopupMenu(context, view)
+        optionsMenu.inflate(R.menu.day_tracker_menu_top_bar)
+        optionsMenu.setOnMenuItemClickListener{
+            when(it.itemId) {
+                R.id.logout -> {
+                    SharedPrefManager.logout(this)
+                    findNavController().navigate(R.id.action_dayTrackerCategoriesFragment_to_loginFragment)
+                    true}
+                else -> {true}
+            }
+        }
+        optionsMenu.show()
     }
 
     private fun setupCategoriesRecyclerView()= binding.recyclerView.apply {
