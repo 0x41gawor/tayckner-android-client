@@ -1,5 +1,6 @@
 package pl.gawor.android.tayckner.day_tracker.fragment
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -7,16 +8,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import pl.gawor.android.tayckner.R
-import pl.gawor.android.tayckner.databinding.DayPlannerFragmentMainBinding
+import pl.gawor.android.tayckner.databinding.DayTrackerDialogAddCategoryBinding
 import pl.gawor.android.tayckner.databinding.DayTrackerFragmentCategoriesBinding
-import pl.gawor.android.tayckner.day_tracker.adapter.ActivityAdapter
 import pl.gawor.android.tayckner.day_tracker.adapter.CategoryAdapter
-import pl.gawor.android.tayckner.day_tracker.model.Activity
 import pl.gawor.android.tayckner.day_tracker.model.Category
-import pl.gawor.android.tayckner.day_tracker.repository.ActivityRepository
 import pl.gawor.android.tayckner.day_tracker.repository.CategoryRepository
 import java.util.*
 
@@ -39,6 +37,11 @@ class DayTrackerCategoriesFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DayTrackerFragmentCategoriesBinding.inflate(layoutInflater)
         setupCategoriesRecyclerView()
+
+        binding.imageButtonAdd.setOnClickListener {
+            addCategory()
+        }
+
         return binding.root
     }
 
@@ -46,6 +49,36 @@ class DayTrackerCategoriesFragment : Fragment() {
         categoriesAdapter = CategoryAdapter(context)
         adapter = categoriesAdapter
         layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+    }
+
+    private fun addCategory() {
+        Log.i(TAG, "DayTrackerCategoriesFragment.addCategory()")
+
+        val bindingAddCategory = DayTrackerDialogAddCategoryBinding.inflate(layoutInflater)
+
+        val editTextName = bindingAddCategory.editTextName
+        val editTextDescription = bindingAddCategory.editTextDescription
+        val editTextColor = bindingAddCategory.editTextColor
+
+        val dialogAddCategory = AlertDialog.Builder(context)
+
+        dialogAddCategory.setView(bindingAddCategory.root)
+
+        dialogAddCategory.setPositiveButton("Add") {
+                dialog,_->
+            repository.sendCategoryCreateRequest(editTextName, editTextDescription, editTextColor)
+            Thread.sleep(500)
+            repository.refreshCategoriesList()
+            dialog.dismiss()
+        }
+        dialogAddCategory.setNegativeButton("Cancel") {
+                dialog,_->
+            Toast.makeText(context, "Adding canceled", Toast.LENGTH_SHORT).show()
+            dialog.dismiss()
+        }
+        dialogAddCategory.create()
+        dialogAddCategory.show()
+        Log.e(TAG, "DayTrackerCategoriesFragment.addCategory() = void")
     }
 
     inner class Repository {
@@ -61,8 +94,17 @@ class DayTrackerCategoriesFragment : Fragment() {
             Log.i(TAG, "DayTrackerFragment.Repository.refreshActivitiesList() = void")
         }
 
-        fun sendCategoryCreateRequest() {
+        fun sendCategoryCreateRequest(editTextName: EditText, editTextDescription: EditText, editTextColor: EditText) {
+            Log.i(TAG, "CategoryAdapter.sendCategoriesUpdateRequest()")
+            val name = editTextName.text.toString()
+            val description = editTextDescription.text.toString()
+            val color = editTextColor.text.toString()
 
+            val category = Category(color, description, 0, name, null)
+            lifecycleScope.launchWhenCreated {
+                categoryRepository.create(category)
+                return@launchWhenCreated
+            }
         }
     }
 
