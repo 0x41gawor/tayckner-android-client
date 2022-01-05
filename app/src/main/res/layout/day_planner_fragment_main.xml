@@ -20,7 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Day-Planner"
+            android:text="Day-Tracker"
             android:textAlignment="center"
             android:textColor="@color/primary"
             android:textSize="50sp" />

@@ -7,5 +7,5 @@ data class Category(
     val description: String,
     val id: Int,
     val name: String,
-    val user: User
+    val user: User?
 )
