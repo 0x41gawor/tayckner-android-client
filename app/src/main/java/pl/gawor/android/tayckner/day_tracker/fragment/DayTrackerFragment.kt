@@ -16,8 +16,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import pl.gawor.android.tayckner.R
 import pl.gawor.android.tayckner.common.util.SharedPrefManager
 import pl.gawor.android.tayckner.common.util.Util
-import pl.gawor.android.tayckner.databinding.DayPlannerFragmentMainBinding
 import pl.gawor.android.tayckner.databinding.DayTrackerDialogAddActivityBinding
+import pl.gawor.android.tayckner.databinding.DayTrackerFragmentMainBinding
 import pl.gawor.android.tayckner.day_tracker.adapter.ActivityAdapter
 import pl.gawor.android.tayckner.day_tracker.model.Activity
 import pl.gawor.android.tayckner.day_tracker.model.Category
@@ -29,7 +29,7 @@ class DayTrackerFragment : Fragment() {
 
     private  val TAG = "TAYCKNER"
 
-    private lateinit var binding: DayPlannerFragmentMainBinding
+    private lateinit var binding: DayTrackerFragmentMainBinding
 
     private lateinit var activityAdapter: ActivityAdapter
 
@@ -41,12 +41,24 @@ class DayTrackerFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = DayPlannerFragmentMainBinding.inflate(layoutInflater)
+        binding = DayTrackerFragmentMainBinding.inflate(layoutInflater)
         setupActivitiesRecyclerView()
         setupDate()
 
         binding.imageButtonOptions.setOnClickListener {
             optionsMenu(binding.imageButtonOptions)
+        }
+
+        binding.imageButtonDayPlanner.setOnClickListener {
+            findNavController().navigate(R.id.action_dayTrackerFragment_to_dayPlannerFragment)
+        }
+
+        binding.imageButtonDayTracker.setOnClickListener {
+
+        }
+
+        binding.imageButtonHabitTracker.setOnClickListener {
+            findNavController().navigate(R.id.action_dayTrackerFragment_to_habitTrackerFragment)
         }
 
         binding.imageButtonAdd.setOnClickListener {

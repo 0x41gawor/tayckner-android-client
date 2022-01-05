@@ -47,6 +47,12 @@
         <action
             android:id="@+id/action_habitTrackerFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_habitTrackerFragment_to_dayTrackerFragment"
+            app:destination="@id/dayTrackerFragment" />
+        <action
+            android:id="@+id/action_habitTrackerFragment_to_dayPlannerFragment"
+            app:destination="@id/dayPlannerFragment" />
     </fragment>
     <fragment
         android:id="@+id/myHabitsFragment"
@@ -65,6 +71,12 @@
         <action
             android:id="@+id/action_dayPlannerFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_dayPlannerFragment_to_dayTrackerFragment"
+            app:destination="@id/dayTrackerFragment" />
+        <action
+            android:id="@+id/action_dayPlannerFragment_to_habitTrackerFragment"
+            app:destination="@id/habitTrackerFragment" />
     </fragment>
     <fragment
         android:id="@+id/dayTrackerFragment"
@@ -77,6 +89,12 @@
         <action
             android:id="@+id/action_dayTrackerFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_dayTrackerFragment_to_habitTrackerFragment"
+            app:destination="@id/habitTrackerFragment" />
+        <action
+            android:id="@+id/action_dayTrackerFragment_to_dayPlannerFragment"
+            app:destination="@id/dayPlannerFragment" />
     </fragment>
     <fragment
         android:id="@+id/dayTrackerCategoriesFragment"
