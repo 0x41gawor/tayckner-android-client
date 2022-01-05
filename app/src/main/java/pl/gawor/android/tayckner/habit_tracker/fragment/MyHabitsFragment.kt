@@ -8,11 +8,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import pl.gawor.android.tayckner.R
+import pl.gawor.android.tayckner.common.util.SharedPrefManager
 import pl.gawor.android.tayckner.habit_tracker.adapter.MyHabitAdapter
 import pl.gawor.android.tayckner.databinding.HabitTrackerFragmentMyHabitsBinding
 import pl.gawor.android.tayckner.databinding.HabitTrackerItemAddHabitBinding
@@ -39,16 +41,16 @@ class MyHabitsFragment : Fragment() {
         setupHabitRecyclerView()
 
         binding.imageButtonOptions.setOnClickListener {
-            Toast.makeText(context, "Options button not implemented yet", Toast.LENGTH_SHORT).show()
+            optionsMenu(binding.imageButtonOptions)
         }
         binding.imageButtonDayPlanner.setOnClickListener {
-            Toast.makeText(context, "Day-planner button not implemented yet", Toast.LENGTH_SHORT).show()
+            findNavController().navigate(R.id.action_myHabitsFragment_to_dayPlannerFragment)
         }
         binding.imageButtonDayTracker.setOnClickListener {
-            Toast.makeText(context, "Day-tracker button not implemented yet", Toast.LENGTH_SHORT).show()
+            findNavController().navigate(R.id.action_myHabitsFragment_to_dayTrackerFragment)
         }
         binding.imageButtonHabitTracker.setOnClickListener {
-            Toast.makeText(context, "Habit-tracker button not implemented yet", Toast.LENGTH_SHORT).show()
+            findNavController().navigate(R.id.action_myHabitsFragment_to_habitTrackerFragment)
         }
         binding.imageButtonAdd.setOnClickListener {
             addHabit()
@@ -57,6 +59,21 @@ class MyHabitsFragment : Fragment() {
             findNavController().navigate(R.id.action_myHabitsFragment_to_habitTrackerFragment)
         }
         return binding.root
+    }
+
+    private fun optionsMenu(view: View) {
+        val optionsMenu = PopupMenu(context, view)
+        optionsMenu.inflate(R.menu.day_tracker_menu_top_bar)
+        optionsMenu.setOnMenuItemClickListener{
+            when(it.itemId) {
+                R.id.logout -> {
+                    SharedPrefManager.logout(this)
+                    findNavController().navigate(R.id.action_myHabitsFragment_to_loginFragment)
+                    true}
+                else -> {true}
+            }
+        }
+        optionsMenu.show()
     }
 
     private fun setupHabitRecyclerView()  = binding.recyclerViewMyHabits.apply {
