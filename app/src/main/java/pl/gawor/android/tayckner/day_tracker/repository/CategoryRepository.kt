@@ -19,10 +19,10 @@ class CategoryRepository {
         val response: Response<ResponseModel<List<Category>>> = try {
             categoryApiClient.list(JWT_TOKEN)
         } catch (e: IOException) {
-            Log.e(TAG, "ActivityRepository.list:\t\tIOException: ${e.message}")
+            Log.e(TAG, "CategoryRepository.list:\t\tIOException: ${e.message}")
             return emptyList()
         } catch (e: HttpException) {
-            Log.e(TAG, "ActivityRepository.list:\t\tHttpException: ${e.message}")
+            Log.e(TAG, "CategoryRepository.list:\t\tHttpException: ${e.message}")
             return emptyList()
         }
         if (response.isSuccessful && response.body() != null) {
@@ -42,73 +42,73 @@ class CategoryRepository {
     }
 
     suspend fun create(schedule: Category) : Category? {
-        Log.i(TAG, "ActivityRepository.create()")
+        Log.i(TAG, "CategoryRepository.create()")
         var result: Category? = null
         val categoryApiClient: CategoryApi = RetrofitInstance.retrofit.create(CategoryApi::class.java)
         val response: Response<ResponseModel<Category>> = try {
             categoryApiClient.create(JWT_TOKEN, schedule)
         }catch (e: IOException) {
-            Log.e(TAG, "ActivityRepository.create:\t\tIOException: ${e.message}")
+            Log.e(TAG, "CategoryRepository.create:\t\tIOException: ${e.message}")
             return null
         } catch (e: HttpException) {
-            Log.e(TAG, "ActivityRepository.create:\t\tHttpException: ${e.message}")
+            Log.e(TAG, "CategoryRepository.create:\t\tHttpException: ${e.message}")
             return null
         }
         if (response.isSuccessful && response.body() != null) {
             val res: ResponseModel<Category> = response.body()!!
             result = res.content
-            Log.e(TAG, "ActivityRepository.create: $res")
+            Log.e(TAG, "CategoryRepository.create: $res")
         } else {
-            Log.e(TAG, "ActivityRepository.create: HTTP status != 200")
+            Log.e(TAG, "CategoryRepository.create: HTTP status != 200")
         }
-        Log.i(TAG, "ActivityRepository.create() = $result")
+        Log.i(TAG, "CategoryRepository.create() = $result")
 
         return result
     }
 
     suspend fun update(schedule: Category, id: Int) : Category? {
-        Log.i(TAG, "ActivityRepository.update()")
+        Log.i(TAG, "CategoryRepository.update()")
         var result: Category? = null
         val categoryApiClient: CategoryApi = RetrofitInstance.retrofit.create(CategoryApi::class.java)
         val response: Response<ResponseModel<Category>> = try {
             categoryApiClient.update(JWT_TOKEN, schedule, id)
         }catch (e: IOException) {
-            Log.e(TAG, "ActivityRepository.update:\t\tIOException: ${e.message}")
+            Log.e(TAG, "CategoryRepository.update:\t\tIOException: ${e.message}")
             return null
         } catch (e: HttpException) {
-            Log.e(TAG, "ActivityRepository.update:\t\tHttpException: ${e.message}")
+            Log.e(TAG, "CategoryRepository.update:\t\tHttpException: ${e.message}")
             return null
         }
         if (response.isSuccessful && response.body() != null) {
             val res: ResponseModel<Category> = response.body()!!
             result = res.content
-            Log.e(TAG, "ActivityRepository.update: $res")
+            Log.e(TAG, "CategoryRepository.update: $res")
         } else {
-            Log.e(TAG, "ActivityRepository.update: HTTP status != 200")
+            Log.e(TAG, "CategoryRepository.update: HTTP status != 200")
         }
-        Log.i(TAG, "ActivityRepository.update() = $result")
+        Log.i(TAG, "CategoryRepository.update() = $result")
 
         return result
     }
 
     suspend fun delete(id: Int) {
-        Log.i(TAG, "ActivityRepository.delete()")
+        Log.i(TAG, "CategoryRepository.delete()")
         val categoryApiClient: CategoryApi = RetrofitInstance.retrofit.create(CategoryApi::class.java)
         val response: Response<ResponseModel<Any>> = try {
             categoryApiClient.delete(JWT_TOKEN, id)
         }catch (e: IOException) {
-            Log.e(TAG, "ActivityRepository.delete:\t\tIOException: ${e.message}")
+            Log.e(TAG, "CategoryRepository.delete:\t\tIOException: ${e.message}")
             return
         } catch (e: HttpException) {
-            Log.e(TAG, "ActivityRepository.delete:\t\tHttpException: ${e.message}")
+            Log.e(TAG, "CategoryRepository.delete:\t\tHttpException: ${e.message}")
             return
         }
         if (response.isSuccessful && response.body() != null) {
             val res: ResponseModel<Any> = response.body()!!
-            Log.e(TAG, "ActivityRepository.delete: $res")
+            Log.e(TAG, "CategoryRepository.delete: $res")
         } else {
-            Log.e(TAG, "ActivityRepository.delete: HTTP status != 200")
+            Log.e(TAG, "CategoryRepository.delete: HTTP status != 200")
         }
-        Log.i(TAG, "ActivityRepository.delete() = void")
+        Log.i(TAG, "CategoryRepository.delete() = void")
     }
 }
