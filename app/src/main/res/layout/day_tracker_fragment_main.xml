@@ -51,20 +51,20 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="631dp"
+        android:layout_height="579dp"
         android:orientation="vertical">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
-            android:layout_height="619dp" />
+            android:layout_height="match_parent" />
 
         <ImageButton
             android:id="@+id/imageButton_add"
             android:layout_width="72dp"
             android:layout_height="60dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="550dp"
+            android:layout_marginTop="510dp"
             android:background="@drawable/button_login_enabled"
             android:src="@drawable/ic_add_icon"
             tools:ignore="SpeakableTextPresentCheck" />
