@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.PopupMenu
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
@@ -19,7 +20,6 @@ import pl.gawor.android.tayckner.databinding.DayTrackerDialogUpdateCategoryBindi
 import pl.gawor.android.tayckner.databinding.DayTrackerItemCategoryBinding
 import pl.gawor.android.tayckner.day_tracker.model.Category
 import pl.gawor.android.tayckner.day_tracker.repository.CategoryRepository
-import java.util.*
 
 class CategoryAdapter(val context: Context) : RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>() {
     inner class CategoryViewHolder(val binding: DayTrackerItemCategoryBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -42,13 +42,21 @@ class CategoryAdapter(val context: Context) : RecyclerView.Adapter<CategoryAdapt
                         val bindingUpdateCategory = DayTrackerDialogUpdateCategoryBinding.inflate(
                             LayoutInflater.from(context))
 
+                        val editTextName = bindingUpdateCategory.editTextName
+                        val editTextDescription = bindingUpdateCategory.editTextDescription
+                        val editTextColor = bindingUpdateCategory.editTextColor
+
+                        editTextName.setText(item.name)
+                        editTextDescription.setText(item.description)
+                        editTextColor.setText(item.color)
+
                         val dialogUpdateCategory = AlertDialog.Builder(context)
 
                         dialogUpdateCategory.setView(bindingUpdateCategory.root)
 
                         dialogUpdateCategory.setPositiveButton("Update") {
                                 dialog,_->
-                            repository.sendCategoriesUpdateRequest()
+                            repository.sendCategoriesUpdateRequest(item.id, editTextName, editTextDescription, editTextColor)
                             Thread.sleep(500)
                             repository.sendCategoriesListRequest()
                             dialog.dismiss()
@@ -112,27 +120,16 @@ class CategoryAdapter(val context: Context) : RecyclerView.Adapter<CategoryAdapt
     inner class Repository {
         private val categoriesRepository = CategoryRepository()
 
-        fun sendCategoriesUpdateRequest() {
+        fun sendCategoriesUpdateRequest(id: Int, editTextName: EditText, editTextDescription: EditText, editTextColor: EditText) {
             Log.i(TAG, "CategoryAdapter.sendCategoriesUpdateRequest()")
-//            val name = editTextName.text.toString()
-//            val categoryId = editTextCategoryId.text.toString().toInt()
-//
-//            val c = Calendar.getInstance()
-//            val year = c.get(Calendar.YEAR)
-//            val month = c.get(Calendar.MONTH) + 1
-//            val day = c.get(Calendar.DAY_OF_MONTH)
-//
-//            val date = "$year-${if (month < 10) "0$month" else month}-${if (day < 10) "0$day" else day}"
-//
-//            var start = editTextStart.text.toString()
-//            var end = editTextEnd.text.toString()
-//            start = "${date}T${start}:00"
-//            end = "${date}T${end}:00"
-//
-//            val category = Category("", "", categoryId, "", null)
-//            CoroutineScope(Dispatchers.IO).launch {
-//                categoriesRepository.update(category, id)
-//            }
+            val name = editTextName.text.toString()
+            val description = editTextDescription.text.toString()
+            val color = editTextColor.text.toString()
+
+            val category = Category(color, description, id, name, null)
+            CoroutineScope(Dispatchers.IO).launch {
+                categoriesRepository.update(category, id)
+            }
         }
 
         fun sendCategoriesListRequest() {
