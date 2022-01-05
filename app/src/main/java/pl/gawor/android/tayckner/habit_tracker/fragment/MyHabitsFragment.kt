@@ -63,7 +63,7 @@ class MyHabitsFragment : Fragment() {
 
     private fun optionsMenu(view: View) {
         val optionsMenu = PopupMenu(context, view)
-        optionsMenu.inflate(R.menu.day_tracker_menu_top_bar)
+        optionsMenu.inflate(R.menu.habit_tracker_menu_top_bar_options)
         optionsMenu.setOnMenuItemClickListener{
             when(it.itemId) {
                 R.id.logout -> {
