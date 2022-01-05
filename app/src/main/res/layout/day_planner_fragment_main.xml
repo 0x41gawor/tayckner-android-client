@@ -20,7 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Day-Tracker"
+            android:text="Day-Planner"
             android:textAlignment="center"
             android:textColor="@color/primary"
             android:textSize="50sp" />
@@ -51,20 +51,20 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="631dp"
+        android:layout_height="578dp"
         android:orientation="vertical">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="583dp" />
 
         <ImageButton
             android:id="@+id/imageButton_add"
             android:layout_width="72dp"
             android:layout_height="60dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="550dp"
+            android:layout_marginTop="510dp"
             android:background="@drawable/button_login_enabled"
             android:src="@drawable/ic_add_icon"
             tools:ignore="SpeakableTextPresentCheck" />

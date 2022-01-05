@@ -49,13 +49,13 @@ class DayPlannerFragment : Fragment() {
             optionsMenu(binding.imageButtonOptions)
         }
         binding.imageButtonDayPlanner.setOnClickListener {
-            Toast.makeText(context, "Day-planner button not implemented yet", Toast.LENGTH_SHORT).show()
+
         }
         binding.imageButtonDayTracker.setOnClickListener {
-            Toast.makeText(context, "Day-tracker button not implemented yet", Toast.LENGTH_SHORT).show()
+            findNavController().navigate(R.id.action_dayPlannerFragment_to_dayTrackerFragment)
         }
         binding.imageButtonHabitTracker.setOnClickListener {
-            Toast.makeText(context, "Habit-tracker button not implemented yet", Toast.LENGTH_SHORT).show()
+          findNavController().navigate(R.id.action_dayPlannerFragment_to_habitTrackerFragment)
         }
         binding.imageButtonAdd.setOnClickListener {
             addSchedule()

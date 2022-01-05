@@ -40,13 +40,16 @@
     <LinearLayout
         android:id="@+id/linearLayout_my_habits_panel"
         android:layout_width="match_parent"
-        android:layout_height="642dp"
+        android:layout_height="592dp"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="20dp"
         android:layout_marginRight="15dp"
         android:background="@drawable/habit_tracker_background_habit_tracker_linear_layout_my_habits"
         android:orientation="vertical"
-        android:padding="10dp">
+        android:paddingLeft="10dp"
+        android:paddingTop="10dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="0dp">
 
         <TextView
             android:id="@+id/textView_my_habits"
@@ -58,7 +61,7 @@
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="598dp"
+            android:layout_height="555dp"
             android:orientation="vertical">
 
             <androidx.recyclerview.widget.RecyclerView
@@ -71,7 +74,7 @@
                 android:layout_width="72dp"
                 android:layout_height="60dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="532dp"
+                android:layout_marginTop="495dp"
                 android:background="@drawable/button_login_enabled"
                 android:src="@drawable/ic_add_icon" />
         </FrameLayout>

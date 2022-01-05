@@ -47,6 +47,12 @@
         <action
             android:id="@+id/action_habitTrackerFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_habitTrackerFragment_to_dayTrackerFragment"
+            app:destination="@id/dayTrackerFragment" />
+        <action
+            android:id="@+id/action_habitTrackerFragment_to_dayPlannerFragment"
+            app:destination="@id/dayPlannerFragment" />
     </fragment>
     <fragment
         android:id="@+id/myHabitsFragment"
@@ -56,6 +62,15 @@
         <action
             android:id="@+id/action_myHabitsFragment_to_habitTrackerFragment"
             app:destination="@id/habitTrackerFragment" />
+        <action
+            android:id="@+id/action_myHabitsFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_myHabitsFragment_to_dayTrackerFragment"
+            app:destination="@id/dayTrackerFragment" />
+        <action
+            android:id="@+id/action_myHabitsFragment_to_dayPlannerFragment"
+            app:destination="@id/dayPlannerFragment" />
     </fragment>
     <fragment
         android:id="@+id/dayPlannerFragment"
@@ -65,6 +80,12 @@
         <action
             android:id="@+id/action_dayPlannerFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_dayPlannerFragment_to_dayTrackerFragment"
+            app:destination="@id/dayTrackerFragment" />
+        <action
+            android:id="@+id/action_dayPlannerFragment_to_habitTrackerFragment"
+            app:destination="@id/habitTrackerFragment" />
     </fragment>
     <fragment
         android:id="@+id/dayTrackerFragment"
@@ -77,10 +98,29 @@
         <action
             android:id="@+id/action_dayTrackerFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_dayTrackerFragment_to_habitTrackerFragment"
+            app:destination="@id/habitTrackerFragment" />
+        <action
+            android:id="@+id/action_dayTrackerFragment_to_dayPlannerFragment"
+            app:destination="@id/dayPlannerFragment" />
     </fragment>
     <fragment
         android:id="@+id/dayTrackerCategoriesFragment"
         android:name="pl.gawor.android.tayckner.day_tracker.fragment.DayTrackerCategoriesFragment"
         android:label="fragment_day_tracker_categories"
-        tools:layout="@layout/day_tracker_fragment_categories" />
+        tools:layout="@layout/day_tracker_fragment_categories" >
+        <action
+            android:id="@+id/action_dayTrackerCategoriesFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_dayTrackerCategoriesFragment_to_dayTrackerFragment"
+            app:destination="@id/dayTrackerFragment" />
+        <action
+            android:id="@+id/action_dayTrackerCategoriesFragment_to_habitTrackerFragment"
+            app:destination="@id/habitTrackerFragment" />
+        <action
+            android:id="@+id/action_dayTrackerCategoriesFragment_to_dayPlannerFragment"
+            app:destination="@id/dayPlannerFragment" />
+    </fragment>
 </navigation>

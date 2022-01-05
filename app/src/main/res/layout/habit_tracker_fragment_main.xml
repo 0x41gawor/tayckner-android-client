@@ -64,21 +64,21 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="511dp"
+        android:layout_height="464dp"
         android:orientation="vertical">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView_habit_events"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="455dp" />
 
         <ImageButton
             android:id="@+id/imageButton_add"
-            android:background="@drawable/button_login_enabled"
             android:layout_width="72dp"
             android:layout_height="60dp"
-            android:layout_marginTop="440dp"
             android:layout_gravity="center_horizontal"
+            android:layout_marginTop="397dp"
+            android:background="@drawable/button_login_enabled"
             android:src="@drawable/ic_add_icon" />
     </FrameLayout>
 
