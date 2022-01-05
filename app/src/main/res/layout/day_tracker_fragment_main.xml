@@ -51,7 +51,7 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="579dp"
+        android:layout_height="576dp"
         android:orientation="vertical">
 
         <androidx.recyclerview.widget.RecyclerView

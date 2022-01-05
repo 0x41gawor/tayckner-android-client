@@ -13,8 +13,8 @@
         <action
             android:id="@+id/action_loginFragment_to_registerFragment"
             app:destination="@id/registerFragment"
-            app:enterAnim="@anim/from_right_slow"
-            app:exitAnim="@anim/to_left_slow" />
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left" />
         <action
             android:id="@+id/action_loginFragment_to_habitTrackerFragment"
             app:destination="@id/habitTrackerFragment" />
@@ -33,8 +33,8 @@
         <action
             android:id="@+id/action_registerFragment_to_loginFragment"
             app:destination="@id/loginFragment"
-            app:enterAnim="@anim/from_left_slow"
-            app:exitAnim="@anim/to_right_slow" />
+            app:enterAnim="@anim/from_left"
+            app:exitAnim="@anim/to_right" />
     </fragment>
     <fragment
         android:id="@+id/habitTrackerFragment"
@@ -49,14 +49,10 @@
             app:destination="@id/loginFragment" />
         <action
             android:id="@+id/action_habitTrackerFragment_to_dayTrackerFragment"
-            app:destination="@id/dayTrackerFragment"
-            app:enterAnim="@anim/from_left"
-            app:exitAnim="@anim/to_right" />
+            app:destination="@id/dayTrackerFragment" />
         <action
             android:id="@+id/action_habitTrackerFragment_to_dayPlannerFragment"
-            app:destination="@id/dayPlannerFragment"
-            app:enterAnim="@anim/from_left"
-            app:exitAnim="@anim/to_right" />
+            app:destination="@id/dayPlannerFragment" />
     </fragment>
     <fragment
         android:id="@+id/myHabitsFragment"
@@ -86,14 +82,10 @@
             app:destination="@id/loginFragment" />
         <action
             android:id="@+id/action_dayPlannerFragment_to_dayTrackerFragment"
-            app:destination="@id/dayTrackerFragment"
-            app:enterAnim="@anim/from_right"
-            app:exitAnim="@anim/to_left" />
+            app:destination="@id/dayTrackerFragment" />
         <action
             android:id="@+id/action_dayPlannerFragment_to_habitTrackerFragment"
-            app:destination="@id/habitTrackerFragment"
-            app:enterAnim="@anim/from_right"
-            app:exitAnim="@anim/to_left" />
+            app:destination="@id/habitTrackerFragment" />
     </fragment>
     <fragment
         android:id="@+id/dayTrackerFragment"
@@ -108,14 +100,10 @@
             app:destination="@id/loginFragment" />
         <action
             android:id="@+id/action_dayTrackerFragment_to_habitTrackerFragment"
-            app:destination="@id/habitTrackerFragment"
-            app:enterAnim="@anim/from_right"
-            app:exitAnim="@anim/to_left" />
+            app:destination="@id/habitTrackerFragment" />
         <action
             android:id="@+id/action_dayTrackerFragment_to_dayPlannerFragment"
-            app:destination="@id/dayPlannerFragment"
-            app:enterAnim="@anim/from_left"
-            app:exitAnim="@anim/to_right" />
+            app:destination="@id/dayPlannerFragment" />
     </fragment>
     <fragment
         android:id="@+id/dayTrackerCategoriesFragment"

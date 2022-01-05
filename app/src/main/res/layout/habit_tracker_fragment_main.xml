@@ -77,7 +77,7 @@
             android:layout_width="72dp"
             android:layout_height="60dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="400dp"
+            android:layout_marginTop="397dp"
             android:background="@drawable/button_login_enabled"
             android:src="@drawable/ic_add_icon" />
     </FrameLayout>
