@@ -8,9 +8,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import pl.gawor.android.tayckner.R
+import pl.gawor.android.tayckner.common.util.SharedPrefManager
 import pl.gawor.android.tayckner.common.util.Util
 import pl.gawor.android.tayckner.databinding.DayPlannerFragmentMainBinding
 import pl.gawor.android.tayckner.databinding.DayTrackerDialogAddActivityBinding
@@ -41,11 +45,39 @@ class DayTrackerFragment : Fragment() {
         setupActivitiesRecyclerView()
         setupDate()
 
+        binding.imageButtonOptions.setOnClickListener {
+            optionsMenu(binding.imageButtonOptions)
+        }
+
         binding.imageButtonAdd.setOnClickListener {
             addActivity()
         }
 
         return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        repository.refreshActivitiesList()
+    }
+
+    private fun optionsMenu(view: View) {
+        val optionsMenu = PopupMenu(context, view)
+        optionsMenu.inflate(R.menu.day_tracker_menu_top_bar)
+        optionsMenu.setOnMenuItemClickListener{
+            when(it.itemId) {
+                R.id.logout -> {
+                    SharedPrefManager.logout(this)
+                    findNavController().navigate(R.id.action_habitTrackerFragment_to_loginFragment)
+                    true}
+                R.id.categories -> {
+                    findNavController().navigate(R.id.action_dayTrackerFragment_to_dayTrackerCategoriesFragment)
+                    true
+                }
+                else -> {true}
+            }
+        }
+        optionsMenu.show()
     }
 
 
