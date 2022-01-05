@@ -74,6 +74,9 @@
         <action
             android:id="@+id/action_dayTrackerFragment_to_dayTrackerCategoriesFragment"
             app:destination="@id/dayTrackerCategoriesFragment" />
+        <action
+            android:id="@+id/action_dayTrackerFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
     </fragment>
     <fragment
         android:id="@+id/dayTrackerCategoriesFragment"

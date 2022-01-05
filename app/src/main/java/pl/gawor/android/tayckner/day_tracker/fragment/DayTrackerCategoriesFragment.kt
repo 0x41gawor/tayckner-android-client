@@ -45,6 +45,11 @@ class DayTrackerCategoriesFragment : Fragment() {
         return binding.root
     }
 
+    override fun onResume() {
+        super.onResume()
+        repository.refreshCategoriesList()
+    }
+
     private fun setupCategoriesRecyclerView()= binding.recyclerView.apply {
         categoriesAdapter = CategoryAdapter(context)
         adapter = categoriesAdapter

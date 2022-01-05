@@ -140,10 +140,10 @@ class CategoryAdapter(val context: Context) : RecyclerView.Adapter<CategoryAdapt
             }
         }
 
-        fun sendCategoriesDeleteRequest(habitEventId: Int) {
+        fun sendCategoriesDeleteRequest(id: Int) {
             Log.i(TAG, "CategoryAdapter.sendCategoriesDeleteRequest()")
             CoroutineScope(Dispatchers.IO).launch {
-                categoriesRepository.delete(habitEventId)
+                categoriesRepository.delete(id)
             }
         }
     }

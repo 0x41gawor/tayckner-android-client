@@ -68,7 +68,7 @@ class DayTrackerFragment : Fragment() {
             when(it.itemId) {
                 R.id.logout -> {
                     SharedPrefManager.logout(this)
-                    findNavController().navigate(R.id.action_habitTrackerFragment_to_loginFragment)
+                    findNavController().navigate(R.id.action_dayTrackerFragment_to_loginFragment)
                     true}
                 R.id.categories -> {
                     findNavController().navigate(R.id.action_dayTrackerFragment_to_dayTrackerCategoriesFragment)
@@ -155,7 +155,9 @@ class DayTrackerFragment : Fragment() {
             val date = "$year-${if (month < 10) "0$month" else month}-${if (day < 10) "0$day" else day}"
 
             var start = editTextStart.text.toString()
+            if (start.length < 5) start = "0$start"
             var end = editTextEnd.text.toString()
+            if (end.length < 5) end = "0$end"
             start = "${date}T${start}:00"
             end = "${date}T${end}:00"
 
