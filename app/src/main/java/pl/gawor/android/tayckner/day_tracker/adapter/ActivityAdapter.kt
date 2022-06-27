@@ -147,7 +147,7 @@ class ActivityAdapter(val context: Context) : RecyclerView.Adapter<ActivityAdapt
             start = "${date}T${start}:00"
             end = "${date}T${end}:00"
 
-            val category = Category("", "", categoryId, "", null)
+            val category = Category(categoryId, "", "",  "", null)
             val activity = Activity(0, 0, end, id, name, start, category)
             CoroutineScope(Dispatchers.IO).launch {
                 activitiesRepository.update(activity, id)

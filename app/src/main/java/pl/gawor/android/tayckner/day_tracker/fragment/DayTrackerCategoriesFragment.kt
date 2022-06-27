@@ -1,6 +1,7 @@
 package pl.gawor.android.tayckner.day_tracker.fragment
 
 import android.app.AlertDialog
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -20,6 +21,7 @@ import pl.gawor.android.tayckner.databinding.DayTrackerFragmentCategoriesBinding
 import pl.gawor.android.tayckner.day_tracker.adapter.CategoryAdapter
 import pl.gawor.android.tayckner.day_tracker.model.Category
 import pl.gawor.android.tayckner.day_tracker.repository.CategoryRepository
+import pl.gawor.android.tayckner.day_tracker.repository.CategoryRepositoryDB
 import java.util.*
 
 
@@ -35,12 +37,17 @@ class DayTrackerCategoriesFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        repository.refreshCategoriesList()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DayTrackerFragmentCategoriesBinding.inflate(layoutInflater)
         setupCategoriesRecyclerView()
+
+        Log.i(tag, "activity = ${requireActivity()}")
+
+        repository.init(requireContext())
+
+        repository.refreshCategoriesList()
 
         binding.imageButtonOptions.setOnClickListener {
             optionsMenu(binding.imageButtonOptions)
@@ -119,16 +126,23 @@ class DayTrackerCategoriesFragment : Fragment() {
     }
 
     inner class Repository {
-        private val categoryRepository = CategoryRepository()
+        private var categoryRepository: CategoryRepositoryDB? = null
+//        private val categoryRepository = CategoryRepository()
+
+        fun init(context: Context) {
+            categoryRepository = CategoryRepositoryDB(context)
+            Log.i(tag, "context = $context")
+        }
 
         fun refreshCategoriesList() {
             Log.i(TAG, "DayTrackerCategoriesFragment.Repository.refreshCategoriesList()")
             lifecycleScope.launchWhenCreated {
-                val list: List<Category> = categoryRepository.list()
+                var list: List<Category> = categoryRepository!!.list()
+                Toast.makeText(context, "list = $list", Toast.LENGTH_LONG).show()
                 categoriesAdapter.categories = list
                 return@launchWhenCreated
             }
-            Log.i(TAG, "DayTrackerFragment.Repository.refreshActivitiesList() = void")
+            Log.i(TAG, "DayTrackerFragment.Repository.refreshCategoriesList() = void")
         }
 
         fun sendCategoryCreateRequest(editTextName: EditText, editTextDescription: EditText, editTextColor: EditText) {
@@ -137,9 +151,9 @@ class DayTrackerCategoriesFragment : Fragment() {
             val description = editTextDescription.text.toString()
             val color = editTextColor.text.toString()
 
-            val category = Category(color, description, 0, name, null)
+            val category = Category(0, name, description, color, null)
             lifecycleScope.launchWhenCreated {
-                categoryRepository.create(category)
+                categoryRepository!!.create(category)
                 return@launchWhenCreated
             }
         }

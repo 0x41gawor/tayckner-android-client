@@ -173,7 +173,7 @@ class DayTrackerFragment : Fragment() {
             start = "${date}T${start}:00"
             end = "${date}T${end}:00"
 
-            val category = Category("", "", categoryId, "", null)
+            val category = Category(categoryId, "", "",  "", null)
             val activity = Activity(0, 0, end, 0, name, start, category)
 
             lifecycleScope.launchWhenCreated {

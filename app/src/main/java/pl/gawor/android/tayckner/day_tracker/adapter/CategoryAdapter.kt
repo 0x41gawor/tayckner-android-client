@@ -20,6 +20,7 @@ import pl.gawor.android.tayckner.databinding.DayTrackerDialogUpdateCategoryBindi
 import pl.gawor.android.tayckner.databinding.DayTrackerItemCategoryBinding
 import pl.gawor.android.tayckner.day_tracker.model.Category
 import pl.gawor.android.tayckner.day_tracker.repository.CategoryRepository
+import pl.gawor.android.tayckner.day_tracker.repository.CategoryRepositoryDB
 
 class CategoryAdapter(val context: Context) : RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>() {
     inner class CategoryViewHolder(val binding: DayTrackerItemCategoryBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -118,7 +119,7 @@ class CategoryAdapter(val context: Context) : RecyclerView.Adapter<CategoryAdapt
     }
 
     inner class Repository {
-        private val categoriesRepository = CategoryRepository()
+        private val categoriesRepository = CategoryRepositoryDB(context)
 
         fun sendCategoriesUpdateRequest(id: Int, editTextName: EditText, editTextDescription: EditText, editTextColor: EditText) {
             Log.i(TAG, "CategoryAdapter.sendCategoriesUpdateRequest()")
@@ -126,9 +127,9 @@ class CategoryAdapter(val context: Context) : RecyclerView.Adapter<CategoryAdapt
             val description = editTextDescription.text.toString()
             val color = editTextColor.text.toString()
 
-            val category = Category(color, description, id, name, null)
+            val category = Category(id, name, description, color, null)
             CoroutineScope(Dispatchers.IO).launch {
-                categoriesRepository.update(category, id)
+              //  categoriesRepository.update(category, id)
             }
         }
 
@@ -143,7 +144,7 @@ class CategoryAdapter(val context: Context) : RecyclerView.Adapter<CategoryAdapt
         fun sendCategoriesDeleteRequest(id: Int) {
             Log.i(TAG, "CategoryAdapter.sendCategoriesDeleteRequest()")
             CoroutineScope(Dispatchers.IO).launch {
-                categoriesRepository.delete(id)
+               // categoriesRepository.delete(id)
             }
         }
     }
