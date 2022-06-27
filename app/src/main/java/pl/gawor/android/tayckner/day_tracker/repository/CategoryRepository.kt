@@ -41,12 +41,12 @@ class CategoryRepository {
         return emptyList()
     }
 
-    suspend fun create(schedule: Category) : Category? {
+    suspend fun create(category: Category) : Category? {
         Log.i(TAG, "CategoryRepository.create()")
         var result: Category? = null
         val categoryApiClient: CategoryApi = RetrofitInstance.retrofit.create(CategoryApi::class.java)
         val response: Response<ResponseModel<Category>> = try {
-            categoryApiClient.create(JWT_TOKEN, schedule)
+            categoryApiClient.create(JWT_TOKEN, category)
         }catch (e: IOException) {
             Log.e(TAG, "CategoryRepository.create:\t\tIOException: ${e.message}")
             return null
@@ -66,12 +66,12 @@ class CategoryRepository {
         return result
     }
 
-    suspend fun update(schedule: Category, id: Int) : Category? {
+    suspend fun update(category: Category, id: Int) : Category? {
         Log.i(TAG, "CategoryRepository.update()")
         var result: Category? = null
         val categoryApiClient: CategoryApi = RetrofitInstance.retrofit.create(CategoryApi::class.java)
         val response: Response<ResponseModel<Category>> = try {
-            categoryApiClient.update(JWT_TOKEN, schedule, id)
+            categoryApiClient.update(JWT_TOKEN, category, id)
         }catch (e: IOException) {
             Log.e(TAG, "CategoryRepository.update:\t\tIOException: ${e.message}")
             return null
