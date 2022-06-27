@@ -129,7 +129,7 @@ class CategoryAdapter(val context: Context) : RecyclerView.Adapter<CategoryAdapt
 
             val category = Category(id, name, description, color, null)
             CoroutineScope(Dispatchers.IO).launch {
-              //  categoriesRepository.update(category, id)
+              categoriesRepository.update(category, id)
             }
         }
 

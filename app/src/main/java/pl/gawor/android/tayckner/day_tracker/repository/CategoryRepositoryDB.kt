@@ -73,4 +73,25 @@ class CategoryRepositoryDB() {
         val deletedRows = db.delete("category", selection, selectionArgs)
     }
 
+    fun update(category: Category, id: Int) {
+        val db = dbHelper!!.writableDatabase
+        val values = ContentValues().apply {
+            put("name", category.name)
+            put("description", category.description)
+            put("color", category.color)
+            put("user_id", 1)
+        }
+
+        // Define 'where' part of query.
+        val selection = "id LIKE ?"
+        // Specify arguments in placeholder order.
+        val selectionArgs = arrayOf(id.toString())
+
+        val count = db.update(
+            "category",
+            values,
+            selection,
+            selectionArgs)
+    }
+
 }
