@@ -144,7 +144,7 @@ class CategoryAdapter(val context: Context) : RecyclerView.Adapter<CategoryAdapt
         fun sendCategoriesDeleteRequest(id: Int) {
             Log.i(TAG, "CategoryAdapter.sendCategoriesDeleteRequest()")
             CoroutineScope(Dispatchers.IO).launch {
-               // categoriesRepository.delete(id)
+                categoriesRepository.delete(id)
             }
         }
     }

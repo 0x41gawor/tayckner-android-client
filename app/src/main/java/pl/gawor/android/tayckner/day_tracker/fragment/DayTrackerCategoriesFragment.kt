@@ -127,7 +127,6 @@ class DayTrackerCategoriesFragment : Fragment() {
 
     inner class Repository {
         private var categoryRepository: CategoryRepositoryDB? = null
-//        private val categoryRepository = CategoryRepository()
 
         fun init(context: Context) {
             categoryRepository = CategoryRepositoryDB(context)
@@ -138,7 +137,6 @@ class DayTrackerCategoriesFragment : Fragment() {
             Log.i(TAG, "DayTrackerCategoriesFragment.Repository.refreshCategoriesList()")
             lifecycleScope.launchWhenCreated {
                 var list: List<Category> = categoryRepository!!.list()
-                Toast.makeText(context, "list = $list", Toast.LENGTH_LONG).show()
                 categoriesAdapter.categories = list
                 return@launchWhenCreated
             }

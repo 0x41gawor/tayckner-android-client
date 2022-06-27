@@ -19,19 +19,6 @@ class CategoryRepositoryDB() {
         this.context = context
     }
 
-    fun create(category: Category): Category? {
-        val db = dbHelper!!.writableDatabase
-        val values = ContentValues().apply {
-            put("name", category.name)
-            put("description", category.description)
-            put("color", category.color)
-            put("user_id", 1)
-        }
-
-        val newRowId = db?.insert("category", null, values)
-        return Category(0,"","", "#ffffff",  null)
-    }
-
     fun list(): List<Category> {
         val db = dbHelper!!.readableDatabase
         val cursor = db.query(
@@ -60,6 +47,30 @@ class CategoryRepositoryDB() {
         }
         cursor.close()
         return list
+    }
+
+    fun create(category: Category): Category? {
+        val db = dbHelper!!.writableDatabase
+        val values = ContentValues().apply {
+            put("name", category.name)
+            put("description", category.description)
+            put("color", category.color)
+            put("user_id", 1)
+        }
+
+        val newRowId = db?.insert("category", null, values)
+        return Category(0,"","", "#ffffff",  null)
+    }
+
+    fun delete(id: Int) {
+        val db = dbHelper!!.writableDatabase
+
+        // Define 'where' part of query.
+        val selection = "id LIKE ?"
+        // Specify arguments in placeholder order.
+        val selectionArgs = arrayOf(id.toString())
+        // Issue SQL statement.
+        val deletedRows = db.delete("category", selection, selectionArgs)
     }
 
 }
