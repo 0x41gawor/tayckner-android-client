@@ -21,6 +21,7 @@ import pl.gawor.android.tayckner.databinding.DayTrackerItemActivityBinding
 import pl.gawor.android.tayckner.day_tracker.model.Activity
 import pl.gawor.android.tayckner.day_tracker.model.Category
 import pl.gawor.android.tayckner.day_tracker.repository.ActivityRepository
+import pl.gawor.android.tayckner.day_tracker.repository.ActivityRepositoryDB
 import java.time.LocalDate
 import java.util.*
 
@@ -51,8 +52,8 @@ class ActivityAdapter(val context: Context) : RecyclerView.Adapter<ActivityAdapt
 
                         editTextName.setText(item.name)
                         editTextCategoryId.setText(item.category.id.toString())
-                        editTextStart.setText(item.startTime.substring(11,16))
-                        editTextEnd.setText(item.endTime.substring(11,16))
+                        editTextStart.setText(item.startTime.substring(0,5))
+                        editTextEnd.setText(item.endTime.substring(0,5))
 
                         val dialogUpdateActivity = AlertDialog.Builder(context)
 
@@ -115,10 +116,10 @@ class ActivityAdapter(val context: Context) : RecyclerView.Adapter<ActivityAdapt
         holder.binding.apply {
             val activity = activities[position]
             textViewName.text = activity.name
-            var start = activity.startTime.substring(11, 16)
+            var start = activity.startTime.substring(0, 5)
             if (start[0] == '0') start = start.substring(1)
             textViewStart.text = start
-            var end = activity.endTime.substring(11, 16)
+            var end = activity.endTime.substring(0, 5)
             if (end[0] == '0') end = end.substring(1)
             textViewEnd.text = end
             textViewCategory.text = activity.category.name
@@ -127,7 +128,7 @@ class ActivityAdapter(val context: Context) : RecyclerView.Adapter<ActivityAdapt
     }
 
     inner class Repository {
-        private val activitiesRepository = ActivityRepository()
+        private val activitiesRepository = ActivityRepositoryDB(context)
 
         fun sendActivitiesUpdateRequest(id: Int, editTextName: EditText, editTextCategoryId: EditText, editTextStart: EditText, editTextEnd: EditText) {
             Log.i(TAG, "ActivityAdapter.sendActivitiesUpdateRequest()")
@@ -149,7 +150,7 @@ class ActivityAdapter(val context: Context) : RecyclerView.Adapter<ActivityAdapt
             end = "${date}T${end}:00"
 
             val category = Category(categoryId, "", "",  "", null)
-            val activity = Activity(9, "", start, end, LocalDate.MIN, 0, 0, category)
+            val activity = Activity(9, name , start, end, LocalDate.MIN, 0, 0, category)
             CoroutineScope(Dispatchers.IO).launch {
                 activitiesRepository.update(activity, id)
             }
@@ -163,10 +164,10 @@ class ActivityAdapter(val context: Context) : RecyclerView.Adapter<ActivityAdapt
             }
         }
 
-        fun sendActivitiesDeleteRequest(habitEventId: Int) {
+        fun sendActivitiesDeleteRequest(id: Int) {
             Log.i(TAG, "ActivityAdapter.sendActivitiesDeleteRequest()")
             CoroutineScope(Dispatchers.IO).launch {
-                activitiesRepository.delete(habitEventId)
+                activitiesRepository.delete(id)
             }
         }
     }

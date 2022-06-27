@@ -130,7 +130,6 @@ class DayTrackerCategoriesFragment : Fragment() {
 
         fun init(context: Context) {
             categoryRepository = CategoryRepositoryDB(context)
-            Log.i(tag, "context = $context")
         }
 
         fun refreshCategoriesList() {

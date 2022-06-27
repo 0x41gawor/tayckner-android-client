@@ -1,6 +1,7 @@
 package pl.gawor.android.tayckner.day_tracker.fragment
 
 import android.app.AlertDialog
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -21,7 +22,7 @@ import pl.gawor.android.tayckner.databinding.DayTrackerFragmentMainBinding
 import pl.gawor.android.tayckner.day_tracker.adapter.ActivityAdapter
 import pl.gawor.android.tayckner.day_tracker.model.Activity
 import pl.gawor.android.tayckner.day_tracker.model.Category
-import pl.gawor.android.tayckner.day_tracker.repository.ActivityRepository
+import pl.gawor.android.tayckner.day_tracker.repository.ActivityRepositoryDB
 import java.time.LocalDate
 import java.util.*
 
@@ -38,13 +39,15 @@ class DayTrackerFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        repository.refreshActivitiesList()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DayTrackerFragmentMainBinding.inflate(layoutInflater)
         setupActivitiesRecyclerView()
         setupDate()
+
+        repository.init(requireContext())
+        repository.refreshActivitiesList()
 
         binding.imageButtonOptions.setOnClickListener {
             optionsMenu(binding.imageButtonOptions)
@@ -143,12 +146,16 @@ class DayTrackerFragment : Fragment() {
     }
 
     inner class Repository {
-        private val activityRepository = ActivityRepository()
+        private var activityRepository: ActivityRepositoryDB? = null
+
+        fun init(context: Context) {
+            activityRepository = ActivityRepositoryDB(context)
+        }
 
         fun refreshActivitiesList() {
             Log.i(TAG, "DayTrackerFragment.Repository.refreshActivitiesList()")
             lifecycleScope.launchWhenCreated {
-                val list: List<Activity> = activityRepository.list()
+                val list: List<Activity> = activityRepository!!.list()
                 activityAdapter.activities = list
                 return@launchWhenCreated
             }
@@ -171,14 +178,12 @@ class DayTrackerFragment : Fragment() {
             if (start.length < 5) start = "0$start"
             var end = editTextEnd.text.toString()
             if (end.length < 5) end = "0$end"
-            start = "${date}T${start}:00"
-            end = "${date}T${end}:00"
 
             val category = Category(categoryId, "", "",  "", null)
-            val activity = Activity(9, "", start, end, LocalDate.MIN, 0, 0, category)
+            val activity = Activity(0, name, start, end, LocalDate.now(), 0, 0, category)
 
             lifecycleScope.launchWhenCreated {
-                activityRepository.create(activity)
+                activityRepository!!.create(activity)
                 return@launchWhenCreated
             }
         }
