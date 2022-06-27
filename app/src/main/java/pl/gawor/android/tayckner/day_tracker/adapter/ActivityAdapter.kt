@@ -116,11 +116,9 @@ class ActivityAdapter(val context: Context) : RecyclerView.Adapter<ActivityAdapt
         holder.binding.apply {
             val activity = activities[position]
             textViewName.text = activity.name
-            var start = activity.startTime.substring(0, 5)
-            if (start[0] == '0') start = start.substring(1)
+            val start = activity.startTime.substring(0, 5)
             textViewStart.text = start
-            var end = activity.endTime.substring(0, 5)
-            if (end[0] == '0') end = end.substring(1)
+            val end = activity.endTime.substring(0, 5)
             textViewEnd.text = end
             textViewCategory.text = activity.category.name
             linearLayout.background.current.setTint(Color.parseColor(activity.category.color))
@@ -146,8 +144,6 @@ class ActivityAdapter(val context: Context) : RecyclerView.Adapter<ActivityAdapt
             if (start.length < 5) start = "0$start"
             var end = editTextEnd.text.toString()
             if (end.length < 5) end = "0$start"
-            start = "${date}T${start}:00"
-            end = "${date}T${end}:00"
 
             val category = Category(categoryId, "", "",  "", null)
             val activity = Activity(9, name , start, end, LocalDate.MIN, 0, 0, category)

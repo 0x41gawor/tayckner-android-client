@@ -56,15 +56,15 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="40dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="1"
             android:layout_marginRight="0dp"
+            android:layout_weight="1"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/textView_start"
-                android:layout_width="match_parent"
+                android:layout_width="52dp"
                 android:layout_height="30dp"
                 android:gravity="center"
                 android:text="9:00"
@@ -73,29 +73,12 @@
 
             <TextView
                 android:id="@+id/textView_end"
-                android:layout_width="match_parent"
+                android:layout_width="53dp"
                 android:layout_height="30dp"
                 android:gravity="center"
                 android:text="12:00"
                 android:textColor="@color/OnPrimary"
                 android:textSize="16sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="40dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/textView_duration"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:textColor="@color/OnPrimary"
-                android:textSize="22sp" />
         </LinearLayout>
 
     </LinearLayout>
