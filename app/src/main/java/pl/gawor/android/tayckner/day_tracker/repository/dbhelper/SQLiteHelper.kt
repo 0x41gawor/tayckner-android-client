@@ -22,11 +22,29 @@ class SQLiteHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, 
                 user_id INTEGER  NOT NULL
                 );
             """.trimIndent()
+        val createActivityTable =
+            """
+                CREATE TABLE activity (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name TEXT NOT NULL,
+                start_time TEXT NOT NULL,
+                end_time TEXT NOT NULL,
+                date TEXT NOT NULL,
+                duration INTEGER,
+                breaks INTEGER,
+                category_id INTEGER NOT NULL,
+                CONSTRAINT FK_category
+                    FOREIGN KEY (category_id)
+                    REFERENCES category(id)
+                );
+            """.trimIndent()
         db?.execSQL(createCategoryTable)
+        db?.execSQL(createActivityTable)
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
         db?.execSQL("DROP TABLE IF EXISTS category")
+        db?.execSQL("DROP TABLE IF EXISTS activity")
         onCreate(db)
     }
 

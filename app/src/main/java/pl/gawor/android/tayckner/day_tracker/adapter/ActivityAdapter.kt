@@ -21,6 +21,7 @@ import pl.gawor.android.tayckner.databinding.DayTrackerItemActivityBinding
 import pl.gawor.android.tayckner.day_tracker.model.Activity
 import pl.gawor.android.tayckner.day_tracker.model.Category
 import pl.gawor.android.tayckner.day_tracker.repository.ActivityRepository
+import java.time.LocalDate
 import java.util.*
 
 class ActivityAdapter(val context: Context) : RecyclerView.Adapter<ActivityAdapter.ActivityViewHolder>() {
@@ -148,7 +149,7 @@ class ActivityAdapter(val context: Context) : RecyclerView.Adapter<ActivityAdapt
             end = "${date}T${end}:00"
 
             val category = Category(categoryId, "", "",  "", null)
-            val activity = Activity(0, 0, end, id, name, start, category)
+            val activity = Activity(9, "", start, end, LocalDate.MIN, 0, 0, category)
             CoroutineScope(Dispatchers.IO).launch {
                 activitiesRepository.update(activity, id)
             }

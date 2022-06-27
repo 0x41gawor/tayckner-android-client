@@ -22,6 +22,7 @@ import pl.gawor.android.tayckner.day_tracker.adapter.ActivityAdapter
 import pl.gawor.android.tayckner.day_tracker.model.Activity
 import pl.gawor.android.tayckner.day_tracker.model.Category
 import pl.gawor.android.tayckner.day_tracker.repository.ActivityRepository
+import java.time.LocalDate
 import java.util.*
 
 
@@ -174,7 +175,7 @@ class DayTrackerFragment : Fragment() {
             end = "${date}T${end}:00"
 
             val category = Category(categoryId, "", "",  "", null)
-            val activity = Activity(0, 0, end, 0, name, start, category)
+            val activity = Activity(9, "", start, end, LocalDate.MIN, 0, 0, category)
 
             lifecycleScope.launchWhenCreated {
                 activityRepository.create(activity)
