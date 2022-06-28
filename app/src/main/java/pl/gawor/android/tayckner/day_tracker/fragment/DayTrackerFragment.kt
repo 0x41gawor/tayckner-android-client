@@ -26,6 +26,7 @@ import pl.gawor.android.tayckner.day_tracker.repository.ActivityRepositoryDB
 import java.time.LocalDate
 import java.util.*
 
+var selectedDate: LocalDate = LocalDate.now()
 
 class DayTrackerFragment : Fragment() {
 
@@ -36,6 +37,7 @@ class DayTrackerFragment : Fragment() {
     private lateinit var activityAdapter: ActivityAdapter
 
     private val repository = Repository()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,6 +53,14 @@ class DayTrackerFragment : Fragment() {
 
         binding.imageButtonOptions.setOnClickListener {
             optionsMenu(binding.imageButtonOptions)
+        }
+
+        binding.buttonPrev.setOnClickListener {
+            setSelectedDate(-1)
+        }
+
+        binding.buttonNext.setOnClickListener {
+            setSelectedDate(1)
         }
 
         binding.imageButtonDayPlanner.setOnClickListener {
@@ -105,13 +115,23 @@ class DayTrackerFragment : Fragment() {
 
     private fun setupDate() {
         val textViewDate = binding.textViewDate
-        val c = Calendar.getInstance()
 
-        val year = c.get(Calendar.YEAR)
-        val month = c.get(Calendar.MONTH)
-        val day = c.get(Calendar.DAY_OF_MONTH)
+        val year = selectedDate.year
+        val month = selectedDate.month.toString()
+        val day = selectedDate.dayOfMonth
 
-        textViewDate.text = "$day ${Util.convertMonth(month)} $year"
+        textViewDate.text = "$day ${month.substring(0,3)} $year"
+    }
+
+    private fun setSelectedDate(sel: Int) {
+        selectedDate = when(sel) {
+            0 -> LocalDate.now()
+            -1 -> selectedDate.minusDays(1)
+            1 -> selectedDate.plusDays(1)
+            else -> {LocalDate.now()}
+        }
+        setupDate()
+        repository.refreshActivitiesList()
     }
 
     private fun addActivity() {
@@ -155,7 +175,7 @@ class DayTrackerFragment : Fragment() {
         fun refreshActivitiesList() {
             Log.i(TAG, "DayTrackerFragment.Repository.refreshActivitiesList()")
             lifecycleScope.launchWhenCreated {
-                val list: List<Activity> = activityRepository!!.list()
+                val list: List<Activity> = activityRepository!!.list(selectedDate)
                 activityAdapter.activities = list
                 return@launchWhenCreated
             }

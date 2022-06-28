@@ -18,6 +18,7 @@ import kotlinx.coroutines.launch
 import pl.gawor.android.tayckner.R
 import pl.gawor.android.tayckner.databinding.DayTrackerDialogUpdateActivityBinding
 import pl.gawor.android.tayckner.databinding.DayTrackerItemActivityBinding
+import pl.gawor.android.tayckner.day_tracker.fragment.selectedDate
 import pl.gawor.android.tayckner.day_tracker.model.Activity
 import pl.gawor.android.tayckner.day_tracker.model.Category
 import pl.gawor.android.tayckner.day_tracker.repository.ActivityRepository
@@ -133,20 +134,14 @@ class ActivityAdapter(val context: Context) : RecyclerView.Adapter<ActivityAdapt
             val name = editTextName.text.toString()
             val categoryId = editTextCategoryId.text.toString().toInt()
 
-            val c = Calendar.getInstance()
-            val year = c.get(Calendar.YEAR)
-            val month = c.get(Calendar.MONTH) + 1
-            val day = c.get(Calendar.DAY_OF_MONTH)
-
-            val date = "$year-${if (month < 10) "0$month" else month}-${if (day < 10) "0$day" else day}"
-
             var start = editTextStart.text.toString()
             if (start.length < 5) start = "0$start"
             var end = editTextEnd.text.toString()
             if (end.length < 5) end = "0$start"
 
+
             val category = Category(categoryId, "", "",  "", null)
-            val activity = Activity(9, name , start, end, LocalDate.MIN, 0, 0, category)
+            val activity = Activity(9, name , start, end, selectedDate, 0, 0, category)
             CoroutineScope(Dispatchers.IO).launch {
                 activitiesRepository.update(activity, id)
             }
@@ -155,7 +150,7 @@ class ActivityAdapter(val context: Context) : RecyclerView.Adapter<ActivityAdapt
         fun sendActivitiesListRequest() {
             Log.i(TAG, "ActivityAdapter.sendActivitiesListRequest()")
             CoroutineScope(Dispatchers.IO).launch {
-                val list :List<Activity> = activitiesRepository.list()
+                val list :List<Activity> = activitiesRepository.list(selectedDate)
                 activities = list
             }
         }

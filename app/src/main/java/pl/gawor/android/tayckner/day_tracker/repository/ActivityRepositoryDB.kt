@@ -3,6 +3,7 @@ package pl.gawor.android.tayckner.day_tracker.repository
 import android.content.ContentValues
 import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import pl.gawor.android.tayckner.day_tracker.model.Activity
 import pl.gawor.android.tayckner.day_tracker.model.Category
 import pl.gawor.android.tayckner.day_tracker.repository.dbhelper.SQLiteHelper
@@ -73,14 +74,20 @@ class ActivityRepositoryDB() {
         val deletedRows = db.delete("activity", selection, selectionArgs)
     }
 
-    fun list() : List<Activity> {
+    fun list(date: LocalDate) : List<Activity> {
         val db = dbHelper!!.readableDatabase
+
+        // Define 'where' part of query.
+        val selection = "date = ?"
+        // Specify arguments in placeholder order.
+        val selectionArgs = arrayOf(date.toString())
+
         val cursor = db.query(
             false,
             "activity",
             null,
-            null,
-            null,
+            selection,
+            selectionArgs,
             null,
             null,
             null,
